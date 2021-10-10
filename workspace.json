@@ -1,6 +1,41 @@
 {
   "version": 2,
-  "projects": {},
+  "projects": {
+    "models": {
+      "root": "libs/models",
+      "sourceRoot": "libs/models/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/models/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/models"],
+          "options": {
+            "jestConfig": "libs/models/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "generate": {
+          "builder": "@nx-tools/nx-prisma:generate",
+          "options": {
+            "schema": "libs/models/prisma/schema.prisma"
+          }
+        },
+        "migrations": {
+          "builder": "@nx-tools/nx-prisma:migrations",
+          "options": {
+            "schema": "libs/models/prisma/schema.prisma"
+          }
+        }
+      }
+    }
+  },
   "cli": {
     "defaultCollection": "@nrwl/workspace"
   }
