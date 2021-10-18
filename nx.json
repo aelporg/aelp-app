@@ -28,6 +28,9 @@
     ]
   },
   "projects": {
+    "api": {
+      "tags": []
+    },
     "models": {
       "tags": []
     }
