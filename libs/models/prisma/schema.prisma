@@ -11,12 +11,18 @@ generator client {
   output   = "../../../node_modules/.prisma/client"
 }
 
+generator typegraphql {
+  provider = "typegraphql-prisma"
+  output   = "../../../node_modules/.generated/graphql"
+}
+
 model User {
   id             String             @id @default(uuid())
   firstName      String
   lastName       String
   userName       String             @unique
   email          String
+  /// @TypeGraphQL.omit(output: true)
   password       String
   country        Country            @relation(fields: [countryId], references: [id], name: "user_country")
   countryId      String

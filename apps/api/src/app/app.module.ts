@@ -1,9 +1,28 @@
 import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ModelsModule } from '@aelp-app/models';
+import { ModelsModule, PrismaService } from '@aelp-app/models';
+import { TypeGraphQLModule } from 'typegraphql-nestjs';
+import UserModule from './submodules/user.module';
+import AuthModule from './submodules/auth.module';
 
 @Module({
-  imports: [ModelsModule, GraphQLModule.forRoot({ autoSchemaFile: true })],
+  imports: [
+    ModelsModule,
+    TypeGraphQLModule.forRoot({
+      emitSchemaFile: true,
+      playground: true,
+      authChecker: (data, roles) => {
+        console.log(data, roles);
+        return true;
+      },
+      dateScalarMode: 'timestamp',
+      context: ({ req }) => ({
+        currentUser: req.user,
+        prisma: new PrismaService(),
+      }),
+    }),
+    UserModule,
+    AuthModule,
+  ],
   controllers: [],
   providers: [],
 })

@@ -9,16 +9,22 @@
   },
   "private": true,
   "dependencies": {
+    "@apollo/federation": "0.29.0",
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/graphql": "^9.0.6",
     "@nestjs/platform-express": "^7.0.0",
     "@prisma/client": "^3.2.1",
     "apollo-server-express": "^3.4.0",
+    "class-validator": "^0.13.1",
     "graphql": "^15.6.1",
+    "graphql-fields": "^2.0.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.6.3",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "type-graphql": "^1.1.1",
+    "typegraphql-nestjs": "^0.4.1",
+    "typegraphql-prisma": "^0.16.2"
   },
   "devDependencies": {
     "@nestjs/schematics": "^7.0.0",
