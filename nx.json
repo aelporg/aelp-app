@@ -34,5 +34,22 @@
     "models": {
       "tags": []
     }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/nest"
+  },
+  "defaultProject": "api",
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "@emotion/styled",
+        "linter": "eslint"
+      }
+    }
   }
 }
