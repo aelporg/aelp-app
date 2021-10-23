@@ -86,8 +86,7 @@ model Classroom {
   ownerId    String
 }
 
-model ClassroomMembers {
-  id            String        @id @default(uuid())
+model ClassroomMember {
   classroom     Classroom     @relation(fields: [classroomId], references: [id], name: "classroom_members")
   classroomId   String
   user          User          @relation(fields: [userId], references: [id], name: "user_classroomMembers")
@@ -95,6 +94,8 @@ model ClassroomMembers {
   classroomRole ClassroomRole
   updatedAt     DateTime      @updatedAt
   createdAt     DateTime      @default(now())
+
+  @@id([classroomId, userId])
 }
 
 enum ClassroomRole {
@@ -113,6 +114,8 @@ model Question {
   programmingQuestionId    String?                 @unique
   assessment               Assessment?             @relation(fields: [assessmentId], references: [id], name: "assessment_questions")
   assessmentId             String?
+  updatedAt    DateTime                       @updatedAt
+  createdAt    DateTime                       @default(now())
 }
 
 enum QuestionType {
@@ -167,8 +170,8 @@ model EvaluationCriteria {
   name                            String
   type                            EvaluationCriteriaType
   totalPoints                     Int
-  inputOutputEvaluationCriteria   InputOutputEvaluationCriteria? @relation(name: "evaluationCriteria_inputOutputEvaluationCriteria", fields: [inputOutputEvaluationCriteriaId], references: [id])
-  inputOutputEvaluationCriteriaId String
+  inputOutputEvalCrit   InputOutputEvaluationCriteria? @relation(name: "evaluationCriteria_inputOutputEvaluationCriteria", fields: [inputOutputEvaluationCriteriaId], references: [id])
+  inputOutputEvalCritId String?
   updatedAt                       DateTime                       @updatedAt
   createdAt                       DateTime                       @default(now())
 }
@@ -183,18 +186,24 @@ model InputOutputEvaluationCriteria {
   inputs       String[]
   outputs      String[]
   baseCriteria EvaluationCriteria[] @relation("evaluationCriteria_inputOutputEvaluationCriteria")
+  updatedAt                       DateTime                       @updatedAt
+  createdAt                       DateTime                       @default(now())
 }
 
 model SingleFileProgrammingQuestion {
   id                      String               @id @default(uuid())
   baseProgrammingQuestion ProgrammingQuestion? @relation("question_singleFileProgrammingQuestion")
   allowedLanguages        Language[]
+  updatedAt                       DateTime                       @updatedAt
+  createdAt                       DateTime                       @default(now())
 }
 
 model MultipleFilesProgrammingQuestion {
   id                      String               @id @default(uuid())
   baseProgrammingQuestion ProgrammingQuestion? @relation("question_multipleFilesProgrammingQuestion")
   defaultFiles            File[]
+  updatedAt                       DateTime                       @updatedAt
+  createdAt                       DateTime                       @default(now())
 }
 
 model Language {
