@@ -324,7 +324,7 @@ model Assessment {
   classroomId    String
   updatedAt      DateTime           @updatedAt
   createdAt      DateTime           @default(now())
-  submissions    AssessmentAnswer[]
+  answers        AssessmentAnswer[]
 }
 
 model AssessmentAnswer {
@@ -337,7 +337,7 @@ model AssessmentAnswer {
   submittedAt          DateTime?
   updatedAt            DateTime
   createdAt            DateTime
-  points               Int
+  recPoints               Int
 
   @@id([assessmentId, userId])
 }
