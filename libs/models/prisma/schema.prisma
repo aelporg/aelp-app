@@ -11,23 +11,27 @@ generator client {
   output   = "../../../node_modules/.prisma/client"
 }
 
+// --------------------
+// --- USER RELATED ---
+// --------------------
+
 model User {
-  id                String             @id @default(uuid())
-  firstName         String
-  lastName          String
-  userName          String             @unique
-  email             String
-  password          String
-  country           Country            @relation(fields: [countryId], references: [id], name: "user_country")
-  countryId         String
-  refreshTokens     UserRefreshToken[] @relation("user_refreshTokens")
-  role              Role               @default(USER)
-  updatedAt         DateTime           @updatedAt
-  createdAt         DateTime           @default(now())
-  linkedAccounts    LinkedAccount[]    @relation("user_linkedAccounts")
-  joinedClassrooms  ClassroomMember[]  @relation("user_classroomMembers")
-  envirnments       Envirnment[]       @relation("user_environment")
-  assessmentAnswers AssessmentAnswer[]
+  id                    String                  @id @default(uuid())
+  firstName             String
+  lastName              String
+  userName              String                  @unique
+  email                 String
+  password              String
+  country               Country                 @relation(fields: [countryId], references: [id], name: "user_country")
+  countryId             String
+  refreshTokens         UserRefreshToken[]      @relation("user_refreshTokens")
+  role                  Role                    @default(USER)
+  updatedAt             DateTime                @updatedAt
+  createdAt             DateTime                @default(now())
+  linkedAccounts        LinkedAccount[]         @relation("user_linkedAccounts")
+  joinedClassrooms      ClassroomMember[]       @relation("user_classroomMembers")
+  assessmentAnswers     AssessmentAnswer[]
+  envirnmentPermissions EnvironmentPermission[]
 }
 
 enum Role {
@@ -76,6 +80,9 @@ model Country {
   createdAt    DateTime @default(now())
 }
 
+// -------------------------
+// --- CLASSROOM RELATED ---
+// -------------------------
 model Classroom {
   id                           String                        @id @default(uuid())
   name                         String
@@ -108,6 +115,32 @@ enum ClassroomRole {
   TA
 }
 
+// --------------------------
+// --- ASSESSMENT RELATED ---
+// --------------------------
+
+model Assessment {
+  id             String             @id @default(uuid())
+  title          String
+  description    String
+  assessmentType AssessmentType
+  questions      Question[]         @relation("assessment_questions")
+  startTime      DateTime           @default(now())
+  endTime        DateTime?
+  submitAfterEnd Boolean            @default(false)
+  totalPoints    Int                @default(0)
+  classroom      Classroom          @relation(fields: [classroomId], references: [id])
+  classroomId    String
+  updatedAt      DateTime           @updatedAt
+  createdAt      DateTime           @default(now())
+  answers        AssessmentAnswer[]
+}
+
+enum AssessmentType {
+  EXAM
+  ASSIGNMENT
+}
+
 model Question {
   id                       String                  @id @default(uuid())
   questionType             QuestionType
@@ -121,21 +154,6 @@ model Question {
   updatedAt                DateTime                @updatedAt
   createdAt                DateTime                @default(now())
   answers                  QuestionAnswer[]        @relation("question_submission")
-}
-
-model QuestionAnswer {
-  id                             String                        @id @default(uuid())
-  question                       Question                      @relation(fields: [questionId], references: [id], name: "question_submission")
-  questionId                     String
-  multipleChoiceQuestionAnswer   MultipleChoiceQuestionAnswer? @relation(name: "multipleChoiceQuestionAnswer_submission", fields: [multipleChoiceQuestionAnswerId], references: [id])
-  multipleChoiceQuestionAnswerId String?                       @unique
-  programmingQuestionAnswer      ProgrammingQuestionAnswer?    @relation(name: "programmingQuestionAnswer_submission", fields: [programmingQuestionAnswerId], references: [id])
-  programmingQuestionAnswerId    String?                       @unique
-  updatedAt                      DateTime                      @updatedAt
-  createdAt                      DateTime                      @default(now())
-  assessmentSubmission           AssessmentAnswer?             @relation(fields: [assessmentSubmissionId, userId], references: [assessmentId, userId])
-  assessmentSubmissionId         String?
-  userId                         String?
 }
 
 enum QuestionType {
@@ -165,14 +183,6 @@ model MultipleChoiceQuestionChoice {
   @@unique([correct, questionId])
 }
 
-model MultipleChoiceQuestionAnswer {
-  id               String                       @id @default(uuid())
-  questionChoice   MultipleChoiceQuestionChoice @relation(fields: [questionChoiceId], references: [id])
-  questionChoiceId String
-  points           Int
-  baseAnswer       QuestionAnswer?              @relation("multipleChoiceQuestionAnswer_submission")
-}
-
 model ProgrammingQuestion {
   id                                 String                            @id @default(uuid())
   title                              String
@@ -190,19 +200,24 @@ model ProgrammingQuestion {
   createdAt                          DateTime                          @default(now())
 }
 
-model ProgrammingQuestionAnswer {
-  id                String             @id @default(uuid())
-  submission        QuestionAnswer?    @relation("programmingQuestionAnswer_submission")
-  envirnment        Envirnment         @relation(fields: [envirnmentId], references: [id], name: "envirnment_programmingQuestionAnswer")
-  envirnmentId      String
-  updatedAt         DateTime           @updatedAt
-  createdAt         DateTime           @default(now())
-  evaluationResults EvaluationResult[]
-}
-
 enum ProgrammingQuestionType {
   SINGLE_FILE
   MULTIPLE_FILE
+}
+
+model SingleFileProgrammingQuestion {
+  id                      String               @id @default(uuid())
+  baseProgrammingQuestion ProgrammingQuestion? @relation("question_singleFileProgrammingQuestion")
+  defaultCode             String
+  allowedLanguages        Language[]
+}
+
+model MultipleFilesProgrammingQuestion {
+  id                      String               @id @default(uuid())
+  language                Language             @relation(fields: [languageId], references: [id])
+  baseProgrammingQuestion ProgrammingQuestion? @relation("question_multipleFilesProgrammingQuestion")
+  defaultFiles            File[]
+  languageId              String
 }
 
 model EvaluationCriteria {
@@ -215,6 +230,7 @@ model EvaluationCriteria {
   requiredToPass        Boolean                        @default(false)
   programmingQuestion   ProgrammingQuestion            @relation(fields: [programmingQuestionId], references: [id], name: "programmingQuestion_evaluationCriteria")
   programmingQuestionId String
+  hidden                Boolean                        @default(false)
   updatedAt             DateTime                       @updatedAt
   createdAt             DateTime                       @default(now())
   results               EvaluationResult[]             @relation("evaluationCriteria_evaluationResult")
@@ -233,6 +249,57 @@ model InputOutputEvaluationCriteria {
   baseCriteria EvaluationCriteria[] @relation("evaluationCriteria_inputOutputEvaluationCriteria")
   updatedAt    DateTime             @updatedAt
   createdAt    DateTime             @default(now())
+}
+
+// -------------------------------------
+// --- ASSESSMENT-SUBMISSION RELATED ---
+// -------------------------------------
+model AssessmentAnswer {
+  user                 User             @relation(fields: [userId], references: [id])
+  userId               String
+  assessment           Assessment       @relation(fields: [assessmentId], references: [id])
+  assessmentId         String
+  reviewed             Boolean          @default(false)
+  questionsSubmissions QuestionAnswer[]
+  submittedAt          DateTime?
+  updatedAt            DateTime
+  createdAt            DateTime
+  recPoints            Int
+
+  @@id([assessmentId, userId])
+}
+
+model QuestionAnswer {
+  id                             String                        @id @default(uuid())
+  question                       Question                      @relation(fields: [questionId], references: [id], name: "question_submission")
+  questionId                     String
+  multipleChoiceQuestionAnswer   MultipleChoiceQuestionAnswer? @relation(name: "multipleChoiceQuestionAnswer_submission", fields: [multipleChoiceQuestionAnswerId], references: [id])
+  multipleChoiceQuestionAnswerId String?                       @unique
+  programmingQuestionAnswer      ProgrammingQuestionAnswer?    @relation(name: "programmingQuestionAnswer_submission", fields: [programmingQuestionAnswerId], references: [id])
+  programmingQuestionAnswerId    String?                       @unique
+  updatedAt                      DateTime                      @updatedAt
+  createdAt                      DateTime                      @default(now())
+  assessmentSubmission           AssessmentAnswer?             @relation(fields: [assessmentSubmissionId, userId], references: [assessmentId, userId])
+  assessmentSubmissionId         String?
+  userId                         String?
+}
+
+model MultipleChoiceQuestionAnswer {
+  id               String                       @id @default(uuid())
+  questionChoice   MultipleChoiceQuestionChoice @relation(fields: [questionChoiceId], references: [id])
+  questionChoiceId String
+  points           Int
+  baseAnswer       QuestionAnswer?              @relation("multipleChoiceQuestionAnswer_submission")
+}
+
+model ProgrammingQuestionAnswer {
+  id                String             @id @default(uuid())
+  baseAnswer        QuestionAnswer?    @relation("programmingQuestionAnswer_submission")
+  envirnment        Environment        @relation(fields: [envirnmentId], references: [id], name: "envirnment_programmingQuestionAnswer")
+  envirnmentId      String             @unique
+  updatedAt         DateTime           @updatedAt
+  createdAt         DateTime           @default(now())
+  evaluationResults EvaluationResult[]
 }
 
 model EvaluationResult {
@@ -254,6 +321,9 @@ model InputOutputEvaluationResult {
   baseEvaluationResult EvaluationResult?
 }
 
+// ------------------------
+// --- PRACTICE RELATED ---
+// ------------------------
 model PracticeProgrammingQuestion {
   id          String              @id @default(uuid())
   questionId  String              @unique
@@ -269,21 +339,9 @@ enum Difficulty {
   HARD
 }
 
-model SingleFileProgrammingQuestion {
-  id                      String               @id @default(uuid())
-  baseProgrammingQuestion ProgrammingQuestion? @relation("question_singleFileProgrammingQuestion")
-  defaultCode             String
-  allowedLanguages        Language[]
-}
-
-model MultipleFilesProgrammingQuestion {
-  id                      String               @id @default(uuid())
-  language                Language             @relation(fields: [languageId], references: [id])
-  baseProgrammingQuestion ProgrammingQuestion? @relation("question_multipleFilesProgrammingQuestion")
-  defaultFiles            File[]
-  languageId              String
-}
-
+// ---------------------------
+// --- PROGRAMMING RELATED ---
+// ---------------------------
 model Language {
   id                  String                          @id @default(uuid())
   name                String                          @unique
@@ -304,56 +362,32 @@ model File {
   updatedAt                        DateTime                           @updatedAt
   createdAt                        DateTime                           @default(now())
   multipleFilesProgrammingQuestion MultipleFilesProgrammingQuestion[]
-  environment                      Envirnment?                        @relation(name: "environment_files", fields: [environmentId], references: [id])
+  environment                      Environment?                       @relation(name: "environment_files", fields: [environmentId], references: [id])
   environmentId                    String?
 
   @@index([name, extension])
 }
 
-model Assessment {
-  id             String             @id @default(uuid())
-  title          String
-  description    String
-  assessmentType AssessmentType
-  questions      Question[]         @relation("assessment_questions")
-  startTime      DateTime           @default(now())
-  endTime        DateTime?
-  submitAfterEnd Boolean            @default(false)
-  totalPoints    Int                @default(0)
-  classroom      Classroom          @relation(fields: [classroomId], references: [id])
-  classroomId    String
-  updatedAt      DateTime           @updatedAt
-  createdAt      DateTime           @default(now())
-  answers        AssessmentAnswer[]
+model Environment {
+  id          String                      @id @default(uuid())
+  files       File[]                      @relation("environment_files")
+  submitted   Boolean                     @default(false)
+  createdAt   DateTime                    @default(now())
+  updatedAt   DateTime                    @updatedAt
+  answers     ProgrammingQuestionAnswer[] @relation("envirnment_programmingQuestionAnswer")
+  permissions EnvironmentPermission[]
 }
 
-model AssessmentAnswer {
-  user                 User             @relation(fields: [userId], references: [id])
-  userId               String
-  assessment           Assessment       @relation(fields: [assessmentId], references: [id])
-  assessmentId         String
-  reviewed             Boolean          @default(false)
-  questionsSubmissions QuestionAnswer[]
-  submittedAt          DateTime?
-  updatedAt            DateTime
-  createdAt            DateTime
-  recPoints               Int
+model EnvironmentPermission {
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String
+  environment   Environment @relation(fields: [environmentId], references: [id])
+  environmentId String
+  allowRead     Boolean     @default(true)
+  allowWrite    Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  isOwner       Boolean     @default(false)
 
-  @@id([assessmentId, userId])
-}
-
-model Envirnment {
-  id                        String                      @id @default(uuid())
-  files                     File[]                      @relation("environment_files")
-  owner                     User                        @relation(fields: [ownerId], references: [id], name: "user_environment")
-  ownerId                   String
-  submitted                 Boolean                     @default(false)
-  createdAt                 DateTime                    @default(now())
-  updatedAt                 DateTime                    @updatedAt
-  ProgrammingQuestionAnswer ProgrammingQuestionAnswer[] @relation("envirnment_programmingQuestionAnswer")
-}
-
-enum AssessmentType {
-  EXAM
-  ASSIGNMENT
+  @@unique([environmentId, userId])
 }
