@@ -16,22 +16,24 @@ generator client {
 // --------------------
 
 model User {
-  id                    String                  @id @default(uuid())
+  id                    String                   @id @default(uuid())
   firstName             String
   lastName              String
-  userName              String                  @unique
+  userName              String                   @unique
   email                 String
   password              String
-  country               Country                 @relation(fields: [countryId], references: [id], name: "user_country")
+  country               Country                  @relation(fields: [countryId], references: [id], name: "user_country")
   countryId             String
-  refreshTokens         UserRefreshToken[]      @relation("user_refreshTokens")
-  role                  Role                    @default(USER)
-  updatedAt             DateTime                @updatedAt
-  createdAt             DateTime                @default(now())
-  linkedAccounts        LinkedAccount[]         @relation("user_linkedAccounts")
-  joinedClassrooms      ClassroomMember[]       @relation("user_classroomMembers")
+  refreshTokens         UserRefreshToken[]       @relation("user_refreshTokens")
+  role                  Role                     @default(USER)
+  updatedAt             DateTime                 @updatedAt
+  createdAt             DateTime                 @default(now())
+  linkedAccounts        LinkedAccount[]          @relation("user_linkedAccounts")
+  joinedClassrooms      ClassroomMember[]        @relation("user_classroomMembers")
   assessmentAnswers     AssessmentAnswer[]
   envirnmentPermissions EnvironmentPermission[]
+  competitionsJoined    CompetitionParticipant[]
+  createdCompetitions   Competition[]
 }
 
 enum Role {
@@ -129,11 +131,13 @@ model Assessment {
   endTime        DateTime?
   submitAfterEnd Boolean            @default(false)
   totalPoints    Int                @default(0)
-  classroom      Classroom          @relation(fields: [classroomId], references: [id])
-  classroomId    String
+  classroom      Classroom?         @relation(fields: [classroomId], references: [id])
+  classroomId    String?
   updatedAt      DateTime           @updatedAt
   createdAt      DateTime           @default(now())
   answers        AssessmentAnswer[]
+  competition    Competition?       @relation(fields: [competitionId], references: [id])
+  competitionId  String?            @unique
 }
 
 enum AssessmentType {
@@ -281,6 +285,7 @@ model QuestionAnswer {
   createdAt                      DateTime                      @default(now())
   assessmentSubmission           AssessmentAnswer?             @relation(fields: [assessmentSubmissionId, userId], references: [assessmentId, userId])
   assessmentSubmissionId         String?
+  points                         Int
   userId                         String?
 }
 
@@ -288,7 +293,6 @@ model MultipleChoiceQuestionAnswer {
   id               String                       @id @default(uuid())
   questionChoice   MultipleChoiceQuestionChoice @relation(fields: [questionChoiceId], references: [id])
   questionChoiceId String
-  points           Int
   baseAnswer       QuestionAnswer?              @relation("multipleChoiceQuestionAnswer_submission")
 }
 
@@ -297,8 +301,6 @@ model ProgrammingQuestionAnswer {
   baseAnswer        QuestionAnswer?    @relation("programmingQuestionAnswer_submission")
   envirnment        Environment        @relation(fields: [envirnmentId], references: [id], name: "envirnment_programmingQuestionAnswer")
   envirnmentId      String             @unique
-  updatedAt         DateTime           @updatedAt
-  createdAt         DateTime           @default(now())
   evaluationResults EvaluationResult[]
 }
 
@@ -306,7 +308,7 @@ model EvaluationResult {
   id                            String                       @id @default(uuid())
   evaluationCriteria            EvaluationCriteria           @relation(fields: [evaluationCriteriaId], references: [id], name: "evaluationCriteria_evaluationResult")
   evaluationCriteriaId          String
-  receviedPoints                Float
+  evaulationPoints              Float
   inputOutputEvaulationResult   InputOutputEvaluationResult? @relation(fields: [inputOutputEvaluationResultId], references: [id])
   inputOutputEvaluationResultId String?                      @unique
   updatedAt                     DateTime                     @updatedAt
@@ -369,25 +371,55 @@ model File {
 }
 
 model Environment {
-  id          String                      @id @default(uuid())
-  files       File[]                      @relation("environment_files")
-  submitted   Boolean                     @default(false)
-  createdAt   DateTime                    @default(now())
-  updatedAt   DateTime                    @updatedAt
-  answers     ProgrammingQuestionAnswer[] @relation("envirnment_programmingQuestionAnswer")
-  permissions EnvironmentPermission[]
+  id             String                      @id @default(uuid())
+  files          File[]                      @relation("environment_files")
+  scratchPadData String
+  submitted      Boolean                     @default(false)
+  createdAt      DateTime                    @default(now())
+  updatedAt      DateTime                    @updatedAt
+  answers        ProgrammingQuestionAnswer[] @relation("envirnment_programmingQuestionAnswer")
+  permissions    EnvironmentPermission[]
 }
 
 model EnvironmentPermission {
-  user          User        @relation(fields: [userId], references: [id])
+  user          User                       @relation(fields: [userId], references: [id])
   userId        String
-  environment   Environment @relation(fields: [environmentId], references: [id])
+  environment   Environment                @relation(fields: [environmentId], references: [id])
   environmentId String
-  allowRead     Boolean     @default(true)
-  allowWrite    Boolean     @default(false)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  isOwner       Boolean     @default(false)
+  permission    EnvironmentPermissionLevel
+  createdAt     DateTime                   @default(now())
+  updatedAt     DateTime                   @updatedAt
 
   @@unique([environmentId, userId])
+}
+
+enum EnvironmentPermissionLevel {
+  OWNER
+  READ_WRITE
+  READ
+}
+
+// ---------------------------
+// --- COMPETITION RELATED ---
+// ---------------------------
+model Competition {
+  id            String                   @id @default(uuid())
+  isPrivate     Boolean                  @default(false)
+  assessment    Assessment?
+  creatorUser   User                     @relation(fields: [creatorUserId], references: [id])
+  creatorUserId String
+  participants  CompetitionParticipant[]
+  createdAt     DateTime                 @default(now())
+  updatedAt     DateTime                 @updatedAt
+}
+
+model CompetitionParticipant {
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String
+  competition   Competition @relation(fields: [competitionId], references: [id])
+  competitionId String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@id([competitionId, userId])
 }
