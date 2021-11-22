@@ -1,18 +1,13 @@
-import styled from '@emotion/styled';
-
-const StyledPage = styled.div`
-  .page {
-  }
-`;
+import styles from './index.module.scss';
 
 export function Index() {
   /*
    * Replace the elements below with your own.
    *
-   * Note: The corresponding styles are in the ./index.@emotion/styled file.
+   * Note: The corresponding styles are in the ./index.scss file.
    */
   return (
-    <StyledPage>
+    <div className={styles.page}>
       <h2>Resources &amp; Tools</h2>
       <p>Thank you for using and showing some ♥ for Nx.</p>
       <div className="flex github-star-container">
@@ -96,7 +91,7 @@ nx affected:test
 nx affected:e2e
 `}</pre>
       </details>
-    </StyledPage>
+    </div>
   );
 }
 

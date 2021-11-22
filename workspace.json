@@ -116,8 +116,7 @@
           "executor": "@nrwl/cypress:cypress",
           "options": {
             "cypressConfig": "apps/frontend-e2e/cypress.json",
-            "devServerTarget": "frontend:serve",
-            "tsConfig": "apps/frontend-e2e/tsconfig.json"
+            "devServerTarget": "frontend:serve"
           },
           "configurations": {
             "production": {
