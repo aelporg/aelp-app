@@ -1,55 +1,35 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserInputError } from 'apollo-server-express';
-import { PrismaService } from '@aelp-app/models';
-import { hash } from 'bcrypt';
-
+import { User } from '@aelp-app/models';
 import { UserRegisterDto } from './dto/UserRegisterDto';
 import { IPAddressLookUpService } from '../helper-services/IPAdddressLookUp.service';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard';
+import { LoggedInUser } from '../utils/decorators/LoggedInUser';
+import { UserService } from './user.service';
+import { Request } from 'express';
 
-@Resolver(() => String)
+@Resolver(() => User)
 export default class UserResolver {
   constructor(
-    private prismaService: PrismaService,
+    private userService: UserService,
     private ipAddressService: IPAddressLookUpService
   ) {}
 
-  @Mutation(() => String)
+  @Mutation(() => Boolean)
   async register(@Args('data') data: UserRegisterDto, @Context() ctx) {
-    if (
-      await this.prismaService.user.findUnique({
-        where: { userName: data.userName },
-      })
-    ) {
-      throw new UserInputError('User name already exists');
-    }
-
-    const ipAddress = ctx.req.socket.remoteAddress;
+    const ipAddress = (ctx.req as Request).socket.remoteAddress;
     let country: string | undefined;
 
     if (ipAddress) {
       country = await this.ipAddressService.getCountry(ipAddress);
     }
 
-    const hashedPassword = await hash(data.password, 10);
-
-    await this.prismaService.user.create({
-      data: {
-        email: data.email,
-        password: hashedPassword,
-        userName: data.userName,
-        country: {
-          connect: {
-            countryCode: country || 'PK',
-          },
-        },
-      },
-    });
-
-    return 'test';
+    return this.userService.registerUser({ ...data, country });
   }
 
-  @Query(() => String)
-  sayHello(): string {
-    return 'Hello World!';
+  @UseGuards(JwtAuthGuard)
+  @Query(() => User)
+  me(@LoggedInUser() user: User) {
+    return user;
   }
 }

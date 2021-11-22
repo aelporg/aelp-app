@@ -6,10 +6,12 @@ import { join } from 'path';
 
 import UserModule from '../user/user.module';
 import AuthModule from '../auth/auth.module';
+import { RedisModule } from '@aelp-app/redis';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    RedisModule,
 
     // Sub modules for GraphQl
     UserModule,
