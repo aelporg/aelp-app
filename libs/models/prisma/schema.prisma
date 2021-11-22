@@ -11,16 +11,23 @@ generator client {
   output   = "../../../node_modules/.prisma/client"
 }
 
+generator nestgraphql {
+  provider = "prisma-nestjs-graphql"
+  output   = "../src/.generated/graphql"
+  reExport = All
+}
+
 // --------------------
 // --- USER RELATED ---
 // --------------------
 
 model User {
   id                    String                   @id @default(uuid())
-  firstName             String
-  lastName              String
+  firstName             String?
+  lastName              String?
   userName              String                   @unique
-  email                 String
+  email                 String                   @unique
+  /// @HideField()
   password              String
   country               Country                  @relation(fields: [countryId], references: [id], name: "user_country")
   countryId             String
