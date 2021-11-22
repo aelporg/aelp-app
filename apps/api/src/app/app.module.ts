@@ -22,11 +22,7 @@ import { RedisModule } from '@aelp-app/redis';
       autoSchemaFile: join(__dirname, '../schema.gql'),
       playground: true,
       formatError: (error: GraphQLError) => {
-        console.log(error);
-        const graphQLFormattedError: GraphQLFormattedError = {
-          message: error.extensions?.response?.message || error.message,
-        };
-        return graphQLFormattedError;
+        return error;
       },
     }),
   ],

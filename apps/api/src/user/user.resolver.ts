@@ -6,7 +6,6 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard';
 import { LoggedInUser } from '../utils/decorators/LoggedInUser';
 import { UserService } from './user.service';
-import { Request } from 'express';
 
 @Resolver(() => User)
 export default class UserResolver {
@@ -17,14 +16,10 @@ export default class UserResolver {
 
   @Mutation(() => Boolean)
   async register(@Args('data') data: UserRegisterDto, @Context() ctx) {
-    const ipAddress = (ctx.req as Request).socket.remoteAddress;
-    let country: string | undefined;
-
-    if (ipAddress) {
-      country = await this.ipAddressService.getCountry(ipAddress);
-    }
-
-    return this.userService.registerUser({ ...data, country });
+    return this.userService.registerUserWithCreds({
+      ...data,
+      country: await this.ipAddressService.getCountryOfRequest(ctx),
+    });
   }
 
   @UseGuards(JwtAuthGuard)

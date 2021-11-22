@@ -25,7 +25,7 @@ export class UserGroupBy {
     email!: string;
 
     @HideField()
-    password!: string;
+    password?: string;
 
     @Field(() => String, {nullable:false})
     countryId!: string;

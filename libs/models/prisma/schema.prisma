@@ -28,7 +28,7 @@ model User {
   userName              String                   @unique
   email                 String                   @unique
   /// @HideField()
-  password              String
+  password              String?
   country               Country                  @relation(fields: [countryId], references: [id], name: "user_country")
   countryId             String
   refreshTokens         UserRefreshToken[]       @relation("user_refreshTokens")

@@ -20,8 +20,8 @@ export class UserCreateManyCountryInput {
     @Field(() => String, {nullable:false})
     email!: string;
 
-    @Field(() => String, {nullable:false})
-    password!: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
 
     @Field(() => Role, {nullable:true})
     role?: keyof typeof Role;

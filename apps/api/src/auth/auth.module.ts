@@ -6,9 +6,14 @@ import { ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './stratergies/JwtStrategy';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
+import UserModule from '../user/user.module';
+import { GoogleOAuthClientService } from './google-oauth-client.service';
+import { IPAddressLookUpService } from '../helper-services/IPAdddressLookUp.service';
 
 @Module({
   imports: [
+    UserModule,
+    ModelsModule,
     PassportModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
@@ -19,9 +24,14 @@ import { AuthService } from './auth.service';
         },
       }),
     }),
-    ModelsModule,
   ],
-  providers: [AuthResolver, JwtStrategy, AuthService],
+  providers: [
+    JwtStrategy,
+    IPAddressLookUpService,
+    GoogleOAuthClientService,
+    AuthService,
+    AuthResolver,
+  ],
   exports: [AuthService],
 })
 export default class AuthModule {}

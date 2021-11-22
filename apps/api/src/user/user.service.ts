@@ -26,7 +26,7 @@ export class UserService {
     role: true,
   };
 
-  async registerUser(data: RegisterUserArgs) {
+  async registerUserWithCreds(data: RegisterUserArgs) {
     if (
       await this.prismaService.user.findUnique({
         where: { userName: data.userName },

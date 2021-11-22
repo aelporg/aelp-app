@@ -32,7 +32,7 @@ export class User {
     email!: string;
 
     @HideField()
-    password!: string;
+    password!: string | null;
 
     @Field(() => Country, {nullable:false})
     country?: Country;

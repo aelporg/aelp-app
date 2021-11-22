@@ -3,15 +3,22 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserInputError } from 'apollo-server-errors';
 import { compare } from 'bcrypt';
+import { OAuth2Client } from 'google-auth-library';
 import moment from 'moment';
+import { IPAddressLookUpService } from '../helper-services/IPAdddressLookUp.service';
+import { UserService } from '../user/user.service';
 import { generateRefreshToken } from '../utils/generateRefreshToken';
 import { UserAuthInfoDto } from './dto/UserAuthInfoDto';
+import { GoogleOAuthClientService } from './google-oauth-client.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prismaService: PrismaService,
-    private jwtService: JwtService
+    private userService: UserService,
+    private googleOAuthClient: GoogleOAuthClientService,
+    private jwtService: JwtService,
+    private ipAddressService: IPAddressLookUpService
   ) {}
 
   async loginWithCreds(
@@ -20,13 +27,25 @@ export class AuthService {
   ): Promise<UserAuthInfoDto> {
     const user = await this.prismaService.user.findUnique({
       where: { userName },
-      select: { password: true, id: true },
+      select: {
+        password: true,
+        id: true,
+        linkedAccounts: { select: { provider: { select: { name: true } } } },
+      },
     });
 
     const error = new Error('Login Unsuccessful');
 
     if (!user) {
       throw error;
+    }
+
+    if (!user.password) {
+      throw new Error(
+        `This account is logged in via third-party login. Use ${user.linkedAccounts.join(
+          ' or '
+        )}`
+      );
     }
 
     if (!(await compare(password, user.password))) {
@@ -42,8 +61,56 @@ export class AuthService {
     return authPayloadWithRefreshToken;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async loginWithGoogle(authorizationCode: string) {}
+  async loginWithGoogle(
+    authorizationCode: string,
+    country?: string
+  ): Promise<UserAuthInfoDto> {
+    const loginTicket = await this.googleOAuthClient.verifyIdToken(
+      authorizationCode
+    );
+    const payload = loginTicket.getPayload();
+    console.log(payload);
+
+    const linkedAccount = await this.prismaService.linkedAccount.findUnique({
+      where: { externalId: payload.sub },
+      select: { user: true },
+    });
+
+    let authPayload: Omit<UserAuthInfoDto, 'refreshToken'>;
+
+    if (linkedAccount) {
+      authPayload = await this.authorize(linkedAccount.user.id);
+    } else {
+      const user = await this.prismaService.user.create({
+        data: {
+          email: payload.email,
+          firstName: payload.given_name,
+          lastName: payload.family_name,
+          linkedAccounts: {
+            create: [
+              {
+                externalId: payload.sub,
+                provider: { connect: { name: 'google' } },
+              },
+            ],
+          },
+          userName: payload.email.split('@')[0],
+          country: {
+            connect: {
+              countryCode: country || 'PK',
+            },
+          },
+        },
+      });
+
+      authPayload = await this.authorize(user.id);
+    }
+
+    return {
+      ...authPayload,
+      refreshToken: await this.createRefreshToken(authPayload.userId),
+    };
+  }
 
   async authorize(
     userId: string
