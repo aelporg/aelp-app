@@ -1771,6 +1771,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@heroicons/react@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@heroicons/react@npm:1.0.5"
+  peerDependencies:
+    react: ">= 16"
+  checksum: 12114af19c17f69140cc7338e4cd12fe38098ad3ed79f02762106160655cde3ebdba58a2b26f1067f720786187364fd9465bc72f02aad85b0ead8172d76aa51d
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.5.0":
   version: 0.5.0
   resolution: "@humanwhocodes/config-array@npm:0.5.0"
@@ -5120,6 +5129,7 @@ __metadata:
   resolution: "aelp-app@workspace:."
   dependencies:
     "@apollo/client": ^3.4.17
+    "@heroicons/react": ^1.0.5
     "@nestjs/common": ^8.2.2
     "@nestjs/config": ^1.1.0
     "@nestjs/core": ^8.2.2
@@ -5190,6 +5200,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-google-login: ^5.2.2
+    react-hook-form: ^7.20.5
     react-test-renderer: 17.0.2
     reflect-metadata: ^0.1.13
     regenerator-runtime: 0.13.7
@@ -14902,6 +14913,15 @@ __metadata:
     react: ^16 || ^17
     react-dom: ^16 || ^17
   checksum: 29199c7035c3c1070a82241dc4063628d693f35a1736d292e3db736e52da825e8a53f9287b0b12b08a50d676973ce1349a4d8243cd849ca25fed6a4284378880
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.20.5":
+  version: 7.20.5
+  resolution: "react-hook-form@npm:7.20.5"
+  peerDependencies:
+    react: ^16.8.0 || ^17
+  checksum: f7ae9bbdddf5e2efb75541a6dccbd881ae92f4636a08eb9d1ffa866160929cef743702de5858c054f169b798efbdc80e46896f344d97e34be70f21364c8f23cf
   languageName: node
   linkType: hard
 

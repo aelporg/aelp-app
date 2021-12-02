@@ -1,11 +1,10 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 
-import Index from '../pages/index.page';
+import Input from './input';
 
-describe('Index', () => {
+describe('Input', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Index />);
+    const { baseElement } = render(<Input />);
     expect(baseElement).toBeTruthy();
   });
 });

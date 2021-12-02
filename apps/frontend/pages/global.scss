@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+   @font-face {
+    font-family: Satoshi;
+    src: url(/fonts/satohsi-variable.ttf) format("ttf");
+  }
+
+  body, html {
+    color: #373F51;
+  }
+}

@@ -18,6 +18,9 @@ module.exports = {
         },
       },
     },
+    fontFamily: {
+      sans: ['Satoshi', 'sans-serif'],
+    },
   },
   variants: {
     extend: {

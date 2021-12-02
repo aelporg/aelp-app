@@ -1,11 +1,10 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 
-import Index from '../pages/index.page';
+import Sidebar from './sidebar';
 
-describe('Index', () => {
+describe('Sidebar', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Index />);
+    const { baseElement } = render(<Sidebar />);
     expect(baseElement).toBeTruthy();
   });
 });

@@ -1,11 +1,10 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 
-import Index from '../pages/index.page';
+import FormGroup from './form-group';
 
-describe('Index', () => {
+describe('FormGroup', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Index />);
+    const { baseElement } = render(<FormGroup>Text</FormGroup>);
     expect(baseElement).toBeTruthy();
   });
 });
