@@ -11,6 +11,8 @@ export interface AvatarProps {
 
 function getAvatarClassNamesBySize(size: Size) {
   switch (size) {
+    case 'xs':
+      return 'w-7 h-7';
     case 'sm':
       return 'w-10 h-10';
     case 'md':
