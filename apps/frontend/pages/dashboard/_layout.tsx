@@ -50,15 +50,15 @@ export function DashboardLayout({
   const router = useRouter();
 
   return (
-    <div className="flex h-screen w-screen">
+    <div className="flex h-screen">
       <Sidebar links={dashboardLinks} />
-      <div className="flex-grow p-6">
+      <div className="flex-grow px-8 py-4">
         <DashboardTopNav
           heading={
             dashboardLinks.find(link => link.href === router.pathname)?.name
           }
         />
-        {children}
+        <div className="mt-5">{children}</div>
       </div>
     </div>
   );

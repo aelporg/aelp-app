@@ -15,7 +15,7 @@ const sampleClassroomSchema = {
 export default function ClassroomList() {
   return (
     <DashboardLayout>
-      <div className="grid lg:grid-cols-4 gap-8 mt-3 md:grid-cols-3 grid-cols-1">
+      <div className="grid lg:grid-cols-4 gap-8 md:grid-cols-3 grid-cols-1">
         {[1, 2, 3, 4, 5, 5, 6, 6, 7].map(e => (
           <div
             key={e}
