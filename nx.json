@@ -27,14 +27,6 @@
       }
     ]
   },
-  "projects": {
-    "api": {
-      "tags": []
-    },
-    "models": {
-      "tags": []
-    }
-  },
   "cli": {
     "defaultCollection": "@nrwl/nest"
   },

@@ -167,7 +167,8 @@
             "schema": "libs/models/prisma/schema.prisma"
           }
         }
-      }
+      },
+      "tags": []
     },
     "redis": {
       "root": "libs/redis",
