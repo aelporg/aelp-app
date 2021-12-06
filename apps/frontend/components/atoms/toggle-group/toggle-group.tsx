@@ -27,7 +27,7 @@ export function ToggleGroup({ items, ...props }: ToggleGroupProps) {
           <ToggleGroupPrimitive.Item
             key={value}
             className={classNames(
-              'py-2 px-4 border text-md font-normal',
+              'py-2 px-4 border-2 text-md font-normal',
               isLast && 'rounded-r-lg',
               isFirst && 'rounded-l-lg',
               styles['toggle-group-item']
