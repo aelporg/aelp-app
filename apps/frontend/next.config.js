@@ -8,7 +8,7 @@ const nextConfig = {
   nx: {
     // Set this to true if you would like to to use SVGR
     // See: https://github.com/gregberge/svgr
-    svgr: false,
+    svgr: true,
   },
   pageExtensions: [
     'page.tsx',
@@ -20,6 +20,16 @@ const nextConfig = {
     'api.jsx',
     'api.js',
   ],
+
+  async redirects() {
+    return [
+      {
+        source: '/dashboard',
+        destination: '/dashboard/feed',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = withNx(nextConfig);

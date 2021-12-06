@@ -7,7 +7,7 @@ import {
   CollectionIcon,
 } from '@heroicons/react/outline';
 import Sidebar from '@components/organisms/sidebar/sidebar';
-import DashboardTopNav from '@components/organisms/dashboard-top-nav/dashboard-top-nav';
+import TopNav, { TopNavProps } from '@components/organisms/top-nav/top-nav';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -44,21 +44,28 @@ const dashboardLinks = [
   },
 ];
 
+export interface DashboardLayoutProps {
+  children?: React.ReactNode;
+  renderTopNavActions?: TopNavProps['renderActions'];
+}
+
 export function DashboardLayout({
   children,
-}: React.PropsWithChildren<Record<string, any>>) {
+  renderTopNavActions,
+}: DashboardLayoutProps) {
   const router = useRouter();
 
   return (
     <div className="flex h-screen">
       <Sidebar links={dashboardLinks} />
-      <div className="flex-grow px-8 py-4">
-        <DashboardTopNav
+      <div className="flex-grow relative">
+        <TopNav
           heading={
             dashboardLinks.find(link => link.href === router.pathname)?.name
           }
+          renderActions={renderTopNavActions}
         />
-        <div className="mt-5">{children}</div>
+        <div className="px-8 py-4 max-w-screen-2xl">{children}</div>
       </div>
     </div>
   );

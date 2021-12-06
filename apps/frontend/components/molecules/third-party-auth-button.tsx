@@ -3,6 +3,8 @@ import React from 'react';
 import Image from 'next/image';
 import capitalize from 'utils/capatilize';
 import classNames from 'classnames';
+import GithubIcon from '@components/atoms/icons/github-icon';
+import GoogleIcon from '@components/atoms/icons/google-icon';
 
 type ThirdPartyAuthType = 'github' | 'google';
 
@@ -14,9 +16,9 @@ export interface ThirdPartyAuthButtonProps {
 function getButtonClassNamesByVariant(variant: ThirdPartyAuthType) {
   switch (variant) {
     case 'github':
-      return 'bg-black text-white';
+      return 'bg-github text-white active:bg-black-dark';
     case 'google':
-      return 'bg-white border-2';
+      return 'bg-white border-2 hover:bg-gray-100 active:bg-gray-200';
   }
 }
 
@@ -29,14 +31,7 @@ export function ThirdPartyAuthButton({
       size="sm"
       className={classNames('mb-2', getButtonClassNamesByVariant(variant))}
       variant="custom"
-      icon={
-        <Image
-          src={`/images/${variant}-icon.svg`}
-          width={20}
-          height={20}
-          alt={`${capitalize(variant)} icon`}
-        />
-      }
+      icon={variant === 'github' ? <GithubIcon /> : <GoogleIcon />}
     >
       Sign {createAccount ? 'Up' : 'In'} with {capitalize(variant)}
     </Button>

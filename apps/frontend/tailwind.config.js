@@ -1,7 +1,6 @@
 const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
 
 module.exports = {
-  mode: 'jit',
   purge: [
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
@@ -11,11 +10,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        accent: '#04B46D',
+        accent: {
+          lightest: '#68D2A7',
+          lighter: '#36C38A',
+          DEFAULT: '#04B46D',
+          darker: '#039057',
+          darkest: '#026C41',
+        },
         black: {
           dark: '#1B1B1E',
           DEFAULT: '#373F51',
         },
+        github: '#333',
       },
     },
     fontFamily: {
@@ -25,6 +31,7 @@ module.exports = {
   variants: {
     extend: {
       backgroundColor: ['active'],
+      backgroundOpacity: ['active'],
     },
   },
   plugins: [],

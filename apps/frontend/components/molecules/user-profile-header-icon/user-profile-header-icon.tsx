@@ -8,7 +8,7 @@ export interface UserProfileHeaderIconProps {
 export function UserProfileHeaderIcon(props: UserProfileHeaderIconProps) {
   return (
     <div className="flex items-center gap-2 hover:bg-black hover:bg-opacity-5 rounded-lg p-2 cursor-pointer">
-      <Avatar intials="TB" image="/images/demo/dp.jpg" />
+      <Avatar intials="TB" />
       <h4 className="text-xl font-bold">{props.userName}</h4>
       <ChevronDownIcon className="w-5 h-5" />
     </div>

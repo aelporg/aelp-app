@@ -26,7 +26,7 @@ export function Logo({ size = 'md' }: LogoProps) {
       <h1>
         <Link href="/" passHref>
           <span className="cursor-pointer">
-            <span className="text-green-400">ae</span>lp
+            <span className="text-accent">ae</span>lp
           </span>
         </Link>
       </h1>

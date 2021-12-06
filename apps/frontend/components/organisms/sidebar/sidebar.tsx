@@ -21,7 +21,7 @@ export function Sidebar({ links }: SidebarProps) {
 
   return (
     <div>
-      <div className="w-80 border-r fixed h-screen bg-green-50 p-8">
+      <div className="w-80 border-r fixed h-screen bg-accent bg-opacity-5 p-8">
         <div className="flex justify-between">
           <Logo />
           <button className="self-end hover:bg-black hover:bg-opacity-5 rounded-md p-1">

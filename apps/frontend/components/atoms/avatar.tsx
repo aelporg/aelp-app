@@ -28,7 +28,7 @@ export function Avatar({ size = 'sm', intials, image }: AvatarProps) {
   return (
     <div
       className={classNames(
-        'rounded-full font-bold bg-green-50 flex justify-center items-center text-green-500',
+        'rounded-full font-bold bg-accent bg-opacity-10 flex justify-center items-center text-accent',
         sizeClasses
       )}
     >

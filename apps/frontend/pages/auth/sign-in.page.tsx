@@ -13,7 +13,7 @@ export default function SignIn() {
         <Logo />
       </nav>
       <div className="flex-1 flex flex-col justify-center items-center">
-        <div className="flex flex-col items-stretch w-1/5">
+        <div className="flex flex-col items-stretch w-80 max-w-full">
           <FormGroup label="Username">
             <Input />
           </FormGroup>
@@ -22,7 +22,7 @@ export default function SignIn() {
           </FormGroup>
           <a
             href="/test"
-            className="text-sm mb-3 font-semibold text-green-500 hover:underline"
+            className="text-sm mb-3 font-semibold text-accent hover:underline"
           >
             Forget your password?
           </a>
