@@ -30,7 +30,7 @@ export function Index() {
           </Link>
         </div>
       </nav>
-      <div className="flex px-12 flex-col flex-grow justify-center md:w-5/12  items-start">
+      <div className="flex px-12 flex-col flex-grow justify-center landing-page items-start">
         <h1 className="text-6xl font-bold mb-8 leading-tight">
           Focus on teaching, while we do the hard work
         </h1>

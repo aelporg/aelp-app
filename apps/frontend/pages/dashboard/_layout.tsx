@@ -65,7 +65,9 @@ export function DashboardLayout({
           }
           renderActions={renderTopNavActions}
         />
-        <div className="px-8 py-4 max-w-screen-2xl">{children}</div>
+        <div className="px-8 pb-4 pt-1 flex flex-col max-w-screen-3xl">
+          {children}
+        </div>
       </div>
     </div>
   );

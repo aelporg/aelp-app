@@ -76,7 +76,7 @@ export default function ClassroomList() {
                     Due in 2 Weeks / 24th Nov, 2021
                   </p>
                 </div>
-                <Button variant="secondary" className="ml-4">
+                <Button variant="secondary" size="sm" className="ml-4">
                   View
                 </Button>
               </div>

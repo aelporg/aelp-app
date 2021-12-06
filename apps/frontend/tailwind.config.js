@@ -23,6 +23,9 @@ module.exports = {
         },
         github: '#333',
       },
+      screen: {
+        '3xl': '2160px',
+      },
     },
     fontFamily: {
       sans: ['Satoshi', 'sans-serif'],

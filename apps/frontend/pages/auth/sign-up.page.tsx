@@ -13,7 +13,7 @@ export default function Login() {
         <Logo />
       </nav>
       <div className="flex-1 flex flex-col justify-center items-center">
-        <div className="flex flex-col items-stretch w-1/5">
+        <div className="flex flex-col items-stretch w-80 max-w-full">
           <FormGroup label="Email">
             <Input />
           </FormGroup>
