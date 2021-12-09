@@ -2,7 +2,7 @@ import { PrismaService, Prisma } from '@aelp-app/models';
 import { Injectable } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-express';
 import { hash } from 'bcrypt';
-import { IPAddressLookUpService } from '../helper-services/IPAdddressLookUp.service';
+import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
 import { UserRegisterDto } from './dto/UserRegisterDto';
 
 interface RegisterUserArgs extends UserRegisterDto {

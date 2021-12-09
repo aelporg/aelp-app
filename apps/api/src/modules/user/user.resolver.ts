@@ -1,10 +1,10 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from '@aelp-app/models';
 import { UserRegisterDto } from './dto/UserRegisterDto';
-import { IPAddressLookUpService } from '../helper-services/IPAdddressLookUp.service';
+import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard';
-import { LoggedInUser } from '../utils/decorators/LoggedInUser';
+import { LoggedInUser } from '../../utils/decorators/LoggedInUser';
 import { UserService } from './user.service';
 
 @Resolver(() => User)

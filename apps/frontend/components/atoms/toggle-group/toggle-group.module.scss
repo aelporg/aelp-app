@@ -1,5 +1,5 @@
 .toggle-group-item {
   &[data-state=on] {
-    @apply text-accent bg-accent-darkest bg-opacity-5 border-accent-darkest border-opacity-20;
+    @apply text-accent bg-accent-darkest bg-opacity-5;
   }
 }

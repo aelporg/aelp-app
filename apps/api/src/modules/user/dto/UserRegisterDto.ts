@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Equals, IsEmail, Matches, MinLength } from 'class-validator';
-import { IsEqualTo } from '../../utils/decorators/IsEqualTo';
+import { IsEqualTo } from '../../../utils/decorators/IsEqualTo';
 
 @InputType()
 export class UserRegisterDto {

@@ -22,7 +22,7 @@ export function Input<T>({
       )}
       <input
         className={classNames(
-          'rounded-lg leading-relaxed w-full pr-2 border-2 py-2 focus:outline-none focus:ring-2 focus:border-accent ring-accent-lightest',
+          'rounded-md leading-relaxed w-full pr-2 border-2 py-1.5 focus:outline-none focus:ring-2 focus:border-accent ring-accent-lightest',
           prefixIcon ? 'pl-9' : 'pl-2',
           className
         )}

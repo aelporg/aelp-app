@@ -8,7 +8,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import UserModule from '../user/user.module';
 import { GoogleOAuthClientService } from './google-oauth-client.service';
-import { IPAddressLookUpService } from '../helper-services/IPAdddressLookUp.service';
+import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
 
 @Module({
   imports: [

@@ -7,7 +7,7 @@ export class GoogleOAuthClientService {
   private client: OAuth2Client;
   private clientId: string;
 
-  constructor(private configService: ConfigService) {
+  constructor(configService: ConfigService) {
     this.clientId = configService.get<string>('NEXT_PUBLIC_GOOGLE_CLIENT_ID');
     this.client = new OAuth2Client(this.clientId);
   }

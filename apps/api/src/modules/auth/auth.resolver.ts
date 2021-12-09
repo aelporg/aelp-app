@@ -1,10 +1,9 @@
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { Request } from 'express';
 import { UserAuthInfoDto } from './dto/UserAuthInfoDto';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/JwtAuthGuard';
 import { AuthService } from './auth.service';
-import { IPAddressLookUpService } from '../helper-services/IPAdddressLookUp.service';
+import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
 
 @Resolver()
 export default class AuthResolver {

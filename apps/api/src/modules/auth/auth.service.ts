@@ -5,9 +5,9 @@ import { UserInputError } from 'apollo-server-errors';
 import { compare } from 'bcrypt';
 import { OAuth2Client } from 'google-auth-library';
 import moment from 'moment';
-import { IPAddressLookUpService } from '../helper-services/IPAdddressLookUp.service';
+import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
 import { UserService } from '../user/user.service';
-import { generateRefreshToken } from '../utils/generateRefreshToken';
+import { generateRefreshToken } from '../../utils/generateRefreshToken';
 import { UserAuthInfoDto } from './dto/UserAuthInfoDto';
 import { GoogleOAuthClientService } from './google-oauth-client.service';
 

@@ -4,8 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { join } from 'path';
 
-import UserModule from '../user/user.module';
-import AuthModule from '../auth/auth.module';
+import UserModule from '../modules/user/user.module';
+import AuthModule from '../modules/auth/auth.module';
 import { RedisModule } from '@aelp-app/redis';
 
 @Module({
