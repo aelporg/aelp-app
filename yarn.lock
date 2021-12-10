@@ -5355,6 +5355,8 @@ __metadata:
     graphql: ^15.0.1
     graphql-fields: ^2.0.3
     jest: 27.2.3
+    mobx: ^6.3.8
+    mobx-react-lite: ^3.2.2
     moment: ^2.29.1
     next: ^12.0.4
     passport: ^0.5.0
@@ -12909,6 +12911,28 @@ __metadata:
   bin:
     mkdirp: bin/cmd.js
   checksum: a96865108c6c3b1b8e1d5e9f11843de1e077e57737602de1b82030815f311be11f96f09cce59bd5b903d0b29834733e5313f9301e3ed6d6f6fba2eae0df4298f
+  languageName: node
+  linkType: hard
+
+"mobx-react-lite@npm:^3.2.2":
+  version: 3.2.2
+  resolution: "mobx-react-lite@npm:3.2.2"
+  peerDependencies:
+    mobx: ^6.1.0
+    react: ^16.8.0 || ^17
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: f64957cb71e45f8bbce0429b90f15fef6e0ad06a38e1522cf887900a2869e157beb3438bf6c2621cfc6907ad891428726686d7b544988995745e9a9c8255ff95
+  languageName: node
+  linkType: hard
+
+"mobx@npm:^6.3.8":
+  version: 6.3.8
+  resolution: "mobx@npm:6.3.8"
+  checksum: 755806b8f9a9782330ff5ef1ebe472f60db5deda9c532269d456d84ecfe81aacbe36d744d2efd117784a142c2732ff3b7093f3c0bef8b9b03917a245972a22de
   languageName: node
   linkType: hard
 
