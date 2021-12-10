@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserInputError } from 'apollo-server-errors';
 import { compare } from 'bcrypt';
-import { OAuth2Client } from 'google-auth-library';
 import moment from 'moment';
 import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
 import { UserService } from '../user/user.service';
@@ -15,10 +14,8 @@ import { GoogleOAuthClientService } from './google-oauth-client.service';
 export class AuthService {
   constructor(
     private prismaService: PrismaService,
-    private userService: UserService,
     private googleOAuthClient: GoogleOAuthClientService,
-    private jwtService: JwtService,
-    private ipAddressService: IPAddressLookUpService
+    private jwtService: JwtService
   ) {}
 
   async loginWithCreds(
@@ -69,7 +66,6 @@ export class AuthService {
       authorizationCode
     );
     const payload = loginTicket.getPayload();
-    console.log(payload);
 
     const linkedAccount = await this.prismaService.linkedAccount.findUnique({
       where: { externalId: payload.sub },
