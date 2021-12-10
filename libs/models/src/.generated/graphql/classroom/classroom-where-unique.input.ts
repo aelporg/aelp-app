@@ -6,4 +6,7 @@ export class ClassroomWhereUniqueInput {
 
     @Field(() => String, {nullable:true})
     id?: string;
+
+    @Field(() => String, {nullable:true})
+    inviteCode?: string;
 }
