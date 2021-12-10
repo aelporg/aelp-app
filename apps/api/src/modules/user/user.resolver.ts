@@ -1,5 +1,13 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { User } from '@aelp-app/models';
+import {
+  Args,
+  Context,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { ClassroomMember, ClassroomUpdateInput, User } from '@aelp-app/models';
 import { UserRegisterDto } from './dto/UserRegisterDto';
 import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
 import { UseGuards } from '@nestjs/common';
@@ -26,5 +34,11 @@ export default class UserResolver {
   @Query(() => User)
   me(@LoggedInUser() user: User) {
     return user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ResolveField(type => ClassroomMember)
+  async joinedClassrooms(@Parent() user: User) {
+    return this.userService.getUserJoinedClassrooms(user);
   }
 }
