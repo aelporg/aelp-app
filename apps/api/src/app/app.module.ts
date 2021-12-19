@@ -22,7 +22,7 @@ import ClassroomModule from '../modules/classroom/classroom.module';
 
     // Main GraphQL module
     GraphQLModule.forRoot({
-      autoSchemaFile: join(__dirname, '../schema.gql'),
+      autoSchemaFile: join(__dirname, './schema.gql'),
       playground: true,
       formatError: (error: GraphQLError) => {
         return error;

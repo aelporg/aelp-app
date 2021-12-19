@@ -18,7 +18,7 @@ function getButtonClassNamesByVariant(variant: ThirdPartyAuthType) {
     case 'github':
       return 'bg-github text-white active:bg-black-dark';
     case 'google':
-      return 'bg-white border-2 hover:bg-gray-100 active:bg-gray-200';
+      return 'bg-white border hover:bg-gray-100 active:bg-gray-200';
   }
 }
 

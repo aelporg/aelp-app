@@ -1,5 +1,5 @@
-import { Input } from '@components/atoms';
 import Button from '@components/atoms/button';
+import Input from '@components/atoms/input/input';
 import Tag from '@components/atoms/tag/tag';
 import ToggleGroup from '@components/atoms/toggle-group/toggle-group';
 import QuestionCard from '@components/organisms/question-card/question-card';
@@ -7,7 +7,7 @@ import { AnnotationIcon, SearchIcon } from '@heroicons/react/outline';
 import React from 'react';
 import { DashboardLayout } from './_layout';
 
-export default function ClassroomList() {
+export default function QuestionsList() {
   return (
     <DashboardLayout
       renderTopNavActions={() => {

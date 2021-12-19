@@ -48,13 +48,10 @@ export class UserService {
   }
 
   async getUserJoinedClassrooms(user: User) {
-    const res = await this.prismaService.user.findUnique({
-      where: { id: user.id },
-      select: {
-        joinedClassrooms: true,
-      },
-    });
-
-    return res.joinedClassrooms;
+    return this.prismaService.user
+      .findUnique({
+        where: { id: user.id },
+      })
+      .joinedClassrooms();
   }
 }

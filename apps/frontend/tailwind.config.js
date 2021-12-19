@@ -1,13 +1,15 @@
 const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
 const { join } = require('path');
+const colors = require('tailwindcss/colors');
 
 module.exports = {
-  purge: [
+  mode: 'jit',
+  content: [
     join(__dirname, './pages/**/*.{js,ts,jsx,tsx}'),
     join(__dirname, './components/**/*.{js,ts,jsx,tsx}'),
+    join(__dirname, './modules/**/*.{js,ts,jsx,tsx}'),
     ...createGlobPatternsForDependencies(__dirname),
   ],
-  darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
@@ -23,6 +25,7 @@ module.exports = {
           DEFAULT: '#373F51',
         },
         github: '#333',
+        error: colors.rose['600'],
       },
       screen: {
         '3xl': '2160px',
@@ -30,12 +33,6 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Satoshi', 'sans-serif'],
-    },
-  },
-  variants: {
-    extend: {
-      backgroundColor: ['active'],
-      backgroundOpacity: ['active'],
     },
   },
   plugins: [],

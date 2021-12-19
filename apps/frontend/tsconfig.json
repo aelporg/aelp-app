@@ -14,6 +14,9 @@
     "isolatedModules": true,
     "paths": {
       "@components/*": ["./components/*"],
+      "@modules/*": ["./modules/*"],
+      "@aelp-app/models": ["../../libs/models/src/index.ts"],
+      "@aelp-app/redis": ["../../libs/redis/src/index.ts"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts"],

@@ -52,8 +52,10 @@ export default class ClassroomResolver {
 
   @ResolveField()
   async members(@Parent() classroom: Classroom) {
-    return this.prismaService.classroomMember.findMany({
-      where: { classroomId: classroom.id },
-    });
+    return this.prismaService.classroom
+      .findUnique({
+        where: { id: classroom.id },
+      })
+      .members();
   }
 }

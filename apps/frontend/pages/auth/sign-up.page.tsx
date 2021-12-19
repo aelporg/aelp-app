@@ -1,10 +1,10 @@
-import { Input } from '../../components';
 import React from 'react';
 import Logo from '../../components/atoms/logo/logo';
 import Button from '../../components/atoms/button';
 import FormGroup from '../../components/atoms/form-group/form-group';
 import ThirdPartyAuthButton from '@components/molecules/third-party-auth-button';
 import OrLine from '@components/atoms/or-line';
+import Input from '@components/atoms/input/input';
 
 export default function Login() {
   return (

@@ -13,13 +13,16 @@
             "outputPath": "dist/apps/api",
             "main": "apps/api/src/main.ts",
             "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": ["apps/api/src/assets"]
+            "assets": ["apps/api/src/assets"],
+            "generatePackageJson": true,
+            "progress": true
           },
           "configurations": {
             "production": {
               "optimization": true,
               "extractLicenses": true,
               "inspect": false,
+              "progress": true,
               "fileReplacements": [
                 {
                   "replace": "apps/api/src/environments/environment.ts",
@@ -64,7 +67,8 @@
           "defaultConfiguration": "production",
           "options": {
             "root": "apps/frontend",
-            "outputPath": "dist/apps/frontend"
+            "outputPath": "dist/apps/frontend",
+            "generatePackageJson": true
           },
           "configurations": {
             "production": {}

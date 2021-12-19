@@ -5,12 +5,13 @@ import { Size } from '../../typings/utils-types';
 type ButtonVariant = 'primary' | 'secondary' | 'custom';
 type ButtonSize = Size;
 
-interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   variant?: ButtonVariant;
   size?: ButtonSize;
   icon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  loading?: boolean;
 }
 
 function getButtonClassNamesForVariant(variant: ButtonVariant) {
@@ -54,15 +55,21 @@ export default function Button({
   size = 'md',
   className,
   icon,
+  type = 'button',
   rightIcon,
+  loading,
   ...rest
 }: ButtonProps) {
+  const modifiedChildren = loading ? 'Loading...' : children;
+
   return (
     <button
+      type={type}
       className={classNames(
         'font-bold focus:outline-none  transition-all duration-200 focus:ring-2 ring-accent-darker',
         getButtonClassNamesForVariant(variant),
         getButtonClassNamesForSize(size),
+        'disabled:bg-gray-200 disabled:opacity-70 disabled:text-gray-400 disabled:cursor-not-allowed',
         className
       )}
       {...rest}
@@ -71,14 +78,14 @@ export default function Button({
         <div className={classNames('flex justify-center items-center')}>
           {icon && <div className={getIconClassNamesForSize(size)}>{icon}</div>}
           <span className={classNames(icon && 'ml-2', rightIcon && 'mr-2')}>
-            {children}
+            {modifiedChildren}
           </span>
           {rightIcon && (
             <div className={getIconClassNamesForSize(size)}>{icon}</div>
           )}
         </div>
       ) : (
-        children
+        modifiedChildren
       )}
     </button>
   );
