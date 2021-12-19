@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  workspace:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # access docker daemon in the container
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "4200:4200"
+      - "3333:3333"
+  posgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=aelpcore
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: always
+  redis:
+    image: redis
+    environment:
+      - REDIS_PASSWORD=mypassword
+    restart: always
+
+volumes:
+  postgres-data:

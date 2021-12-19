@@ -1,0 +1,14 @@
+FROM node:lts-alpine3.13
+
+WORKDIR /app
+
+RUN npm install -g nx
+
+COPY package.json yarn.lock ./
+COPY .yarn ./.yarn
+COPY ./.yarnrc.yml ./
+
+RUN yarn install
+RUN apk add git
+
+CMD ["ash"]
