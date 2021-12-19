@@ -1,0 +1,23 @@
+version: 2.1
+
+
+orbs:
+  node: circleci/node@4.7
+
+jobs:
+  setup-and-test:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+      - run: yarn 
+      - run:  yarn nx run-many --target=test --all=true
+ 
+
+workflows:
+  test: # This is the name of the workflow, feel free to change it to better match your workflow.
+    # Inside the workflow, you define the jobs you want to run.
+    jobs:
+      - setup-and-test
