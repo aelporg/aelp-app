@@ -1,29 +1,26 @@
 import { PrismaService } from '@aelp-app/models';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserInputError } from 'apollo-server-errors';
 import { compare } from 'bcrypt';
 import moment from 'moment';
-import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
-import { UserService } from '../user/user.service';
 import { generateRefreshToken } from '../../utils/generateRefreshToken';
-import { UserAuthInfoDto } from './dto/UserAuthInfoDto';
+import { UserAuthInfo } from './dto/UserAuthInfo';
 import { GoogleOAuthClientService } from './google-oauth-client.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prismaService: PrismaService,
     private googleOAuthClient: GoogleOAuthClientService,
+    private userService: UserService,
     private jwtService: JwtService
   ) {}
 
-  async loginWithCreds(
-    userName: string,
-    password: string
-  ): Promise<UserAuthInfoDto> {
+  async loginWithCreds(email: string, password: string): Promise<UserAuthInfo> {
     const user = await this.prismaService.user.findUnique({
-      where: { userName },
+      where: { email },
       select: {
         password: true,
         id: true,
@@ -31,7 +28,7 @@ export class AuthService {
       },
     });
 
-    const error = new Error('Login Unsuccessful');
+    const error = new UnauthorizedException('Email/password is invalid');
 
     if (!user) {
       throw error;
@@ -61,7 +58,7 @@ export class AuthService {
   async loginWithGoogle(
     authorizationCode: string,
     country?: string
-  ): Promise<UserAuthInfoDto> {
+  ): Promise<UserAuthInfo> {
     const loginTicket = await this.googleOAuthClient.verifyIdToken(
       authorizationCode
     );
@@ -72,33 +69,15 @@ export class AuthService {
       select: { user: true },
     });
 
-    let authPayload: Omit<UserAuthInfoDto, 'refreshToken'>;
+    let authPayload: Omit<UserAuthInfo, 'refreshToken'>;
 
     if (linkedAccount) {
       authPayload = await this.authorize(linkedAccount.user.id);
     } else {
-      const user = await this.prismaService.user.create({
-        data: {
-          email: payload.email,
-          firstName: payload.given_name,
-          lastName: payload.family_name,
-          linkedAccounts: {
-            create: [
-              {
-                externalId: payload.sub,
-                provider: { connect: { name: 'google' } },
-              },
-            ],
-          },
-          userName: payload.email.split('@')[0],
-          country: {
-            connect: {
-              countryCode: country || 'PK',
-            },
-          },
-        },
-      });
-
+      const user = await this.userService.registerUserWithGoogle(
+        payload,
+        country
+      );
       authPayload = await this.authorize(user.id);
     }
 
@@ -108,9 +87,7 @@ export class AuthService {
     };
   }
 
-  async authorize(
-    userId: string
-  ): Promise<Omit<UserAuthInfoDto, 'refreshToken'>> {
+  async authorize(userId: string): Promise<Omit<UserAuthInfo, 'refreshToken'>> {
     const payload = {
       userId,
     };
@@ -155,7 +132,7 @@ export class AuthService {
     return true;
   }
 
-  async refreshAuth(refreshToken: string): Promise<UserAuthInfoDto> {
+  async refreshAuth(refreshToken: string): Promise<UserAuthInfo> {
     const userRefreshToken =
       await this.prismaService.userRefreshToken.findUnique({
         where: { token: refreshToken },

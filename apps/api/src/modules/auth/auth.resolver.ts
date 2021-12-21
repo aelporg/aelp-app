@@ -1,5 +1,5 @@
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { UserAuthInfoDto } from './dto/UserAuthInfoDto';
+import { UserAuthInfo } from './dto/UserAuthInfo';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/JwtAuthGuard';
 import { AuthService } from './auth.service';
@@ -12,12 +12,12 @@ export default class AuthResolver {
     private ipAddressService: IPAddressLookUpService
   ) {}
 
-  @Mutation(() => UserAuthInfoDto)
+  @Mutation(() => UserAuthInfo)
   async loginWithCreds(
-    @Args('userName') userName: string,
+    @Args('email') email: string,
     @Args('password') password: string
   ) {
-    return this.authService.loginWithCreds(userName, password);
+    return this.authService.loginWithCreds(email, password);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -26,12 +26,12 @@ export default class AuthResolver {
     return this.authService.logout(refreshToken);
   }
 
-  @Mutation(() => UserAuthInfoDto)
+  @Mutation(() => UserAuthInfo)
   async refreshAuth(@Args('refreshToken') refreshToken: string) {
     return this.authService.refreshAuth(refreshToken);
   }
 
-  @Mutation(() => UserAuthInfoDto)
+  @Mutation(() => UserAuthInfo)
   async loginWithGoogle(
     @Args('tokenId') authorizationCode: string,
     @Context() ctx

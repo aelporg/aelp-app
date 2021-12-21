@@ -54,8 +54,7 @@ export function TopNav(props: TopNavProps) {
             <div className="w-0.5 rounded-lg ml-4 bg-gray-300 mx-2 h-8"></div>
           </Fragment>
         )}
-        {/* TODO: Change it to users's name */}
-        <UserProfileHeaderIcon userName="Talha" />
+        <UserProfileHeaderIcon />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { ClassroomMember, ModelsModule } from '@aelp-app/models';
+import { ModelsModule } from '@aelp-app/models';
 import { Module } from '@nestjs/common';
 import ClassroomMemberResolver from './classroom-member.resolver';
 import ClassroomResolver from './classroom.resolver';

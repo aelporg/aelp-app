@@ -2,8 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UserAuthInfoDto } from '../dto/UserAuthInfoDto';
-import { PrismaService } from '@aelp-app/models';
+import { UserAuthInfo } from '../dto/UserAuthInfo';
 import { RedisCacheService } from '@aelp-app/redis';
 import { UserService } from '../../user/user.service';
 
@@ -21,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: Pick<UserAuthInfoDto, 'userId'>) {
+  async validate(payload: Pick<UserAuthInfo, 'userId'>) {
     return this.redisCacheService.cache(`user_${payload.userId}`, () =>
       this.userService.getUserById(payload.userId)
     );

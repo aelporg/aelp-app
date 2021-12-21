@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DashboardLayout } from './_layout';
+import { AppLayout } from './_layout';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/outline';
 import Image from 'next/image';
 import Avatar from '@components/atoms/avatar';
@@ -17,7 +17,7 @@ export default function ClassroomList() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
   return (
-    <DashboardLayout
+    <AppLayout
       renderTopNavActions={() => {
         return (
           <div className="flex gap-4">
@@ -88,6 +88,6 @@ export default function ClassroomList() {
           </div>
         ))}
       </div>
-    </DashboardLayout>
+    </AppLayout>
   );
 }

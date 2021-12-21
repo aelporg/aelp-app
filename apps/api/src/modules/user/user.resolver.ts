@@ -7,13 +7,13 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { ClassroomMember, ClassroomUpdateInput, User } from '@aelp-app/models';
-import { UserRegisterDto } from './dto/UserRegisterDto';
+import { ClassroomMember, User } from '@aelp-app/models';
 import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard';
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser';
 import { UserService } from './user.service';
+import { UserRegisterDtoWithPassword } from '@aelp-app/validators';
 
 @Resolver(() => User)
 export default class UserResolver {
@@ -23,7 +23,10 @@ export default class UserResolver {
   ) {}
 
   @Mutation(() => Boolean)
-  async register(@Args('data') data: UserRegisterDto, @Context() ctx) {
+  async register(
+    @Args('data') data: UserRegisterDtoWithPassword,
+    @Context() ctx
+  ) {
     return this.userService.registerUserWithCreds({
       ...data,
       country: await this.ipAddressService.getCountryOfRequest(ctx),

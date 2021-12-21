@@ -17,7 +17,7 @@ export function Index() {
           {links.map(link => {
             return (
               <Link key={link.name} passHref href={link.href}>
-                <li className="inline cursor-pointer p-3 font-medium hover:border-b-2 text-xl">
+                <li className="inline cursor-pointer text-gray-500 p-3 font-medium hover:border-accent hover:text-accent border-b-[3px] border-transparent text-xl">
                   {link.name}
                 </li>
               </Link>

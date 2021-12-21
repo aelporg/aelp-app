@@ -57,6 +57,7 @@ export default function Button({
   icon,
   type = 'button',
   rightIcon,
+  disabled,
   loading,
   ...rest
 }: ButtonProps) {
@@ -65,6 +66,7 @@ export default function Button({
   return (
     <button
       type={type}
+      disabled={loading || disabled}
       className={classNames(
         'font-bold focus:outline-none  transition-all duration-200 focus:ring-2 ring-accent-darker',
         getButtonClassNamesForVariant(variant),

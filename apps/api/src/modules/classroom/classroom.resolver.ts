@@ -4,6 +4,7 @@ import {
   PrismaService,
   User,
 } from '@aelp-app/models';
+import { CreateClassroom } from '@aelp-app/validators';
 import { UseGuards } from '@nestjs/common';
 import {
   Args,
@@ -13,11 +14,9 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { generate } from 'randomstring';
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser';
 import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard';
 import ClassroomService from './classroom.service';
-import CreateClassroomDto from './dto/CreateClassroomDto';
 
 @Resolver(() => Classroom)
 export default class ClassroomResolver {
@@ -36,7 +35,7 @@ export default class ClassroomResolver {
   @Mutation(() => Classroom)
   async createClassroom(
     @LoggedInUser() user: User,
-    @Args('data') data: CreateClassroomDto
+    @Args('data') data: CreateClassroom
   ) {
     return this.classroomService.createClassroom(data, user);
   }

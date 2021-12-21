@@ -21,15 +21,6 @@ const nextConfig = {
     'api.js',
   ],
 
-  async redirects() {
-    return [
-      {
-        source: '/dashboard',
-        destination: '/dashboard/feed',
-        permanent: true,
-      },
-    ];
-  },
 };
 
 module.exports = withNx(nextConfig);

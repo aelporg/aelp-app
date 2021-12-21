@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-errors';
 import { generate } from 'randomstring';
 import { Prisma } from '@aelp-app/models';
-import CreateClassroomDto from './dto/CreateClassroomDto';
+import { CreateClassroom } from '@aelp-app/validators';
 
 export class ClassroomInviteCodeGenError extends Error {
   constructor() {
@@ -73,7 +73,7 @@ export default class ClassroomService {
     return classroom;
   }
 
-  async createClassroom(data: CreateClassroomDto, user: User) {
+  async createClassroom(data: CreateClassroom, user: User) {
     const inviteCode = await this.generateUniqueInviteCode();
 
     return this.prismaService.classroom.create({

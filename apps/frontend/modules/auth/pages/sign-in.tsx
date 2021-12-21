@@ -1,35 +1,49 @@
 import Input from '@components/atoms/input/input';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Logo from '@components/atoms/logo/logo';
 import Button from '@components/atoms/button';
 import FormGroup from '@components/atoms/form-group/form-group';
 import ThirdPartyAuthButton from '@components/molecules/third-party-auth-button';
 import OrLine from '@components/atoms/or-line';
-import { useMutation } from '@apollo/client';
-import { LOGIN_WITH_CREDS_MUTATION } from '../graqhql';
+import { gql, useMutation } from '@apollo/client';
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
+import { useAuthStore } from '../store/auth-store';
+
+const LOGIN_WITH_CREDS_MUTATION = gql`
+  mutation LoginWithCreds($email: String!, $password: String!) {
+    loginWithCreds(email: $email, password: $password) {
+      token
+      userId
+      refreshToken
+    }
+  }
+`;
 
 interface LoginWithCreds {
-  userName: string;
+  email: string;
   password: string;
 }
 
 export default function SignIn() {
+  const authStore = useAuthStore();
+
   const [loginWithCreds, { data, error, loading }] = useMutation(
-    LOGIN_WITH_CREDS_MUTATION
+    LOGIN_WITH_CREDS_MUTATION,
+    {
+      onCompleted: data => {
+        authStore.login(data.loginWithCreds);
+      },
+    }
   );
 
   const { register, handleSubmit } = useForm<LoginWithCreds>();
 
   const handleLoginWithCreds = async (data: LoginWithCreds) => {
-    await loginWithCreds({
+    return loginWithCreds({
       variables: data,
-    }).catch(console.error);
+    });
   };
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <div className="p-7 flex flex-col min-h-screen">
@@ -39,10 +53,11 @@ export default function SignIn() {
       <div className="flex-1 flex flex-col justify-center items-center">
         <form onSubmit={handleSubmit(handleLoginWithCreds)}>
           <div className="flex flex-col items-stretch w-80 max-w-full">
-            <FormGroup label="Username">
+            <FormGroup label="Email">
               <Input
-                {...register('userName', { required: 'Required' })}
+                {...register('email', { required: 'Required' })}
                 readOnly={loading}
+                placeholder="your-email@provider.com"
               />
             </FormGroup>
             <FormGroup label="Password">
@@ -50,6 +65,7 @@ export default function SignIn() {
                 type="password"
                 readOnly={loading}
                 {...register('password', { required: 'Required' })}
+                placeholder="********"
               />
             </FormGroup>
             {error && (
@@ -73,9 +89,11 @@ export default function SignIn() {
             >
               Sign In
             </Button>
-            <Button size="sm" className="mt-2" variant="secondary">
-              Don&apos;t have an account?
-            </Button>
+            <Link href="/auth/sign-up" passHref>
+              <Button size="sm" className="mt-2" variant="secondary">
+                Don&apos;t have an account?
+              </Button>
+            </Link>
             <OrLine className="my-6" />
             <ThirdPartyAuthButton variant="google" />
             <ThirdPartyAuthButton variant="github" />

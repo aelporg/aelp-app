@@ -16,7 +16,6 @@ export default class ClassroomMemberResolver {
 
   @ResolveField(() => User)
   user(@Parent() member: ClassroomMember) {
-    console.log(member);
     return this.prismaService.user.findUnique({
       where: { id: member.userId },
     });

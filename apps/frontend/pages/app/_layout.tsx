@@ -10,49 +10,47 @@ import Sidebar from '@components/organisms/sidebar/sidebar';
 import TopNav, { TopNavProps } from '@components/organisms/top-nav/top-nav';
 import { useRouter } from 'next/router';
 import React from 'react';
+import withAuth from '@modules/auth/components/high-order/withAuth';
 
 const dashboardLinks = [
   {
     name: 'Feed',
     icon: NewspaperIcon,
-    href: '/dashboard/feed',
+    href: '/app/feed',
   },
   {
     name: 'Classrooms',
     icon: ClipboardListIcon,
-    href: '/dashboard/classrooms',
+    href: '/app/classrooms',
   },
   {
     name: 'Questions',
     icon: QuestionMarkCircleIcon,
-    href: '/dashboard/questions',
+    href: '/app/questions',
   },
   {
     name: 'Leaderboard',
     icon: ChartBarIcon,
-    href: '/dashboard/leaderboard',
+    href: '/app/leaderboard',
   },
   {
     name: 'Practice',
     icon: CollectionIcon,
-    href: '/dashboard/practice',
+    href: '/app/practice',
   },
   {
     name: 'Competitions',
     icon: PuzzleIcon,
-    href: '/dashboard/competitions',
+    href: '/app/competitions',
   },
 ];
 
-export interface DashboardLayoutProps {
+export interface AppLayoutProps {
   children?: React.ReactNode;
   renderTopNavActions?: TopNavProps['renderActions'];
 }
 
-export function DashboardLayout({
-  children,
-  renderTopNavActions,
-}: DashboardLayoutProps) {
+function _AppLayout({ children, renderTopNavActions }: AppLayoutProps) {
   const router = useRouter();
 
   return (
@@ -72,3 +70,5 @@ export function DashboardLayout({
     </div>
   );
 }
+
+export const AppLayout = withAuth(_AppLayout);

@@ -11,7 +11,7 @@ export function QuestionCard(props: QuestionCardProps) {
     'h-8 w-8 p-2 hover:bg-gray-200 cursor-pointer rounded-full active:bg-gray-300';
 
   return (
-    <div className="border-2 p-5 rounded-lg">
+    <div className="border p-5 rounded-lg">
       <div className="flex gap-4">
         <div className="flex items-center flex-col">
           <Avatar intials="TB" />

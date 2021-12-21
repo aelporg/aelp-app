@@ -5,11 +5,11 @@ import ToggleGroup from '@components/atoms/toggle-group/toggle-group';
 import QuestionCard from '@components/organisms/question-card/question-card';
 import { AnnotationIcon, SearchIcon } from '@heroicons/react/outline';
 import React from 'react';
-import { DashboardLayout } from './_layout';
+import { AppLayout } from './_layout';
 
 export default function QuestionsList() {
   return (
-    <DashboardLayout
+    <AppLayout
       renderTopNavActions={() => {
         return (
           <Button size="sm" icon={<AnnotationIcon />}>
@@ -70,6 +70,6 @@ export default function QuestionsList() {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </AppLayout>
   );
 }

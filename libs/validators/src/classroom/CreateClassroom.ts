@@ -1,12 +1,13 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql/dist/decorators/input-type.decorator';
+import { Field } from '@nestjs/graphql/dist/decorators/field.decorator';
 import { IsOptional, MaxLength, MinLength } from 'class-validator';
 
 @InputType()
-export default class CreateClassroomDto {
+export class CreateClassroom {
   @MinLength(3)
   @MaxLength(250)
   @Field()
-  name: string;
+  name!: string;
 
   @MinLength(1)
   @IsOptional()
