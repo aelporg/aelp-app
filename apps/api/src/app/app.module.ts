@@ -24,7 +24,9 @@ import ClassroomModule from '../modules/classroom/classroom.module';
     GraphQLModule.forRoot({
       autoSchemaFile: join(__dirname, './schema.gql'),
       playground: true,
+      context: ({ req, res }) => ({ req, res }),
       formatError: (error: GraphQLError) => {
+        console.log(error);
         return error;
       },
     }),

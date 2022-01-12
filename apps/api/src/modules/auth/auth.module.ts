@@ -1,5 +1,5 @@
 import { ModelsModule } from '@aelp-app/models';
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import AuthResolver from './auth.resolver';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -10,6 +10,7 @@ import UserModule from '../user/user.module';
 import { GoogleOAuthClientService } from './google-oauth-client.service';
 import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
 
+@Global()
 @Module({
   imports: [
     UserModule,
@@ -26,10 +27,10 @@ import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.s
     }),
   ],
   providers: [
+    AuthService,
     JwtStrategy,
     IPAddressLookUpService,
     GoogleOAuthClientService,
-    AuthService,
     AuthResolver,
   ],
   exports: [AuthService],

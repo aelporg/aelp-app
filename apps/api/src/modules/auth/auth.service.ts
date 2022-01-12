@@ -1,7 +1,7 @@
 import { PrismaService } from '@aelp-app/models';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserInputError } from 'apollo-server-errors';
+import { AuthenticationError } from 'apollo-server-errors';
 import { compare } from 'bcrypt';
 import moment from 'moment';
 import { generateRefreshToken } from '../../utils/generateRefreshToken';
@@ -17,6 +17,15 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService
   ) {}
+
+  verifyAuthToken(jwtToken: string): boolean {
+    try {
+      const data = this.jwtService.verify(jwtToken);
+      return data !== undefined;
+    } catch (error) {
+      return false;
+    }
+  }
 
   async loginWithCreds(email: string, password: string): Promise<UserAuthInfo> {
     const user = await this.prismaService.user.findUnique({
@@ -140,11 +149,11 @@ export class AuthService {
       });
 
     if (!userRefreshToken) {
-      throw new UserInputError('The refresh token is invalid.');
+      throw new AuthenticationError('Unauthenticated');
     }
 
     if (moment().isAfter(userRefreshToken.expiryDate)) {
-      throw new Error('The refresh token has expired');
+      throw new AuthenticationError('Expired or invalid refresh token');
     }
 
     const authPayload = await this.authorize(userRefreshToken.user.id);

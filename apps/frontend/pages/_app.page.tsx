@@ -1,14 +1,9 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import './global.scss';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 import AuthStoreProvider from '@modules/auth/store/auth-store';
-import getBackendLink from 'lib/getBackendLink';
-
-const client = new ApolloClient({
-  link: getBackendLink(),
-  cache: new InMemoryCache(),
-});
+import { gqlClient } from 'graphql/client';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
@@ -18,7 +13,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
       </Head>
       <div className="app">
         <main>
-          <ApolloProvider client={client}>
+          <ApolloProvider client={gqlClient}>
             <AuthStoreProvider>
               <Component {...pageProps} />
             </AuthStoreProvider>

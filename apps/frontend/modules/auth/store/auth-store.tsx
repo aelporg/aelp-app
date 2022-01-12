@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { useApolloClient } from '@apollo/client';
+import { useApolloClient, gql } from '@apollo/client';
 import { useLocalStorage } from 'react-use';
-import getBackendLink from 'lib/getBackendLink';
+import { getApiLink, gqlClient } from 'graphql/client';
 
-interface UserAuthInfo {
+export interface UserAuthInfo {
   token: string;
   userId: string;
-  refreshToken?: string;
+  refreshToken: string;
 }
 
-interface IAuthStore {
+export interface IAuthStore {
   auth?: UserAuthInfo;
   login(auth: UserAuthInfo): void;
   logout(): void;
@@ -27,24 +27,43 @@ export function useAuthStore() {
   return value;
 }
 
+export function refreshToken() {
+  // return gqlClient.mutate({
+  //   mutation: gql`
+  //     mutation RefreshToken {
+  //       refreshToken
+  //     }
+  //   `,
+  // });
+}
+
 export default function AuthStoreProvider(props: React.PropsWithChildren<any>) {
   const [auth, setAuth, remove] = useLocalStorage('auth', null);
   const apolloClient = useApolloClient();
 
+  const refreshApolloClient = useCallback(async () => {
+    apolloClient.resetStore();
+    apolloClient.setLink(getApiLink());
+  }, [apolloClient]);
+
   const login = useCallback(
     (auth: UserAuthInfo) => {
       setAuth(auth);
-      apolloClient.resetStore();
-      apolloClient.setLink(getBackendLink());
+      refreshApolloClient();
     },
-    [apolloClient, setAuth]
+    [refreshApolloClient, setAuth]
   );
 
   const logout = useCallback(() => {
     remove();
-    apolloClient.resetStore();
-    apolloClient.setLink(getBackendLink());
-  }, [apolloClient, remove]);
+    refreshApolloClient();
+  }, [refreshApolloClient, remove]);
+
+  useEffect(() => {
+    if (!auth) {
+      console.log('no auth');
+    }
+  }, [auth]);
 
   const storeValue = useMemo(
     () =>

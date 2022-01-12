@@ -107,6 +107,13 @@
           "options": {
             "lintFilePatterns": ["apps/frontend/**/*.{ts,tsx,js,jsx}"]
           }
+        },
+        "apollo:codegen": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": ["yarn apollo codegen:generate"],
+            "cwd": "apps/frontend"
+          }
         }
       },
       "tags": []

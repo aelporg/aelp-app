@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    command: /bin/sh -c "while sleep 1000; do :; done"
     # access docker daemon in the container
     volumes:
       - .:/app

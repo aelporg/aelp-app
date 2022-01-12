@@ -2,13 +2,18 @@ FROM node:lts-alpine3.13
 
 WORKDIR /app
 
-RUN npm install -g nx
+RUN apk add git zsh
+RUN apk add curl
+RUN curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sh
+RUN adduser -D app -s /bin/zsh
+USER app
 
-COPY package.json yarn.lock ./
+RUN yarn global add nx
+
+COPY package.json ./
 COPY .yarn ./.yarn
 COPY ./.yarnrc.yml ./
 
 RUN yarn install
-RUN apk add git
 
 CMD ["ash"]

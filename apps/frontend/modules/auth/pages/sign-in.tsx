@@ -9,6 +9,10 @@ import { gql, useMutation } from '@apollo/client';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useAuthStore } from '../store/auth-store';
+import {
+  LoginWithCreds,
+  LoginWithCredsVariables,
+} from './__generated__/LoginWithCreds';
 
 const LOGIN_WITH_CREDS_MUTATION = gql`
   mutation LoginWithCreds($email: String!, $password: String!) {
@@ -20,26 +24,19 @@ const LOGIN_WITH_CREDS_MUTATION = gql`
   }
 `;
 
-interface LoginWithCreds {
-  email: string;
-  password: string;
-}
-
 export default function SignIn() {
   const authStore = useAuthStore();
 
-  const [loginWithCreds, { data, error, loading }] = useMutation(
-    LOGIN_WITH_CREDS_MUTATION,
-    {
+  const [loginWithCreds, { data, error, loading }] =
+    useMutation<LoginWithCreds>(LOGIN_WITH_CREDS_MUTATION, {
       onCompleted: data => {
         authStore.login(data.loginWithCreds);
       },
-    }
-  );
+    });
 
-  const { register, handleSubmit } = useForm<LoginWithCreds>();
+  const { register, handleSubmit } = useForm<LoginWithCredsVariables>();
 
-  const handleLoginWithCreds = async (data: LoginWithCreds) => {
+  const handleLoginWithCreds = async (data: LoginWithCredsVariables) => {
     return loginWithCreds({
       variables: data,
     });
