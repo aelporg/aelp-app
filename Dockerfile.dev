@@ -1,18 +1,18 @@
 FROM node:lts-alpine3.13
 
+RUN apk add git zsh curl sudo shadow
+
 WORKDIR /app
 
-RUN apk add git zsh
-RUN apk add curl
-RUN curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sh
-RUN adduser -D app -s /bin/zsh
-USER app
-
 RUN yarn global add nx
+RUN chown node:node -R .
 
-COPY package.json ./
-COPY .yarn ./.yarn
-COPY ./.yarnrc.yml ./
+USER node
+RUN curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sh
+
+COPY --chown=node:node  package.json yarn.lock ./
+COPY --chown=node:node .yarn ./.yarn
+COPY --chown=node:node ./.yarnrc.yml ./
 
 RUN yarn install
 

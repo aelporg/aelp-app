@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: /bin/sh -c "while sleep 1000; do :; done"
     # access docker daemon in the container
     volumes:
       - .:/app
@@ -12,6 +11,8 @@ services:
     ports:
       - "4200:4200"
       - "3333:3333"
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    user: node
   posgres:
     image: postgres
     environment:
