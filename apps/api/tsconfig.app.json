@@ -8,5 +8,5 @@
     "target": "es2015",
   },
   "exclude": ["**/*.spec.ts"],
-  "include": ["**/*.ts", "../frontend/CreateClassroomDto.ts", "../../libs/validators/src/user-register-input-type.ts"]
+  "include": ["**/*.ts"]
 }

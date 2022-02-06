@@ -102,10 +102,19 @@ export class UserService {
     })
   }
 
-  async getUserById(id: string) {
-    return this.prismaService.user.findUnique({
+  async getUserById(id: string): Promise<User> {
+    const user = await this.prismaService.user.findUnique({
       where: { id },
     })
+
+    return {
+      ...user,
+      name:
+        user.firstName && user.lastName
+          ? `${user.firstName} ${user.lastName}`
+          : user.userName,
+      shortName: user.firstName || user.userName,
+    }
   }
 
   async getUserJoinedClassrooms(user: User) {

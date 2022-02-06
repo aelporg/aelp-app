@@ -8,14 +8,14 @@
 // ====================================================
 
 export interface MeQuery_me {
-  __typename: "User";
-  id: string;
-  firstName: string | null;
-  lastName: string | null;
-  userName: string;
-  email: string;
+  __typename: 'User'
+  id: string
+  userName: string
+  shortName: string | null
+  name: string | null
+  email: string
 }
 
 export interface MeQuery {
-  me: MeQuery_me;
+  me: MeQuery_me
 }

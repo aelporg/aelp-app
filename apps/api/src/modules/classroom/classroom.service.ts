@@ -23,6 +23,12 @@ export default class ClassroomService {
     })
   }
 
+  async getClassroomById(id: string) {
+    return this.prismaService.classroom.findUnique({
+      where: { id },
+    })
+  }
+
   async generateUniqueInviteCode(retryNo = 0) {
     const inviteCode = generate({ length: 8, charset: 'alphanumeric' })
 

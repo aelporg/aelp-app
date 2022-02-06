@@ -6,7 +6,6 @@ import { ExtractJwt } from 'passport-jwt'
 import { AuthService } from '../auth.service'
 import { Request, Response } from 'express'
 import { AuthenticationError } from 'apollo-server-express'
-import { Observable } from 'rxjs'
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard(['jwt']) {

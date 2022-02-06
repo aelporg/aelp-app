@@ -1,6 +1,6 @@
-export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 export type SimpleModalProps = {
-  onClose: () => void;
-  isOpen: boolean;
+  onClose: () => void
+  isOpen: boolean
 }

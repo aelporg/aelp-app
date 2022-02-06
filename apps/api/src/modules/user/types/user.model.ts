@@ -23,6 +23,12 @@ export class User {
   @Field(() => String, { nullable: true })
   lastName!: string | null
 
+  @Field(() => String, { nullable: true })
+  name: string | null
+
+  @Field(() => String, { nullable: true })
+  shortName: string | null
+
   @Field(() => String, { nullable: false })
   userName!: string
 

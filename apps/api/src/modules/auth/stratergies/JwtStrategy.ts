@@ -16,7 +16,7 @@ interface JwtPayload {
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private readonly configService: ConfigService,
+    readonly configService: ConfigService,
     private readonly userService: UserService,
     private readonly redisCacheService: RedisCacheService
   ) {
