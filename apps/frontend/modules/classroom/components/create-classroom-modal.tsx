@@ -4,13 +4,13 @@ import Button from '@components/primitives/button'
 import FormGroup from '@components/primitives/form-group/form-group'
 import HForm from '@components/primitives/form/form'
 import Modal from '@components/primitives/modal/modal'
-import { CREATE_CLASSROOM_MUTATION } from 'graphql/mutations/classroom/create-classroom-mutation'
-import { MY_CLASSROOMS_QUERY } from 'graphql/queries/classroom-query'
+import { CREATE_CLASSROOM_MUTATION } from '@modules/classroom/graphql/create-classroom-mutation'
 import { hfCreateClassroomResolver } from '@aelp-app/validators'
 import {
   CreateClassroomMutation,
   CreateClassroomMutationVariables,
 } from 'typings/graphql/CreateClassroomMutation'
+import { MY_CLASSROOMS_QUERY } from '../graphql/my-classrooms-query'
 
 interface CreateClassRoomModalProps {
   isOpen: boolean

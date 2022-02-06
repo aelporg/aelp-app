@@ -8,27 +8,27 @@
 //==============================================================
 
 export enum ClassroomRole {
-  INSTRUCTOR = 'INSTRUCTOR',
-  OWNER = 'OWNER',
-  STUDENT = 'STUDENT',
-  TA = 'TA',
+  INSTRUCTOR = "INSTRUCTOR",
+  OWNER = "OWNER",
+  STUDENT = "STUDENT",
+  TA = "TA",
 }
 
 export interface CreateClassroomInput {
-  name: string
-  subject?: string | null
-  section?: string | null
+  name: string;
+  subject?: string | null;
+  section?: string | null;
 }
 
 export interface JoinClassroomInput {
-  inviteCode: string
+  inviteCode: string;
 }
 
 export interface UserRegisterInput {
-  password: string
-  confirmPassword: string
-  email: string
-  agreeTerms: boolean
+  password: string;
+  confirmPassword: string;
+  email: string;
+  agreeTerms: boolean;
 }
 
 //==============================================================

@@ -1,16 +1,16 @@
+import QuestionCard from '@components/organisms/question-card/question-card';
 import Button from '@components/primitives/button';
 import Input from '@components/primitives/input/input';
 import Tag from '@components/primitives/tag/tag';
 import ToggleGroup from '@components/primitives/toggle-group/toggle-group';
-import QuestionCard from '@components/organisms/question-card/question-card';
-import { AnnotationIcon, SearchIcon } from '@heroicons/react/outline';
 import React from 'react';
-import { AppLayout } from '../../modules/dashboard/components/main-dashboard-layout';
+import { AnnotationIcon, SearchIcon } from '@heroicons/react/outline';
+import MainDashboardLayout from '@modules/dashboard/components/main-dashboard-layout';
 
 export default function QuestionsList() {
   return (
-    <AppLayout
-      renderTopNavActions={() => {
+    <MainDashboardLayout
+      topNavActions={() => {
         return (
           <Button size="sm" icon={<AnnotationIcon />}>
             Ask Question
@@ -70,6 +70,6 @@ export default function QuestionsList() {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </MainDashboardLayout>
   );
 }

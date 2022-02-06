@@ -6,11 +6,7 @@ import {
   PuzzleIcon,
   CollectionIcon,
 } from '@heroicons/react/outline'
-import Sidebar from '@components/organisms/sidebar/sidebar'
-import TopNav, { TopNavProps } from '@components/organisms/top-nav/top-nav'
-import { useRouter } from 'next/router'
-import React, { useMemo } from 'react'
-import withAuth from '@modules/auth/components/high-order/withAuth'
+import { Layout, LayoutProps } from './layout'
 
 const DashboardLinks = [
   {
@@ -45,30 +41,8 @@ const DashboardLinks = [
   },
 ]
 
-export interface AppLayoutProps {
-  children?: React.ReactNode
-  topNavActions?: TopNavProps['actions']
+export default function MainDashboardLayout(
+  props: Omit<LayoutProps, 'links'>
+) {
+  return <Layout {...props} sidebarLinks={DashboardLinks} />
 }
-
-function _AppLayout({ children, topNavActions }: AppLayoutProps) {
-  const router = useRouter()
-
-  const heading = useMemo(
-    () => DashboardLinks.find(link => link.href === router.pathname)?.name,
-    [router.pathname]
-  )
-
-  return (
-    <div className="flex h-screen">
-      <Sidebar links={DashboardLinks} />
-      <div className="flex-grow">
-        <TopNav heading={heading} actions={topNavActions} />
-        <div className="px-8 pb-4 pt-3 flex flex-col max-w-screen-3xl">
-          {children}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-export const AppLayout = withAuth(_AppLayout)

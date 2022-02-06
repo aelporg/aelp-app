@@ -6,9 +6,9 @@
 
   body,
   html {
-    @apply text-black bg-slate-50;
+    @apply text-black;
   }
 }
 
 
-@import 'index.page.scss';
+@import 'index.scss';

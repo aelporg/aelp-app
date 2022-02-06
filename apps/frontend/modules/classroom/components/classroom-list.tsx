@@ -1,5 +1,5 @@
 import { MyClassroomsQuery_classrooms } from 'typings/graphql/MyClassroomsQuery'
-import ClassroomCard from './classroom-card'
+import { ClassroomCard } from './classroom-card'
 
 export default function ClassRoomList({
   classrooms,

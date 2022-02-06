@@ -1,46 +1,46 @@
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
-import UserProfileHeaderIcon from '@components/organisms/top-nav/user-profile-header-icon/user-profile-header-icon';
-import classNames from 'classnames';
-import UserProfileMenu from './user-profile-menu/user-profile-menu';
-import { TopNavConsumer, TopNavProvider } from './top-nav.store';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
+import UserProfileHeaderIcon from '@components/organisms/top-nav/user-profile-header-icon/user-profile-header-icon'
+import classNames from 'classnames'
+import UserProfileMenu from './user-profile-menu/user-profile-menu'
+import { TopNavConsumer, TopNavProvider } from './top-nav.store'
 
 export interface TopNavProps {
-  heading: string;
-  actions?: React.ReactNode;
+  heading: string
+  actions?: React.ReactNode
 }
 
 export function TopNav(props: TopNavProps) {
-  const elementRef = useRef<HTMLDivElement>(null);
-  const [sticking, setSticking] = useState(false);
+  const elementRef = useRef<HTMLDivElement>(null)
+  const [sticking, setSticking] = useState(false)
 
   const handleStickChange: IntersectionObserverCallback = useCallback(
     ([event]) => {
-      setSticking(event.intersectionRatio < 1);
+      setSticking(event.intersectionRatio < 1)
     },
     [setSticking]
-  );
+  )
 
   useEffect(() => {
     if (elementRef.current) {
-      const currentRef = elementRef.current;
+      const currentRef = elementRef.current
       const observer = new IntersectionObserver(handleStickChange, {
         threshold: [1],
-      });
+      })
 
-      observer.observe(currentRef);
+      observer.observe(currentRef)
 
       return () => {
-        observer.unobserve(currentRef);
-      };
+        observer.unobserve(currentRef)
+      }
     }
-  }, [elementRef, handleStickChange]);
+  }, [elementRef, handleStickChange])
 
   return (
     <TopNavProvider>
       <div
         ref={elementRef}
         className={classNames(
-          'flex justify-between sticky  self-start  z-10 pb-2 px-8 items-center transition-all duration-200',
+          'flex justify-between sticky self-start  z-10 py-2 pl-8 pr-4 items-center transition-all duration-200',
           sticking && 'border-b bg-white'
         )}
         style={{
@@ -54,7 +54,7 @@ export function TopNav(props: TopNavProps) {
           {props.actions && (
             <Fragment>
               {props.actions}
-              <div className="w-0.5 rounded-lg ml-4 bg-gray-300 mx-2 h-8"></div>
+              <div className="w-0.5 rounded-lg ml-4  bg-gray-300 mx-2 h-8"></div>
             </Fragment>
           )}
           <UserProfileHeaderIcon />
@@ -65,4 +65,4 @@ export function TopNav(props: TopNavProps) {
   )
 }
 
-export default TopNav;
+export default TopNav

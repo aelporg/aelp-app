@@ -30,6 +30,24 @@ export default class ClassroomResolver {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Query(() => Classroom, { nullable: true })
+  async classroom(@Args('id') id: string, @LoggedInUser() user: User) {
+    const classroom = await this.classroomService.getClassroomById(id)
+
+    if (!classroom) {
+      return null
+    }
+
+    const members = await this.members(classroom)
+
+    if (!members.find(member => member.userId === user.id)) {
+      return null
+    }
+
+    return classroom
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Classroom)
   async createClassroom(
     @LoggedInUser() user: User,

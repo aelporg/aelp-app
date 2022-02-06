@@ -1,24 +1,24 @@
 import React from 'react'
 import { PlusIcon, UserAddIcon } from '@heroicons/react/outline'
 import Button from '@components/primitives/button'
-import { AppLayout } from '@modules/dashboard/components/main-dashboard-layout'
 import useDisclosure from 'lib/hooks/useDisclosure'
 import CreateClassRoomModal from '../components/create-classroom-modal'
 import JoinClassRoomModal from '../components/join-classroom-modal'
 import ClassRoomList from '../components/classroom-list'
 import { useQuery } from '@apollo/client'
-import { MY_CLASSROOMS_QUERY } from 'graphql/queries/classroom-query'
 import { MyClassroomsQuery } from 'typings/graphql/MyClassroomsQuery'
+import MainDashboardLayout from '@modules/dashboard/components/main-dashboard-layout'
+import { MY_CLASSROOMS_QUERY } from '../graphql/my-classrooms-query'
 
-interface ClassroomViewActionsProps {
+interface ClassroomsViewActionsProps {
   onJoinClick: () => void
   onCreateClick: () => void
 }
 
-function ClassroomViewActions({
+function ClassroomsViewActions({
   onJoinClick,
   onCreateClick,
-}: ClassroomViewActionsProps) {
+}: ClassroomsViewActionsProps) {
   return (
     <div className="flex gap-3">
       <Button
@@ -36,7 +36,7 @@ function ClassroomViewActions({
   )
 }
 
-export default function ClassRoomView() {
+export default function ClassroomsView() {
   const {
     isOpen: isCreateOpen,
     onClose: onCreateClose,
@@ -51,9 +51,9 @@ export default function ClassRoomView() {
   const { data, loading } = useQuery<MyClassroomsQuery>(MY_CLASSROOMS_QUERY)
 
   return (
-    <AppLayout
+    <MainDashboardLayout
       topNavActions={
-        <ClassroomViewActions
+        <ClassroomsViewActions
           onCreateClick={onCreateOpen}
           onJoinClick={onJoinOpen}
         />
@@ -62,6 +62,6 @@ export default function ClassRoomView() {
       <CreateClassRoomModal isOpen={isCreateOpen} onClose={onCreateClose} />
       <JoinClassRoomModal isOpen={isJoinOpen} onClose={onJoinClose} />
       {data && <ClassRoomList classrooms={data.classrooms} />}
-    </AppLayout>
+    </MainDashboardLayout>
   )
 }

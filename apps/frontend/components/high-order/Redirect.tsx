@@ -1,14 +1,7 @@
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import Navigate from '@components/navigate'
 
 export default function Redirect(to: string) {
-  return () => {
-    const router = useRouter();
+  const RedirectC = () => <Navigate to={to} />
 
-    useEffect(() => {
-      router.replace(to);
-    }, [router, to]);
-
-    return null;
-  };
+  return RedirectC
 }

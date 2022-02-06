@@ -4,14 +4,14 @@ import Button from '@components/primitives/button'
 import FormGroup from '@components/primitives/form-group/form-group'
 import HForm from '@components/primitives/form/form'
 import Modal from '@components/primitives/modal/modal'
-import { JOIN_CLASSROOM_MUTATION } from 'graphql/mutations/classroom/join-classroom-mutation'
-import { MY_CLASSROOMS_QUERY } from 'graphql/queries/classroom-query'
+import { JOIN_CLASSROOM_MUTATION } from '@modules/classroom/graphql/join-classroom-mutation'
 import {
   JoinClassRoomMutation,
   JoinClassRoomMutationVariables,
 } from 'typings/graphql/JoinClassRoomMutation'
 import { SimpleModalProps } from 'typings/utils-types'
 import { hfJoinClassroomResolver } from '@aelp-app/validators'
+import { MY_CLASSROOMS_QUERY } from '../graphql/my-classrooms-query'
 
 export default function JoinClassRoomModal({
   isOpen,

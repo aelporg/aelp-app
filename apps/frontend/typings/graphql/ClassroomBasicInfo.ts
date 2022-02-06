@@ -4,18 +4,12 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: MeQuery
+// GraphQL fragment: ClassroomBasicInfo
 // ====================================================
 
-export interface MeQuery_me {
-  __typename: "User";
-  id: string;
-  userName: string;
-  shortName: string | null;
-  name: string | null;
-  email: string;
-}
-
-export interface MeQuery {
-  me: MeQuery_me;
+export interface ClassroomBasicInfo {
+  __typename: "Classroom";
+  name: string;
+  subject: string | null;
+  section: string | null;
 }
