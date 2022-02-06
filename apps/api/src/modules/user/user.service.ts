@@ -1,15 +1,16 @@
-import { PrismaService, User, Prisma } from '@aelp-app/models';
-import { Injectable } from '@nestjs/common';
-import { hash } from 'bcrypt';
-import { TokenPayload } from 'google-auth-library';
-import { generateUsername } from 'unique-username-generator';
-import { UserRegisterInput } from './types/user-register-input-type';
+import { PrismaService, Prisma } from '@aelp-app/models'
+import { Injectable } from '@nestjs/common'
+import { hash } from 'bcrypt'
+import { TokenPayload } from 'google-auth-library'
+import { generateUsername } from 'unique-username-generator'
+import { UserRegisterInput } from './types/user-register-input-type'
+import { User } from './types/user.model'
 
 interface RegisterUserArgs extends UserRegisterInput {
-  country?: string;
+  country?: string
 }
 
-export const userNameRegex = /^[a-zA-Z_][a-zA-Z0-9]{4,10}$/;
+export const userNameRegex = /^[a-zA-Z_][a-zA-Z0-9]{4,10}$/
 
 @Injectable()
 export class UserService {
@@ -17,9 +18,9 @@ export class UserService {
 
   async registerUserWithCreds(data: RegisterUserArgs) {
     return this.prismaService.$transaction(async () => {
-      let userName = await this.generateUserName(data.email);
+      let userName = await this.generateUserName(data.email)
 
-      const hashedPassword = await hash(data.password, 10);
+      const hashedPassword = await hash(data.password, 10)
       try {
         const { id } = await this.prismaService.user.create({
           data: {
@@ -32,51 +33,51 @@ export class UserService {
               },
             },
           },
-        });
+        })
 
-        return id;
+        return id
       } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
           if (e.code === 'P2002') {
             throw new Error(
               `User with this ${(e.meta as any).target?.[0]} already exists.`
-            );
+            )
           }
         }
-        throw e;
+        throw e
       }
-    });
+    })
   }
 
   async generateUserName(email: string) {
-    let userName = email.split('@')[0];
+    let userName = email.split('@')[0]
 
     if (!userName.match(userNameRegex)) {
-      userName = generateUsername('', 3, 7);
+      userName = generateUsername('', 3, 7)
     }
 
     let tries = 0,
-      foundUnqiueUserName = false;
+      foundUnqiueUserName = false
 
     while (tries < 3) {
       const user = await this.prismaService.user.findUnique({
         where: { userName },
-      });
+      })
 
       if (!user) {
-        foundUnqiueUserName = true;
-        break;
+        foundUnqiueUserName = true
+        break
       }
 
-      userName = generateUsername('', 3, 7);
-      tries++;
+      userName = generateUsername('', 3, 7)
+      tries++
     }
 
-    return userName;
+    return userName
   }
 
   async registerUserWithGoogle(payload: TokenPayload, country: string) {
-    const userName = await this.generateUserName(payload.email);
+    const userName = await this.generateUserName(payload.email)
 
     return this.prismaService.user.create({
       data: {
@@ -98,13 +99,13 @@ export class UserService {
           },
         },
       },
-    });
+    })
   }
 
   async getUserById(id: string) {
     return this.prismaService.user.findUnique({
       where: { id },
-    });
+    })
   }
 
   async getUserJoinedClassrooms(user: User) {
@@ -112,6 +113,6 @@ export class UserService {
       .findUnique({
         where: { id: user.id },
       })
-      .joinedClassrooms();
+      .joinedClassrooms()
   }
 }

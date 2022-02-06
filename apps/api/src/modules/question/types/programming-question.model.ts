@@ -1,13 +1,13 @@
 import { Field } from '@nestjs/graphql'
 import { ObjectType } from '@nestjs/graphql'
 import { ID } from '@nestjs/graphql'
-import { ProgrammingQuestionType } from '@aelp-app/models'
 import { ProgrammingQuestionCount } from './programming-question-count.output'
 import { SingleFileProgrammingQuestion } from './single-file-programming-question.model'
 import { MultipleFilesProgrammingQuestion } from './multiple-files-programming-question.model'
 import { Question } from './question.model'
 import { EvaluationCriteria } from '../../evaluation-criteria/types/evaluation-criteria.model'
 import { PracticeProgrammingQuestion } from './practice-programming-question.model'
+import { ProgrammingQuestionType } from '../../../global-types'
 
 @ObjectType()
 export class ProgrammingQuestion {

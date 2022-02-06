@@ -1,13 +1,15 @@
-import { ClassroomRole, PrismaService, User } from '@aelp-app/models';
-import { Injectable } from '@nestjs/common';
-import { UserInputError } from 'apollo-server-errors';
-import { generate } from 'randomstring';
-import { Prisma } from '@aelp-app/models';
-import { CreateClassroomInput } from './types/create-classroom-input-type';
+import { PrismaService } from '@aelp-app/models'
+import { Injectable } from '@nestjs/common'
+import { UserInputError } from 'apollo-server-errors'
+import { generate } from 'randomstring'
+import { Prisma } from '@aelp-app/models'
+import { CreateClassroomInput } from './types/create-classroom-input-type'
+import { User } from '../user/types/user.model'
+import { ClassroomRole } from '../../global-types/classroom-role.enum'
 
 export class ClassroomInviteCodeGenError extends Error {
   constructor() {
-    super('Invite code for classroom cannot be generated in time.');
+    super('Invite code for classroom cannot be generated in time.')
   }
 }
 
@@ -18,35 +20,35 @@ export default class ClassroomService {
   async getUserClassrooms(user: User) {
     return this.prismaService.classroom.findMany({
       where: { members: { some: { userId: user.id } } },
-    });
+    })
   }
 
   async generateUniqueInviteCode(retryNo = 0) {
-    const inviteCode = generate({ length: 8, charset: 'alphanumeric' });
+    const inviteCode = generate({ length: 8, charset: 'alphanumeric' })
 
     const classroomWithGeneratedCode =
       await this.prismaService.classroom.findUnique({
         where: { inviteCode },
         select: { id: true },
-      });
+      })
 
     if (classroomWithGeneratedCode) {
-      if (retryNo < 10) return this.generateUniqueInviteCode(retryNo + 1);
-      else throw new ClassroomInviteCodeGenError();
+      if (retryNo < 10) return this.generateUniqueInviteCode(retryNo + 1)
+      else throw new ClassroomInviteCodeGenError()
     }
 
-    return inviteCode;
+    return inviteCode
   }
 
   async joinClassroom(inviteCode: string, user: User) {
     const classroom = await this.prismaService.classroom.findUnique({
       where: { inviteCode },
-    });
+    })
 
     if (!classroom) {
       throw new UserInputError(
         "This invite code doesn't belong to any Classroom"
-      );
+      )
     }
 
     try {
@@ -56,25 +58,25 @@ export default class ClassroomService {
           user: { connect: { id: user.id } },
           classroomRole: ClassroomRole.STUDENT,
         },
-      });
+      })
     } catch (e: unknown) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         switch (e.code) {
           case 'P2002':
             throw new UserInputError(
               'You are already a member of this classroom'
-            );
+            )
         }
       }
 
-      throw e;
+      throw e
     }
 
-    return classroom;
+    return classroom
   }
 
   async createClassroom(data: CreateClassroomInput, user: User) {
-    const inviteCode = await this.generateUniqueInviteCode();
+    const inviteCode = await this.generateUniqueInviteCode()
 
     return this.prismaService.classroom.create({
       data: {
@@ -89,6 +91,6 @@ export default class ClassroomService {
           ],
         },
       },
-    });
+    })
   }
 }

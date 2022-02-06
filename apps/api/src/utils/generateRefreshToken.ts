@@ -1,5 +1,5 @@
-import { generate } from 'randomstring';
+import { generate } from 'randomstring'
 
 export function generateRefreshToken() {
-  return generate({ length: 64 });
+  return generate({ length: 64 })
 }

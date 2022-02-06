@@ -1,9 +1,9 @@
-import { ModelsModule } from '@aelp-app/models';
-import { Module } from '@nestjs/common';
-import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
-import AuthModule from '../auth/auth.module';
-import UserResolver from './user.resolver';
-import { UserService } from './user.service';
+import { ModelsModule } from '@aelp-app/models'
+import { Module } from '@nestjs/common'
+import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service'
+import AuthModule from '../auth/auth.module'
+import UserResolver from './user.resolver'
+import { UserService } from './user.service'
 
 @Module({
   imports: [ModelsModule],

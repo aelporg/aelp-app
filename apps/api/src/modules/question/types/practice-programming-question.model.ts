@@ -1,9 +1,9 @@
 import { Field } from '@nestjs/graphql'
 import { ObjectType } from '@nestjs/graphql'
 import { ID } from '@nestjs/graphql'
-import { Difficulty } from '@aelp-app/models'
+import { Difficulty } from '../../../global-types'
 import { Classroom } from '../../classroom/types/classroom.model'
-import { ProgrammingQuestion } from '../../programming-question/types/programming-question.model'
+import { ProgrammingQuestion } from './programming-question.model'
 
 @ObjectType()
 export class PracticeProgrammingQuestion {

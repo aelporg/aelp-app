@@ -24,4 +24,3 @@ export class UserRegisterInput implements IUserRegisterInput {
   @Field()
   agreeTerms!: boolean
 }
-

@@ -1,13 +1,13 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql'
 
 @ObjectType()
 export class UserAuthInfo {
   @Field()
-  token: string;
+  token: string
 
   @Field()
-  userId: string;
+  userId: string
 
   @Field()
-  refreshToken: string;
+  refreshToken: string
 }

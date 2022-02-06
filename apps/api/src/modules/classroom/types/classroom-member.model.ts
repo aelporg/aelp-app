@@ -1,7 +1,8 @@
-import { ClassroomRole, User } from '@aelp-app/models'
 import { Field } from '@nestjs/graphql'
 import { ObjectType } from '@nestjs/graphql'
+import { User } from '../../user/types/user.model'
 import { Classroom } from './classroom.model'
+import { ClassroomRole } from '../../../global-types'
 
 @ObjectType()
 export class ClassroomMember {

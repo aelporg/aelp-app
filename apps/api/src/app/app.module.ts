@@ -1,14 +1,14 @@
-import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ConfigModule } from '@nestjs/config';
-import { RedisModule } from '@aelp-app/redis';
+import { Module } from '@nestjs/common'
+import { GraphQLModule } from '@nestjs/graphql'
+import { ConfigModule } from '@nestjs/config'
+import { RedisModule } from '@aelp-app/redis'
 
-import { GraphQLError, GraphQLFormattedError } from 'graphql';
-import { join } from 'path';
+import { GraphQLError, GraphQLFormattedError } from 'graphql'
+import { join } from 'path'
 
-import UserModule from '../modules/user/user.module';
-import AuthModule from '../modules/auth/auth.module';
-import ClassroomModule from '../modules/classroom/classroom.module';
+import UserModule from '../modules/user/user.module'
+import AuthModule from '../modules/auth/auth.module'
+import ClassroomModule from '../modules/classroom/classroom.module'
 
 @Module({
   imports: [
@@ -26,8 +26,7 @@ import ClassroomModule from '../modules/classroom/classroom.module';
       playground: true,
       context: ({ req, res }) => ({ req, res }),
       formatError: (error: GraphQLError) => {
-
-        return error;
+        return error
       },
     }),
   ],

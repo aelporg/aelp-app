@@ -1,13 +1,13 @@
-import { PrismaService } from '@aelp-app/models';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { AuthenticationError } from 'apollo-server-errors';
-import { compare } from 'bcrypt';
-import moment from 'moment';
-import { generateRefreshToken } from '../../utils/generateRefreshToken';
-import { UserAuthInfo } from './types/UserAuthInfo';
-import { GoogleOAuthClientService } from './google-oauth-client.service';
-import { UserService } from '../user/user.service';
+import { PrismaService } from '@aelp-app/models'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import { AuthenticationError } from 'apollo-server-errors'
+import { compare } from 'bcrypt'
+import moment from 'moment'
+import { generateRefreshToken } from '../../utils/generateRefreshToken'
+import { UserAuthInfo } from './types/UserAuthInfo'
+import { GoogleOAuthClientService } from './google-oauth-client.service'
+import { UserService } from '../user/user.service'
 
 @Injectable()
 export class AuthService {
@@ -20,10 +20,10 @@ export class AuthService {
 
   verifyAuthToken(jwtToken: string): boolean {
     try {
-      const data = this.jwtService.verify(jwtToken);
-      return data !== undefined;
+      const data = this.jwtService.verify(jwtToken)
+      return data !== undefined
     } catch (error) {
-      return false;
+      return false
     }
   }
 
@@ -35,12 +35,12 @@ export class AuthService {
         id: true,
         linkedAccounts: { select: { provider: { select: { name: true } } } },
       },
-    });
+    })
 
-    const error = new UnauthorizedException('Email/password is invalid');
+    const error = new UnauthorizedException('Email/password is invalid')
 
     if (!user) {
-      throw error;
+      throw error
     }
 
     if (!user.password) {
@@ -48,21 +48,21 @@ export class AuthService {
         `This account is logged in via third-party login. Use ${user.linkedAccounts.join(
           ' or '
         )}`
-      );
+      )
     }
 
     if (!(await compare(password, user.password))) {
-      throw error;
+      throw error
     }
 
-    return this.authorizeWithRefreshToken(user.id);
+    return this.authorizeWithRefreshToken(user.id)
   }
 
   async authorizeWithRefreshToken(userId: string): Promise<UserAuthInfo> {
     return {
       ...(await this.authorize(userId)),
       refreshToken: await this.createRefreshToken(userId),
-    };
+    }
   }
 
   async loginWithGoogle(
@@ -71,44 +71,44 @@ export class AuthService {
   ): Promise<UserAuthInfo> {
     const loginTicket = await this.googleOAuthClient.verifyIdToken(
       authorizationCode
-    );
-    const payload = loginTicket.getPayload();
+    )
+    const payload = loginTicket.getPayload()
 
     const linkedAccount = await this.prismaService.linkedAccount.findUnique({
       where: { externalId: payload.sub },
       select: { user: true },
-    });
+    })
 
-    let userId: string;
+    let userId: string
 
     if (linkedAccount) {
-      userId = linkedAccount.user.id;
+      userId = linkedAccount.user.id
     } else {
       const user = await this.userService.registerUserWithGoogle(
         payload,
         country
-      );
-      userId = user.id;
+      )
+      userId = user.id
     }
 
-    return this.authorizeWithRefreshToken(userId);
+    return this.authorizeWithRefreshToken(userId)
   }
 
   async authorize(userId: string): Promise<Omit<UserAuthInfo, 'refreshToken'>> {
     const payload = {
       userId,
-    };
+    }
 
-    const token = this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload)
 
     return {
       token,
       userId,
-    };
+    }
   }
 
   async createRefreshToken(userId: string) {
-    const refreshToken = generateRefreshToken();
+    const refreshToken = generateRefreshToken()
 
     await this.prismaService.userRefreshToken.create({
       data: {
@@ -116,9 +116,9 @@ export class AuthService {
         token: refreshToken,
         user: { connect: { id: userId } },
       },
-    });
+    })
 
-    return refreshToken;
+    return refreshToken
   }
 
   async logout(refreshToken: string) {
@@ -126,17 +126,17 @@ export class AuthService {
       await this.prismaService.userRefreshToken.findUnique({
         where: { token: refreshToken },
         select: { id: true },
-      });
+      })
 
     if (!userRefreshToken) {
-      return false;
+      return false
     }
 
     await this.prismaService.userRefreshToken.delete({
       where: { id: userRefreshToken.id },
-    });
+    })
 
-    return true;
+    return true
   }
 
   async refreshAuth(refreshToken: string): Promise<UserAuthInfo> {
@@ -144,21 +144,21 @@ export class AuthService {
       await this.prismaService.userRefreshToken.findUnique({
         where: { token: refreshToken },
         select: { user: true, expiryDate: true, id: true },
-      });
+      })
 
     if (!userRefreshToken) {
-      throw new AuthenticationError('Unauthenticated');
+      throw new AuthenticationError('Unauthenticated')
     }
 
     if (moment().isAfter(userRefreshToken.expiryDate)) {
-      throw new AuthenticationError('Expired or invalid refresh token');
+      throw new AuthenticationError('Expired or invalid refresh token')
     }
 
-    const authPayload = await this.authorize(userRefreshToken.user.id);
+    const authPayload = await this.authorize(userRefreshToken.user.id)
 
     return {
       refreshToken,
       ...authPayload,
-    };
+    }
   }
 }
