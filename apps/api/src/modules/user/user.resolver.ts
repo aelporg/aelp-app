@@ -13,24 +13,29 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard';
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser';
 import { UserService } from './user.service';
-import { UserRegisterDtoWithPassword } from '@aelp-app/validators';
+import { AuthService } from '../auth/auth.service';
+import { UserAuthInfo } from '../auth/dto/UserAuthInfo';
+import { UserRegisterInput } from './user-register-input-type';
 
 @Resolver(() => User)
 export default class UserResolver {
   constructor(
     private userService: UserService,
+    private authService: AuthService,
     private ipAddressService: IPAddressLookUpService
   ) {}
 
-  @Mutation(() => Boolean)
+  @Mutation(() => UserAuthInfo)
   async register(
-    @Args('data') data: UserRegisterDtoWithPassword,
+    @Args('data') data: UserRegisterInput,
     @Context() ctx
   ) {
-    return this.userService.registerUserWithCreds({
+    const userId = await this.userService.registerUserWithCreds({
       ...data,
       country: await this.ipAddressService.getCountryOfRequest(ctx),
     });
+
+    return this.authService.authorizeWithRefreshToken(userId);
   }
 
   @UseGuards(JwtAuthGuard)

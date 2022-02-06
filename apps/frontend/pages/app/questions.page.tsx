@@ -1,11 +1,11 @@
-import Button from '@components/atoms/button';
-import Input from '@components/atoms/input/input';
-import Tag from '@components/atoms/tag/tag';
-import ToggleGroup from '@components/atoms/toggle-group/toggle-group';
+import Button from '@components/primitives/button';
+import Input from '@components/primitives/input/input';
+import Tag from '@components/primitives/tag/tag';
+import ToggleGroup from '@components/primitives/toggle-group/toggle-group';
 import QuestionCard from '@components/organisms/question-card/question-card';
 import { AnnotationIcon, SearchIcon } from '@heroicons/react/outline';
 import React from 'react';
-import { AppLayout } from './_layout';
+import { AppLayout } from '../../modules/dashboard/components/main-dashboard-layout';
 
 export default function QuestionsList() {
   return (

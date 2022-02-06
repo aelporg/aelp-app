@@ -55,13 +55,14 @@ export class AuthService {
       throw error;
     }
 
-    const authPayload = await this.authorize(user.id);
-    const authPayloadWithRefreshToken = {
-      ...authPayload,
-      refreshToken: await this.createRefreshToken(user.id),
-    };
+    return this.authorizeWithRefreshToken(user.id);
+  }
 
-    return authPayloadWithRefreshToken;
+  async authorizeWithRefreshToken(userId: string): Promise<UserAuthInfo> {
+    return {
+      ...(await this.authorize(userId)),
+      refreshToken: await this.createRefreshToken(userId),
+    };
   }
 
   async loginWithGoogle(
@@ -78,22 +79,19 @@ export class AuthService {
       select: { user: true },
     });
 
-    let authPayload: Omit<UserAuthInfo, 'refreshToken'>;
+    let userId: string;
 
     if (linkedAccount) {
-      authPayload = await this.authorize(linkedAccount.user.id);
+      userId = linkedAccount.user.id;
     } else {
       const user = await this.userService.registerUserWithGoogle(
         payload,
         country
       );
-      authPayload = await this.authorize(user.id);
+      userId = user.id;
     }
 
-    return {
-      ...authPayload,
-      refreshToken: await this.createRefreshToken(authPayload.userId),
-    };
+    return this.authorizeWithRefreshToken(userId);
   }
 
   async authorize(userId: string): Promise<Omit<UserAuthInfo, 'refreshToken'>> {

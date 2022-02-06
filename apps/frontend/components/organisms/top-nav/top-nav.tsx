@@ -1,10 +1,12 @@
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
-import UserProfileHeaderIcon from '@components/molecules/user-profile-header-icon/user-profile-header-icon';
+import UserProfileHeaderIcon from '@components/organisms/top-nav/user-profile-header-icon/user-profile-header-icon';
 import classNames from 'classnames';
+import UserProfileMenu from './user-profile-menu/user-profile-menu';
+import { TopNavConsumer, TopNavProvider } from './top-nav.store';
 
 export interface TopNavProps {
   heading: string;
-  renderActions?: () => JSX.Element;
+  actions?: React.ReactNode;
 }
 
 export function TopNav(props: TopNavProps) {
@@ -34,30 +36,33 @@ export function TopNav(props: TopNavProps) {
   }, [elementRef, handleStickChange]);
 
   return (
-    <div
-      ref={elementRef}
-      className={classNames(
-        'flex justify-between sticky self-start bg-white z-10 pb-2 px-8 items-center transition-all duration-200',
-        sticking && 'border-b'
-      )}
-      style={{
-        // Sticky detection hack
-        top: '-1px',
-        paddingTop: 'calc(.5rem + 1px)',
-      }}
-    >
-      <h3 className="text-3xl font-bold">{props.heading}</h3>
-      <div className="flex items-center">
-        {props.renderActions && (
-          <Fragment>
-            {props.renderActions()}
-            <div className="w-0.5 rounded-lg ml-4 bg-gray-300 mx-2 h-8"></div>
-          </Fragment>
+    <TopNavProvider>
+      <div
+        ref={elementRef}
+        className={classNames(
+          'flex justify-between sticky  self-start  z-10 pb-2 px-8 items-center transition-all duration-200',
+          sticking && 'border-b bg-white'
         )}
-        <UserProfileHeaderIcon />
+        style={{
+          // Sticky detection hack
+          top: '-1px',
+          paddingTop: 'calc(.5rem + 1px)',
+        }}
+      >
+        <h3 className="text-3xl font-bold">{props.heading}</h3>
+        <div className="flex items-center">
+          {props.actions && (
+            <Fragment>
+              {props.actions}
+              <div className="w-0.5 rounded-lg ml-4 bg-gray-300 mx-2 h-8"></div>
+            </Fragment>
+          )}
+          <UserProfileHeaderIcon />
+        </div>
       </div>
-    </div>
-  );
+      <UserProfileMenu />
+    </TopNavProvider>
+  )
 }
 
 export default TopNav;

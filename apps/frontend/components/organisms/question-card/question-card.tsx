@@ -1,5 +1,5 @@
-import Avatar from '@components/atoms/avatar';
-import Tag from '@components/atoms/tag/tag';
+import Avatar from '@components/primitives/avatar';
+import Tag from '@components/primitives/tag/tag';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/outline';
 import './question-card.module.scss';
 
@@ -14,7 +14,7 @@ export function QuestionCard(props: QuestionCardProps) {
     <div className="border p-5 rounded-lg">
       <div className="flex gap-4">
         <div className="flex items-center flex-col">
-          <Avatar intials="TB" />
+          <Avatar name="TB" />
           <div className="mt-4 text-center">
             <div className={iconSizeClass}>
               <ArrowUpIcon />

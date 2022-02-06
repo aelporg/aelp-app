@@ -1,12 +1,11 @@
-import { PrismaService, User } from '@aelp-app/models';
-import { UserRegisterDtoWithPassword } from '@aelp-app/validators';
+import { PrismaService, User, Prisma } from '@aelp-app/models';
 import { Injectable } from '@nestjs/common';
-import { UserInputError } from 'apollo-server-express';
 import { hash } from 'bcrypt';
 import { TokenPayload } from 'google-auth-library';
 import { generateUsername } from 'unique-username-generator';
+import { UserRegisterInput } from './user-register-input-type';
 
-interface RegisterUserArgs extends UserRegisterDtoWithPassword {
+interface RegisterUserArgs extends UserRegisterInput {
   country?: string;
 }
 
@@ -21,33 +20,44 @@ export class UserService {
       let userName = await this.generateUserName(data.email);
 
       const hashedPassword = await hash(data.password, 10);
-
-      await this.prismaService.user.create({
-        data: {
-          email: data.email,
-          password: hashedPassword,
-          userName,
-          country: {
-            connect: {
-              countryCode: data.country || 'PK',
+      try {
+        const { id } = await this.prismaService.user.create({
+          data: {
+            email: data.email,
+            password: hashedPassword,
+            userName,
+            country: {
+              connect: {
+                countryCode: data.country || 'PK',
+              },
             },
           },
-        },
-      });
+        });
 
-      return true;
+        return id;
+      } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+          if (e.code === 'P2002') {
+            throw new Error(
+              `User with this ${(e.meta as any).target?.[0]} already exists.`
+            );
+          }
+        }
+        throw e;
+      }
     });
   }
 
   async generateUserName(email: string) {
-    const userName = email.split('@')[0];
+    let userName = email.split('@')[0];
 
     if (!userName.match(userNameRegex)) {
-      return generateUsername('', 3, 7);
+      userName = generateUsername('', 3, 7);
     }
 
     let tries = 0,
       foundUnqiueUserName = false;
+
     while (tries < 3) {
       const user = await this.prismaService.user.findUnique({
         where: { userName },
@@ -58,6 +68,7 @@ export class UserService {
         break;
       }
 
+      userName = generateUsername('', 3, 7);
       tries++;
     }
 

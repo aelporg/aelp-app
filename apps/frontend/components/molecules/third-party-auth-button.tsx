@@ -1,10 +1,10 @@
-import Button from '@components/atoms/button';
+import Button from '@components/primitives/button';
 import React from 'react';
 import Image from 'next/image';
 import capitalize from 'utils/capatilize';
 import classNames from 'classnames';
-import GithubIcon from '@components/atoms/icons/github-icon';
-import GoogleIcon from '@components/atoms/icons/google-icon';
+import GithubIcon from '@components/primitives/icons/github-icon';
+import GoogleIcon from '@components/primitives/icons/google-icon';
 
 type ThirdPartyAuthType = 'github' | 'google';
 

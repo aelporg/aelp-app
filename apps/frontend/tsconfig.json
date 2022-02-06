@@ -15,9 +15,12 @@
     "paths": {
       "@components/*": ["./components/*"],
       "@modules/*": ["./modules/*"],
+      "@typing/*": [
+        "./typing/*"
+      ],
       "@aelp-app/models": ["../../libs/models/src/index.ts"],
       "@aelp-app/redis": ["../../libs/redis/src/index.ts"],
-      "@aelp-app/validators": ["../../libs/validators/src/index.ts"]
+      "@aelp-app/validators": ["../../libs/validators/src/index.ts"],
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts"],

@@ -26,7 +26,7 @@ import ClassroomModule from '../modules/classroom/classroom.module';
       playground: true,
       context: ({ req, res }) => ({ req, res }),
       formatError: (error: GraphQLError) => {
-        console.log(error);
+
         return error;
       },
     }),

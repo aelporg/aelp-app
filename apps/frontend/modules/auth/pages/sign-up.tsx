@@ -1,34 +1,40 @@
-import React, { useEffect } from 'react';
-import Logo from '@components/atoms/logo/logo';
-import Button from '@components/atoms/button';
-import FormGroup from '@components/atoms/form-group/form-group';
-import ThirdPartyAuthButton from '@components/molecules/third-party-auth-button';
-import OrLine from '@components/atoms/or-line';
-import { HFInput } from '@components/atoms/input/input';
-import Link from 'next/link';
-import { classValidatorResolver } from '@hookform/resolvers/class-validator';
-import { gql, useMutation } from '@apollo/client';
-import { HFUserRegister } from '@aelp-app/validators';
-import HForm from '@components/atoms/form/form';
-
-const REGISTER_WITH_EMAIL = gql`
-  mutation RegisterWithEmail($data: UserRegisterDtoWithPassword!) {
-    register(data: $data)
-  }
-`;
-
-const resolver = classValidatorResolver(HFUserRegister);
+import React from 'react'
+import Logo from '@components/primitives/logo/logo'
+import Button from '@components/primitives/button'
+import FormGroup from '@components/primitives/form-group/form-group'
+import ThirdPartyAuthButton from '@components/molecules/third-party-auth-button'
+import OrLine from '@components/primitives/or-line'
+import { HFInput } from '@components/primitives/input/input'
+import Link from 'next/link'
+import { useMutation } from '@apollo/client'
+import { hfUserRegisterInputResolver } from '@aelp-app/validators'
+import HForm from '@components/primitives/form/form'
+import { HFCheckbox } from '@components/primitives/checkbox/checkbox'
+import { useAuthStore } from '../store/auth-store'
+import {
+  RegisterWithEmail,
+  RegisterWithEmailVariables,
+} from 'typings/graphql/RegisterWithEmail'
+import { REGISTER_WITH_EMAIL } from 'graphql/mutations/user/register-with-email-mutation'
 
 export default function SignUp() {
-  const [registerUser, { error, loading }] = useMutation(REGISTER_WITH_EMAIL, {
-    onCompleted: data => {},
-  });
+  const authStore = useAuthStore()
+  const [registerUser, { error, loading, reset }] = useMutation<
+    RegisterWithEmail,
+    RegisterWithEmailVariables
+  >(REGISTER_WITH_EMAIL)
 
-  const onSubmit = (data: HFUserRegister) => {
-    return registerUser({
-      variables: { data },
-    });
-  };
+  const onSubmit = async (input: RegisterWithEmailVariables['data']) => {
+    try {
+      const { data } = await registerUser({
+        variables: {
+          data: input,
+        },
+      })
+      authStore.login(data.register)
+      reset()
+    } catch (e) {}
+  }
 
   return (
     <div className="p-7 flex flex-col min-h-screen">
@@ -36,27 +42,44 @@ export default function SignUp() {
         <Logo />
       </nav>
       <div className="flex-1 flex flex-col justify-center items-center">
-        <HForm<HFUserRegister>
+        <HForm<RegisterWithEmailVariables['data']>
           className="flex flex-col items-stretch w-80 max-w-full"
           onSubmit={onSubmit}
           hfOptions={{
-            resolver,
+            resolver: hfUserRegisterInputResolver,
           }}
         >
           <FormGroup label="Email">
-            <HFInput name="email" readOnly={loading} />
+            <HFInput
+              name="email"
+              readOnly={loading}
+              placeholder="Email address"
+            />
           </FormGroup>
           <FormGroup label="Password">
-            <HFInput type="password" name="password" readOnly={loading} />
+            <HFInput
+              type="password"
+              name="password"
+              readOnly={loading}
+              placeholder="Password"
+            />
           </FormGroup>
           <FormGroup label="Confirm Password">
             <HFInput
               type="password"
               name="confirmPassword"
+              placeholder="Re-enter password"
               readOnly={loading}
             />
           </FormGroup>
-          <HFInput type="checkbox" name="agreeTerms" readOnly={loading} />
+          <FormGroup>
+            <HFCheckbox name="agreeTerms" disabled={loading}>
+              I agree to the terms and conditions of the service
+            </HFCheckbox>
+          </FormGroup>
+          <div className="text-sm font-medium text-error">
+            {error && error.message}
+          </div>
           <Button
             size="sm"
             className="mt-6"
@@ -77,5 +100,5 @@ export default function SignUp() {
         </HForm>
       </div>
     </div>
-  );
+  )
 }

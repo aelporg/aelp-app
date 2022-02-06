@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import Button from '../components/atoms/button';
-import Logo from '../components/atoms/logo/logo';
+import Button from '../components/primitives/button';
+import Logo from '../components/primitives/logo/logo';
 
 const links = [
   { name: 'Features', href: '#features' },

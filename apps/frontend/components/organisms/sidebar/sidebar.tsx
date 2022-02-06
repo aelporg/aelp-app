@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Logo } from '@components/atoms';
+import { Logo } from '@components/primitives';
 import { ChevronLeftIcon } from '@heroicons/react/outline';
 
 export interface SidebarLink {
@@ -21,7 +21,7 @@ export function Sidebar({ links }: SidebarProps) {
 
   return (
     <div>
-      <div className="w-80 border-r fixed h-screen bg-accent bg-opacity-5 p-8">
+      <div className="w-80 border-r fixed h-screen bg-accent bg-opacity-10 p-8">
         <div className="flex justify-between">
           <Logo />
           <button className="self-end hover:bg-black hover:bg-opacity-5 rounded-md p-1">

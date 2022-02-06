@@ -3,7 +3,7 @@ import Head from 'next/head';
 import './global.scss';
 import { ApolloProvider } from '@apollo/client';
 import AuthStoreProvider from '@modules/auth/store/auth-store';
-import { gqlClient } from 'graphql/client';
+import MeStoreProvider from '@modules/auth/store/me-store';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,11 +13,11 @@ function CustomApp({ Component, pageProps }: AppProps) {
       </Head>
       <div className="app">
         <main>
-          <ApolloProvider client={gqlClient}>
             <AuthStoreProvider>
-              <Component {...pageProps} />
+              <MeStoreProvider>
+                <Component {...pageProps} />
+              </MeStoreProvider>
             </AuthStoreProvider>
-          </ApolloProvider>
         </main>
       </div>
     </>

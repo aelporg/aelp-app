@@ -1,11 +1,5 @@
-import {
-  Classroom,
-  ClassroomRole,
-  PrismaService,
-  User,
-} from '@aelp-app/models';
-import { CreateClassroom } from '@aelp-app/validators';
-import { UseGuards } from '@nestjs/common';
+import { Classroom, PrismaService, User } from '@aelp-app/models'
+import { UseGuards } from '@nestjs/common'
 import {
   Args,
   Mutation,
@@ -13,10 +7,11 @@ import {
   Query,
   ResolveField,
   Resolver,
-} from '@nestjs/graphql';
-import { LoggedInUser } from '../../utils/decorators/LoggedInUser';
-import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard';
-import ClassroomService from './classroom.service';
+} from '@nestjs/graphql'
+import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
+import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard'
+import ClassroomService from './classroom.service'
+import { CreateClassroomInput } from './create-classroom-input-type'
 
 @Resolver(() => Classroom)
 export default class ClassroomResolver {
@@ -28,16 +23,16 @@ export default class ClassroomResolver {
   @UseGuards(JwtAuthGuard)
   @Query(() => [Classroom])
   async classrooms(@LoggedInUser() user: User) {
-    return this.classroomService.getUserClassrooms(user);
+    return this.classroomService.getUserClassrooms(user)
   }
 
   @UseGuards(JwtAuthGuard)
   @Mutation(() => Classroom)
   async createClassroom(
     @LoggedInUser() user: User,
-    @Args('data') data: CreateClassroom
+    @Args('data') data: CreateClassroomInput
   ) {
-    return this.classroomService.createClassroom(data, user);
+    return this.classroomService.createClassroom(data, user)
   }
 
   @UseGuards(JwtAuthGuard)
@@ -46,7 +41,7 @@ export default class ClassroomResolver {
     @LoggedInUser() user: User,
     @Args('inviteCode') inviteCode: string
   ) {
-    return this.classroomService.joinClassroom(inviteCode, user);
+    return this.classroomService.joinClassroom(inviteCode, user)
   }
 
   @ResolveField()
@@ -55,6 +50,6 @@ export default class ClassroomResolver {
       .findUnique({
         where: { id: classroom.id },
       })
-      .members();
+      .members()
   }
 }

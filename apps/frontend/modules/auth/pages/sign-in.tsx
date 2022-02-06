@@ -1,18 +1,18 @@
-import Input from '@components/atoms/input/input';
-import React from 'react';
-import Logo from '@components/atoms/logo/logo';
-import Button from '@components/atoms/button';
-import FormGroup from '@components/atoms/form-group/form-group';
-import ThirdPartyAuthButton from '@components/molecules/third-party-auth-button';
-import OrLine from '@components/atoms/or-line';
-import { gql, useMutation } from '@apollo/client';
-import Link from 'next/link';
-import { useForm } from 'react-hook-form';
-import { useAuthStore } from '../store/auth-store';
+import React from 'react'
+import Logo from '@components/primitives/logo/logo'
+import Button from '@components/primitives/button'
+import FormGroup from '@components/primitives/form-group/form-group'
+import ThirdPartyAuthButton from '@components/molecules/third-party-auth-button'
+import OrLine from '@components/primitives/or-line'
+import { gql, useMutation } from '@apollo/client'
+import Link from 'next/link'
+import { useAuthStore } from '../store/auth-store'
+import HForm from '@components/primitives/form/form'
+import { HFInput } from '@components/primitives'
 import {
   LoginWithCreds,
   LoginWithCredsVariables,
-} from './__generated__/LoginWithCreds';
+} from 'typings/graphql/LoginWithCreds'
 
 const LOGIN_WITH_CREDS_MUTATION = gql`
   mutation LoginWithCreds($email: String!, $password: String!) {
@@ -22,25 +22,28 @@ const LOGIN_WITH_CREDS_MUTATION = gql`
       refreshToken
     }
   }
-`;
+`
 
 export default function SignIn() {
-  const authStore = useAuthStore();
+  const authStore = useAuthStore()
 
-  const [loginWithCreds, { data, error, loading }] =
-    useMutation<LoginWithCreds>(LOGIN_WITH_CREDS_MUTATION, {
-      onCompleted: data => {
-        authStore.login(data.loginWithCreds);
-      },
-    });
+  const [loginWithCreds, { error, loading }] = useMutation<
+    LoginWithCreds,
+    LoginWithCredsVariables
+  >(LOGIN_WITH_CREDS_MUTATION)
 
-  const { register, handleSubmit } = useForm<LoginWithCredsVariables>();
+  const handleLoginWithCreds = async (input: LoginWithCredsVariables) => {
+    try {
+      const { data } = await loginWithCreds({
+        variables: input,
+      })
 
-  const handleLoginWithCreds = async (data: LoginWithCredsVariables) => {
-    return loginWithCreds({
-      variables: data,
-    });
-  };
+      authStore.login(data.loginWithCreds)
+    } catch (e) {
+      // error
+    }
+
+  }
 
   return (
     <div className="p-7 flex flex-col min-h-screen">
@@ -48,21 +51,24 @@ export default function SignIn() {
         <Logo />
       </nav>
       <div className="flex-1 flex flex-col justify-center items-center">
-        <form onSubmit={handleSubmit(handleLoginWithCreds)}>
+        <HForm<LoginWithCredsVariables>
+          onSubmit={handleLoginWithCreds}
+          hfOptions={{}}
+        >
           <div className="flex flex-col items-stretch w-80 max-w-full">
             <FormGroup label="Email">
-              <Input
-                {...register('email', { required: 'Required' })}
+              <HFInput
+                name="email"
                 readOnly={loading}
-                placeholder="your-email@provider.com"
+                placeholder="Email address"
               />
             </FormGroup>
             <FormGroup label="Password">
-              <Input
+              <HFInput
                 type="password"
+                name="password"
                 readOnly={loading}
-                {...register('password', { required: 'Required' })}
-                placeholder="********"
+                placeholder="Password"
               />
             </FormGroup>
             {error && (
@@ -95,8 +101,8 @@ export default function SignIn() {
             <ThirdPartyAuthButton variant="google" />
             <ThirdPartyAuthButton variant="github" />
           </div>
-        </form>
+        </HForm>
       </div>
     </div>
-  );
+  )
 }
