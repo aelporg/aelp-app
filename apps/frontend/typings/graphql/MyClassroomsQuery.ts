@@ -13,6 +13,8 @@ export interface MyClassroomsQuery_classrooms_members_user {
   __typename: "User";
   id: string;
   userName: string;
+  firstName: string | null;
+  lastName: string | null;
 }
 
 export interface MyClassroomsQuery_classrooms_members {

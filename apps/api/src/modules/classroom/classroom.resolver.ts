@@ -1,4 +1,3 @@
-import { Classroom, PrismaService, User } from '@aelp-app/models'
 import { UseGuards } from '@nestjs/common'
 import {
   Args,
@@ -11,7 +10,11 @@ import {
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
 import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard'
 import ClassroomService from './classroom.service'
-import { CreateClassroomInput } from './create-classroom-input-type'
+import { CreateClassroomInput } from './types/create-classroom-input-type'
+import { JoinClassroomInput } from './join-classroom-input-type'
+import { PrismaService } from '@aelp-app/models'
+import { Classroom } from './types/classroom.model'
+import { User } from '../user/types/user.model'
 
 @Resolver(() => Classroom)
 export default class ClassroomResolver {
@@ -39,9 +42,9 @@ export default class ClassroomResolver {
   @Mutation(() => Classroom)
   async joinClassroom(
     @LoggedInUser() user: User,
-    @Args('inviteCode') inviteCode: string
+    @Args('data') data: JoinClassroomInput
   ) {
-    return this.classroomService.joinClassroom(inviteCode, user)
+    return this.classroomService.joinClassroom(data.inviteCode, user)
   }
 
   @ResolveField()

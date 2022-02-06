@@ -4,27 +4,32 @@ import { joiResolver } from '@hookform/resolvers/joi'
 
 export class CreateClassroomInputValidator {
   @JoiSchema(
-    Joi.string().min(3).required().messages({
+    Joi.string().min(3).max(250).required().messages({
       'string.min': 'Name must be at least 3 characters long',
-      'string.required': 'Name is required',
+      'string.max': 'Name must be at most 250 characters long',
+      'string.empty': 'Name is required',
+
     })
   )
   name!: string
 
   @JoiSchema(
-    Joi.string().optional().messages({
-      'string.min': 'Subject must be at least 3 characters long',
-    })
+    Joi.alternatives().try(
+      Joi.string().valid('').empty('').default(null).allow(null),
+      Joi.string().max(250).messages({
+        'string.max': 'Subject must be at most 250 characters long',
+      })
+    )
   )
   subject?: string
 
   @JoiSchema(
-    Joi.string()
-      .optional()
-      .messages({
-        'string.empty': "You can't leave this empty",
+    Joi.alternatives().try(
+      Joi.string().valid('').empty('').default(null).allow(null),
+      Joi.string().max(250).messages({
+        'string.max': 'Section must be at most 250 characters long',
       })
-
+    )
   )
   section?: string
 }

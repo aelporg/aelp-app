@@ -7,15 +7,16 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { ClassroomMember, User } from '@aelp-app/models';
 import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard';
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser';
 import { UserService } from './user.service';
 import { AuthService } from '../auth/auth.service';
-import { UserAuthInfo } from '../auth/dto/UserAuthInfo';
-import { UserRegisterInput } from './user-register-input-type';
+import { UserAuthInfo } from '../auth/types/UserAuthInfo';
+import { UserRegisterInput } from './types/user-register-input-type';
+import { User } from './types/user.model';
+import { ClassroomMember } from '../classroom/types/classroom-member.model';
 
 @Resolver(() => User)
 export default class UserResolver {

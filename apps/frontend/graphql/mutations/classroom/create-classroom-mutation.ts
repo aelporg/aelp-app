@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const CREATE_CLASSROOM_MUTATION = gql`
-  mutation CreateClassroomMutation($data: CreateClassroom!) {
+  mutation CreateClassroomMutation($data: CreateClassroomInput!) {
     createClassroom(data: $data) {
       name
       subject

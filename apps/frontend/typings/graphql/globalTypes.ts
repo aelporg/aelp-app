@@ -14,13 +14,17 @@ export enum ClassroomRole {
   TA = "TA",
 }
 
-export interface CreateClassroom {
+export interface CreateClassroomInput {
   name: string;
   subject?: string | null;
   section?: string | null;
 }
 
-export interface UserRegisterDtoWithPassword {
+export interface JoinClassroomInput {
+  inviteCode: string;
+}
+
+export interface UserRegisterInput {
   password: string;
   confirmPassword: string;
   email: string;

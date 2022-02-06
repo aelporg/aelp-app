@@ -4,7 +4,6 @@ import Button from '@components/primitives/button'
 import FormGroup from '@components/primitives/form-group/form-group'
 import HForm from '@components/primitives/form/form'
 import Modal from '@components/primitives/modal/modal'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { JOIN_CLASSROOM_MUTATION } from 'graphql/mutations/classroom/join-classroom-mutation'
 import { MY_CLASSROOMS_QUERY } from 'graphql/queries/classroom-query'
 import {
@@ -12,7 +11,7 @@ import {
   JoinClassRoomMutationVariables,
 } from 'typings/graphql/JoinClassRoomMutation'
 import { SimpleModalProps } from 'typings/utils-types'
-
+import { hfJoinClassroomResolver } from '@aelp-app/validators'
 
 export default function JoinClassRoomModal({
   isOpen,
@@ -25,9 +24,9 @@ export default function JoinClassRoomModal({
     refetchQueries: [MY_CLASSROOMS_QUERY],
   })
 
-  const onSubmit = async (variables: JoinClassRoomMutationVariables) => {
+  const onSubmit = async (data: JoinClassRoomMutationVariables['data']) => {
     try {
-      await joinClassroom({ variables })
+      await joinClassroom({ variables: { data } })
       onModalClose()
     } catch (e) {
       console.log(e)
@@ -41,8 +40,9 @@ export default function JoinClassRoomModal({
 
   return (
     <Modal isOpen={isOpen} onClose={onModalClose} title="Join Classroom">
-      <HForm<JoinClassRoomMutationVariables>
+      <HForm<JoinClassRoomMutationVariables['data']>
         onSubmit={onSubmit}
+        hfOptions={{ resolver: hfJoinClassroomResolver, mode: 'all',  }}
       >
         <div className="flex flex-col">
           <FormGroup label="Invite Code *">

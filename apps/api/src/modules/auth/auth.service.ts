@@ -5,7 +5,7 @@ import { AuthenticationError } from 'apollo-server-errors';
 import { compare } from 'bcrypt';
 import moment from 'moment';
 import { generateRefreshToken } from '../../utils/generateRefreshToken';
-import { UserAuthInfo } from './dto/UserAuthInfo';
+import { UserAuthInfo } from './types/UserAuthInfo';
 import { GoogleOAuthClientService } from './google-oauth-client.service';
 import { UserService } from '../user/user.service';
 

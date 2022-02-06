@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { hash } from 'bcrypt';
 import { TokenPayload } from 'google-auth-library';
 import { generateUsername } from 'unique-username-generator';
-import { UserRegisterInput } from './user-register-input-type';
+import { UserRegisterInput } from './types/user-register-input-type';
 
 interface RegisterUserArgs extends UserRegisterInput {
   country?: string;

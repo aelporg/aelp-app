@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { UserRegisterDtoWithPassword } from "./globalTypes";
+import { UserRegisterInput } from "./globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: RegisterWithEmail
@@ -21,5 +21,5 @@ export interface RegisterWithEmail {
 }
 
 export interface RegisterWithEmailVariables {
-  data: UserRegisterDtoWithPassword;
+  data: UserRegisterInput;
 }

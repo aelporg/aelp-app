@@ -2,7 +2,7 @@ import { ExtractJwt, JwtFromRequestFunction, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UserAuthInfo } from '../dto/UserAuthInfo';
+import { UserAuthInfo } from '../types/UserAuthInfo';
 import { RedisCacheService } from '@aelp-app/redis';
 import { UserService } from '../../user/user.service';
 import moment from 'moment';

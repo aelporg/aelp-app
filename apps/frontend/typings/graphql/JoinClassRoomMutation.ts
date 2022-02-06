@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { JoinClassroomInput } from "./globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: JoinClassRoomMutation
 // ====================================================
@@ -21,5 +23,5 @@ export interface JoinClassRoomMutation {
 }
 
 export interface JoinClassRoomMutationVariables {
-  inviteCode: string;
+  data: JoinClassroomInput;
 }

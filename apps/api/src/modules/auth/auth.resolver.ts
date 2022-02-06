@@ -1,5 +1,5 @@
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { UserAuthInfo } from './dto/UserAuthInfo';
+import { UserAuthInfo } from './types/UserAuthInfo';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/JwtAuthGuard';
 import { AuthService } from './auth.service';

@@ -11,6 +11,8 @@ export const MY_CLASSROOMS_QUERY = gql`
         user {
           id
           userName
+          firstName
+          lastName
         }
         classroomRole
       }

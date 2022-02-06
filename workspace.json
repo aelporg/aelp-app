@@ -166,16 +166,12 @@
             "passWithNoTests": true
           }
         },
+
         "generate": {
-          "executor": "@nx-tools/nx-prisma:generate",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "schema": "libs/models/prisma/schema.prisma"
-          }
-        },
-        "migrations": {
-          "executor": "@nx-tools/nx-prisma:migrations",
-          "options": {
-            "schema": "libs/models/prisma/schema.prisma"
+            "commands": ["yarn prisma generate"],
+            "cwd": "libs/models"
           }
         },
         "studio": {

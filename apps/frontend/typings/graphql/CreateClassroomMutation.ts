@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CreateClassroom } from "./globalTypes";
+import { CreateClassroomInput } from "./globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: CreateClassroomMutation
@@ -24,5 +24,5 @@ export interface CreateClassroomMutation {
 }
 
 export interface CreateClassroomMutationVariables {
-  data: CreateClassroom;
+  data: CreateClassroomInput;
 }

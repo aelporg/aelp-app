@@ -18,7 +18,7 @@ interface CreateClassRoomModalProps {
 }
 
 export default function CreateClassRoomModal(props: CreateClassRoomModalProps) {
-  const [createClassroom, { loading, error }] = useMutation<
+  const [createClassroom, { loading, error, reset }] = useMutation<
     CreateClassroomMutation,
     CreateClassroomMutationVariables
   >(CREATE_CLASSROOM_MUTATION, {
@@ -28,16 +28,21 @@ export default function CreateClassRoomModal(props: CreateClassRoomModalProps) {
   const onSubmit = async (data: CreateClassroomMutationVariables['data']) => {
     try {
       await createClassroom({ variables: { data } })
-      props.onClose()
+      onClose()
     } catch (e) {
       console.log(e)
     }
   }
 
+  const onClose = () => {
+    props.onClose()
+    reset()
+  }
+
   return (
     <Modal
       isOpen={props.isOpen}
-      onClose={props.onClose}
+      onClose={onClose}
       title="Create Classroom"
     >
       <HForm<CreateClassroomMutationVariables['data']>

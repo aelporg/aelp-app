@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-errors';
 import { generate } from 'randomstring';
 import { Prisma } from '@aelp-app/models';
-import { CreateClassroomInput } from './create-classroom-input-type';
+import { CreateClassroomInput } from './types/create-classroom-input-type';
 
 export class ClassroomInviteCodeGenError extends Error {
   constructor() {
