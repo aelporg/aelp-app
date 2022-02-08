@@ -1,14 +1,18 @@
+FROM ghcr.io/aelporg/builder:latest AS builder
+
+RUN nx build frontend
+
 FROM node:lts-alpine3.13
 
 WORKDIR /app
 
 ENV NODE_ENV production
 
+RUN yarn global add next
+
 COPY ./dist/apps/frontend/package.json ./
-COPY .yarn ./.yarn
-COPY ./.yarnrc.yml ./
 RUN yarn install
 COPY ./dist/apps/frontend ./
 
 
-CMD ["pm2-runtime", "main.js"]
+CMD ["npx", "next", "start"]

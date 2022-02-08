@@ -9,18 +9,5 @@ function MembersView({ members }) {
   )
 }
 
-MembersView.fragments = {
-  classroom: gql`
-    fragment ClassroomMembers on Classroom {
-      members {
-        user {
-          id
-          name
-        }
-        classroomRole
-      }
-    }
-  `,
-}
 
 export default MembersView

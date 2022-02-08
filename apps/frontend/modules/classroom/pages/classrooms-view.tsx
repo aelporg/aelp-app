@@ -8,7 +8,7 @@ import ClassRoomList from '../components/classroom-list'
 import { useQuery } from '@apollo/client'
 import { MyClassroomsQuery } from 'typings/graphql/MyClassroomsQuery'
 import MainDashboardLayout from '@modules/dashboard/components/main-dashboard-layout'
-import { MY_CLASSROOMS_QUERY } from '../graphql/my-classrooms-query'
+import { MY_CLASSROOMS_QUERY } from '../graphql/classroom-query'
 
 interface ClassroomsViewActionsProps {
   onJoinClick: () => void

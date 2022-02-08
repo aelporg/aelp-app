@@ -10,7 +10,7 @@ import {
   CreateClassroomMutation,
   CreateClassroomMutationVariables,
 } from 'typings/graphql/CreateClassroomMutation'
-import { MY_CLASSROOMS_QUERY } from '../graphql/my-classrooms-query'
+import { MY_CLASSROOMS_QUERY } from '../graphql/classroom-query'
 
 interface CreateClassRoomModalProps {
   isOpen: boolean

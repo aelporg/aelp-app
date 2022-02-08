@@ -3,7 +3,7 @@ services:
   workspace:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: workspace.Dockerfile
     # access docker daemon in the container
     volumes:
       - .:/app

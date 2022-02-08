@@ -11,7 +11,7 @@ import {
 } from 'typings/graphql/JoinClassRoomMutation'
 import { SimpleModalProps } from 'typings/utils-types'
 import { hfJoinClassroomResolver } from '@aelp-app/validators'
-import { MY_CLASSROOMS_QUERY } from '../graphql/my-classrooms-query'
+import { MY_CLASSROOMS_QUERY } from '../graphql/classroom-query'
 
 export default function JoinClassRoomModal({
   isOpen,

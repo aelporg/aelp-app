@@ -78,19 +78,4 @@ function ClassroomCard({ classroom }: ClassroomCardProps) {
   )
 }
 
-
-ClassroomCard.fragments = {
-  classroom: gql`
-    ${MembersView.fragments.classroom}
-    ${SidebarClassroomHeader.fragments.classroom}
-    fragment ClassroomDetails on Classroom {
-      id
-      createdAt
-      updatedAt
-      ...ClassroomBasicInfo
-      ...ClassroomMembers
-    }
-  `,
-}
-
 export { ClassroomCard }

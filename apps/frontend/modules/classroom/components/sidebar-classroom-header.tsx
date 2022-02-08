@@ -14,14 +14,6 @@ function SidebarClassroomHeader({
   )
 }
 
-SidebarClassroomHeader.fragments = {
-  classroom: gql`
-    fragment ClassroomBasicInfo on Classroom {
-      name
-      subject
-      section
-    }
-  `,
-}
+
 
 export default SidebarClassroomHeader
