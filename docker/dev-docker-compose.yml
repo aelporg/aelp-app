@@ -2,8 +2,8 @@ version: '3.9'
 services:
   workspace:
     build:
-      context: .
-      dockerfile: workspace.Dockerfile
+      context: ../
+      dockerfile: ./docker/workspace.Dockerfile
     # access docker daemon in the container
     volumes:
       - .:/app
