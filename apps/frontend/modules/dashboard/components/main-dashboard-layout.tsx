@@ -9,11 +9,11 @@ import {
 import { Layout, LayoutProps } from './layout'
 
 const DashboardLinks = [
-  {
-    name: 'Feed',
-    icon: NewspaperIcon,
-    href: '/app/feed',
-  },
+  // {
+  //   name: 'Feed',
+  //   icon: NewspaperIcon,
+  //   href: '/app/feed',
+  // },
   {
     name: 'Classrooms',
     icon: ClipboardListIcon,

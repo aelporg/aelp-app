@@ -78,10 +78,6 @@ function ClassroomCard({ classroom }: ClassroomCardProps) {
   )
 }
 
-/*
-
-${SidebarClassroomHeader.fragments.classroom}
-*/
 
 ClassroomCard.fragments = {
   classroom: gql`
@@ -96,7 +92,5 @@ ClassroomCard.fragments = {
     }
   `,
 }
-
-console.log(ClassroomCard.fragments.classroom)
 
 export { ClassroomCard }
