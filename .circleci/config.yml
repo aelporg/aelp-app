@@ -13,7 +13,7 @@ jobs:
       - checkout
       - docker/build:
           registry: ghcr.io 
-          image: ghcr.io/aelporg/builder 
+          image: aelporg/builder 
           dockerfile: docker/builder.Dockerfile 
           docker-context: . 
           tag: latest, $CIRCLE_SHA1
@@ -23,7 +23,7 @@ jobs:
     steps:
        - docker/build:
           registry: ghcr.io 
-          image: ghcr.io/aelporg/frontend 
+          image: aelporg/frontend 
           dockerfile: docker/frontend.Dockerfile 
           tag: latest, $CIRCLE_SHA1
           docker-context: . 
