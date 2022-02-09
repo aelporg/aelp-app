@@ -1,7 +1,7 @@
 FROM ghcr.io/aelporg/builder:latest AS builder
 
 RUN nx run models:generate
-RUN nx build api
+RUN nx build api --skip-nx-cache
 
 FROM node:lts-alpine3.13
 
