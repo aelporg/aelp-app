@@ -28,9 +28,6 @@ jobs:
           tag: latest, $CIRCLE_SHA1
           docker-context: . 
           extra_build_args: "--build-arg NEXT_PUBLIC_GRAPHQL_API_ENDPOINT=/api/graphql --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=${AELP_APP_GOOGLE_CLIENT_ID}"
-    
-      
- 
 
 workflows:
   deploy-docker: 
@@ -39,12 +36,13 @@ workflows:
       - frontend-the-boogyman:
           requires: [bob-the-builder]
       - docker/publish:
-            image: ghcr.io/aelporg/frontend 
+            image: aelporg/frontend 
             deploy: true
             tag: $CIRCLE_SHA1, latest
             docker-username: AELP_APP_DOCKER_USERNAME
             docker-password: AELP_APP_DOCKER_PASSWORD
             registry: ghcr.io 
+            requires: [frontend-the-boogyman, bob-the-builder]
       # - docker/publish:
       #       image: ghcr.io/aelporg/frontend 
       #       deploy: true
