@@ -3,21 +3,59 @@ version: 2.1
 
 orbs:
   node: circleci/node@4.7
+  docker: circleci/docker@1.7.0
 
 jobs:
-  setup-and-test:
-    docker:
+  bob-the-builder:
+    docker: 
       - image: 'cimg/base:stable'
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
-      - run: yarn 
-      - run:  yarn nx run-many --target=test --all=true
+      - docker/build:
+          registry: ghcr.io 
+          image: ghcr.io/aelporg/builder 
+          dockerfile: docker/builder.Dockerfile 
+          docker-context: . 
+          tag: latest, $CIRCLE_SHA1
+  frontend-the-boogyman:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+       - docker/build:
+          registry: ghcr.io 
+          image: ghcr.io/aelporg/frontend 
+          dockerfile: docker/frontend.Dockerfile 
+          tag: latest, $CIRCLE_SHA1
+          docker-context: . 
+          extra_build_args: "--build-arg NEXT_PUBLIC_GRAPHQL_API_ENDPOINT=/api/graphql --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=${AELP_APP_GOOGLE_CLIENT_ID}"
+    
+      
  
 
 workflows:
-  test: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
+  deploy-docker: 
     jobs:
-      - setup-and-test
+      - bob-the-builder
+      - frontend-the-boogyman:
+          requires: [bob-the-builder]
+      - docker/publish:
+            image: ghcr.io/aelporg/frontend 
+            deploy: true
+            tag: $CIRCLE_SHA1, latest
+            docker-username: AELP_APP_DOCKER_USERNAME
+            docker-password: AELP_APP_DOCKER_PASSWORD
+            registry: ghcr.io 
+      # - docker/publish:
+      #       image: ghcr.io/aelporg/frontend 
+      #       deploy: true
+      #       tag: $CIRCLE_SHA1, latest
+      #       docker-username: AELP_APP_DOCKER_USERNAME
+      #       docker-password: AELP_APP_DOCKER_PASSWORD
+      #       registry: ghcr.io 
+      # - docker/publish:
+      #       image: ghcr.io/aelporg/frontend 
+      #       deploy: true
+      #       tag: $CIRCLE_SHA1, latest
+      #       docker-username: AELP_APP_DOCKER_USERNAME
+      #       docker-password: AELP_APP_DOCKER_PASSWORD
+      #       registry: ghcr.io 
