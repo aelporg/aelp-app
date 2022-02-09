@@ -16,7 +16,6 @@ jobs:
           image: aelporg/builder 
           dockerfile: docker/builder.Dockerfile 
           docker-context: . 
-          tag: latest, $CIRCLE_SHA1
   frontend-the-boogyman:
     docker:
       - image: 'cimg/base:stable'
