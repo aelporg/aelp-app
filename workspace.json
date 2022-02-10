@@ -52,6 +52,30 @@
             "jestConfig": "apps/api/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "docker": {
+          "executor": "@nrwl/workspace:run-commands",
+          "dependsOn": [
+            {
+              "target": "generate",
+              "configuration": "production",
+              "projects": "dependencies"
+            },
+            {
+              "target": "build",
+              "configuration": "production",
+              "projects": "self"
+            }
+          ],
+          "options": {
+            "parallel": false,
+            "cwd": ".",
+            "commands": [
+              "docker build -t ghcr.io/aelporg/api:latest -t ghcr.io/aelporg/api:$CIRCLE_SHA1  -f docker/api.Dockerfile .",
+              "docker push ghcr.io/aelporg/api:latest",
+              "docker push ghcr.io/aelporg/api:$CIRCLE_SHA1"
+            ]
+          }
         }
       },
       "tags": []
@@ -71,7 +95,9 @@
             "generatePackageJson": true
           },
           "configurations": {
-            "production": {}
+            "production": {
+
+            }
           }
         },
         "serve": {
@@ -108,10 +134,31 @@
             "lintFilePatterns": ["apps/frontend/**/*.{ts,tsx,js,jsx}"]
           }
         },
+        "docker": {
+          "executor": "@nrwl/workspace:run-commands",
+          "dependsOn": [
+            {
+              "target": "build",
+              "configuration": "production",
+              "projects": "self"
+            }
+          ],
+          "options": {
+            "parallel": false,
+            "cwd": ".",
+            "commands": [
+              "docker build -t ghcr.io/aelporg/frontend:latest -t ghcr.io/aelporg/frontend:$CIRCLE_SHA1  -f docker/frontend.Dockerfile .",
+              "docker push ghcr.io/aelporg/frontend:latest",
+              "docker push ghcr.io/aelporg/frontend:$CIRCLE_SHA1"
+            ]
+          }
+        },
         "apollo-codegen": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["yarn apollo codegen:generate --target typescript --outputFlat typings/graphql"],
+            "commands": [
+              "yarn apollo codegen:generate --target typescript --outputFlat typings/graphql"
+            ],
             "cwd": "apps/frontend"
           }
         }
@@ -166,7 +213,19 @@
             "passWithNoTests": true
           }
         },
+        "docker": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "parallel": false,
+            "cwd": ".",
+            "commands": [
+              "docker build -t ghcr.io/aelporg/prisma:latest -t ghcr.io/aelporg/prisma:$CIRCLE_SHA1  -f docker/prisma.Dockerfile .",
+              "docker push ghcr.io/aelporg/prisma:latest",
+              "docker push ghcr.io/aelporg/prisma:$CIRCLE_SHA1"
+            ]
+          }
 
+        },
         "generate": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
@@ -177,9 +236,7 @@
         "studio": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": [
-              "yarn prisma studio"
-            ],
+            "commands": ["yarn prisma studio"],
             "cwd": "libs/models"
           }
         }
