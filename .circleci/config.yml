@@ -1,9 +1,6 @@
 version: 2.1
 
 
-orbs:
-  docker: circleci/docker@1.7.0
-
 jobs:
   build-affected-docker-images-and-push:
     docker: 
@@ -13,9 +10,9 @@ jobs:
       NEXT_PUBLIC_GRAPHQL_API_ENDPOINT: ${AELP_APP_GRAPHQL_API_ENPOINT}
     steps:
       - checkout
+      - run: apk add docker-cli
       - setup_remote_docker:
           docker_layer_caching: true
-      - docker/install-docker
       - restore_cache:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
