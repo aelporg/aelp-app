@@ -32,4 +32,6 @@ jobs:
 workflows:
   deploy-docker: 
     jobs:
-      - build-affected-docker-images-and-push
+      - build-affected-docker-images-and-push:
+          context:
+            - aelp-app
