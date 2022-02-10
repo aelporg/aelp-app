@@ -2,23 +2,19 @@ version: 2.1
 
 
 orbs:
-  node: circleci/node@5.0
   docker: circleci/docker@1.7.0
 
 jobs:
   build-affected-docker-images-and-push:
     docker: 
-      - image: 'cimg/base:stable'
+      - image: 'node:lts-alpine3.14'
     environment:
       NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${AELP_APP_GOOGLE_CLIENT_ID}
       NEXT_PUBLIC_GRAPHQL_API_ENDPOINT: ${AELP_APP_GRAPHQL_API_ENPOINT}
     steps:
       - checkout
-      - node/install-yarn:
-          version: 1.2
-      - node/install-packages:
-          pkg-manager: yarn 
       - docker/install-docker
+      - run: echo $AELP_APP_DOCKER_PASSWORD | docker login ghcr.io -u $AELP_APP_DOCKER_USERNAME --password-stdin
       - run: yarn nx affected --target=docker --skip-nx-cache
 
 workflows:
