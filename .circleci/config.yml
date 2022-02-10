@@ -15,7 +15,7 @@ jobs:
     steps:
       - checkout
       - node/install-yarn:
-          version: berry
+          version: 1.2
       - node/install-packages:
           pkg-manager: yarn 
       - docker/install-docker
