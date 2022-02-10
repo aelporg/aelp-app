@@ -1,22 +1,20 @@
-import QuestionCard from '@components/organisms/question-card/question-card';
-import Button from '@components/primitives/button';
-import Input from '@components/primitives/input/input';
-import Tag from '@components/primitives/tag/tag';
-import ToggleGroup from '@components/primitives/toggle-group/toggle-group';
-import React from 'react';
-import { AnnotationIcon, SearchIcon } from '@heroicons/react/outline';
-import MainDashboardLayout from '@modules/dashboard/components/main-dashboard-layout';
+import QuestionCard from '@components/organisms/question-card/question-card'
+import Button from '@components/primitives/button'
+import Input from '@components/primitives/input/input'
+import Tag from '@components/primitives/tag/tag'
+import ToggleGroup from '@components/primitives/toggle-group/toggle-group'
+import React from 'react'
+import { AnnotationIcon, SearchIcon } from '@heroicons/react/outline'
+import MainDashboardLayout from '@modules/dashboard/components/main-dashboard-layout'
 
 export default function QuestionsList() {
   return (
     <MainDashboardLayout
-      topNavActions={() => {
-        return (
-          <Button size="sm" icon={<AnnotationIcon />}>
-            Ask Question
-          </Button>
-        );
-      }}
+      topNavActions={
+        <Button size="sm" icon={<AnnotationIcon />}>
+          Ask Question
+        </Button>
+      }
     >
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
@@ -71,5 +69,5 @@ export default function QuestionsList() {
         </div>
       </div>
     </MainDashboardLayout>
-  );
+  )
 }
