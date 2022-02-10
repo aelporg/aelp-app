@@ -11,6 +11,10 @@ jobs:
       - image: 'cimg/base:stable'
     steps:
       - checkout
+      - node/install-yarn
+      - node/install-packages:
+          pkg-manager: yarn 
+      - docker/install-docker
       - docker/build:
           registry: ghcr.io 
           image: aelporg/builder 
