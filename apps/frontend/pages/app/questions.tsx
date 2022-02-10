@@ -45,7 +45,6 @@ export default function QuestionsList() {
             <QuestionCard />
             <QuestionCard />
             <QuestionCard />
-            <QuestionCard />
           </div>
           <div className="w-80 flex flex-col gap-4">
             <div>
