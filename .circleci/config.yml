@@ -15,6 +15,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
+      - docker/install-docker
       - restore_cache:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
