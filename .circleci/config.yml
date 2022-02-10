@@ -6,57 +6,21 @@ orbs:
   docker: circleci/docker@1.7.0
 
 jobs:
-  bob-the-builder:
+  build-affected-docker-images-and-push:
     docker: 
       - image: 'cimg/base:stable'
+    environment:
+      NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${AELP_APP_GOOGLE_CLIENT_ID}
+      NEXT_PUBLIC_GRAPHQL_API_ENDPOINT: ${AELP_APP_GRAPHQL_API_ENPOINT}
     steps:
       - checkout
       - node/install-yarn
       - node/install-packages:
           pkg-manager: yarn 
       - docker/install-docker
-      - docker/build:
-          registry: ghcr.io 
-          image: aelporg/builder 
-          dockerfile: docker/builder.Dockerfile 
-          docker-context: . 
-  frontend-the-boogyman:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-       - docker/build:
-          registry: ghcr.io 
-          image: aelporg/frontend 
-          dockerfile: docker/frontend.Dockerfile 
-          tag: latest, $CIRCLE_SHA1
-          docker-context: . 
-          extra_build_args: "--build-arg NEXT_PUBLIC_GRAPHQL_API_ENDPOINT=/api/graphql --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=${AELP_APP_GOOGLE_CLIENT_ID}"
+      - run: yarn nx affected --target=docker --skip-nx-cache
 
 workflows:
   deploy-docker: 
     jobs:
-      - bob-the-builder
-      - frontend-the-boogyman:
-          requires: [bob-the-builder]
-      - docker/publish:
-            image: aelporg/frontend 
-            deploy: true
-            tag: $CIRCLE_SHA1, latest
-            docker-username: AELP_APP_DOCKER_USERNAME
-            docker-password: AELP_APP_DOCKER_PASSWORD
-            registry: ghcr.io 
-            requires: [frontend-the-boogyman, bob-the-builder]
-      # - docker/publish:
-      #       image: ghcr.io/aelporg/frontend 
-      #       deploy: true
-      #       tag: $CIRCLE_SHA1, latest
-      #       docker-username: AELP_APP_DOCKER_USERNAME
-      #       docker-password: AELP_APP_DOCKER_PASSWORD
-      #       registry: ghcr.io 
-      # - docker/publish:
-      #       image: ghcr.io/aelporg/frontend 
-      #       deploy: true
-      #       tag: $CIRCLE_SHA1, latest
-      #       docker-username: AELP_APP_DOCKER_USERNAME
-      #       docker-password: AELP_APP_DOCKER_PASSWORD
-      #       registry: ghcr.io 
+      - build-affected-docker-images-and-push
