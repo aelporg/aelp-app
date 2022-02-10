@@ -2,7 +2,7 @@ version: 2.1
 
 
 orbs:
-  node: circleci/node@4.7
+  node: circleci/node@5.0
   docker: circleci/docker@1.7.0
 
 jobs:
@@ -14,7 +14,8 @@ jobs:
       NEXT_PUBLIC_GRAPHQL_API_ENDPOINT: ${AELP_APP_GRAPHQL_API_ENPOINT}
     steps:
       - checkout
-      - node/install-yarn
+      - node/install-yarn:
+          version: berry
       - node/install-packages:
           pkg-manager: yarn 
       - docker/install-docker
