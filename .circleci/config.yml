@@ -7,6 +7,8 @@ jobs:
     steps:
       - checkout
       - run: apk add docker-cli git curl jq
+      - run: echo "export LAST_SUCCESSFUL_COMMIT=$(curl -s https://circleci.com/api/v1.1/project/github/aelporg/aelp-app?circle-token=$CIRCLE_CI_PAT | jq '[.[] | select(.status=="success" or .status=="fixed")] | max_by(.build_num).vcs_revision')" >> /etc/profile
+      - run: echo $LAST_SUCCESSFUL_COMMIT
       - setup_remote_docker:
           docker_layer_caching: true
       - restore_cache:
@@ -19,10 +21,7 @@ jobs:
             - .yarn/cache
             - .yarn/unplugged
       - run: echo "$AELP_APP_DOCKER_PASSWORD" | docker login ghcr.io -u $AELP_APP_DOCKER_USERNAME --password-stdin
-      - run: curl -s https://circleci.com/api/v1.1/project/github/aelporg/aelp-app?circle-token=$CIRCLE_CI_PAT | jq '[.[] | select(.status=="success" or .status=="fixed")] | max_by(.build_num).vcs_revision'
-      - run: export LAST_SUCCESSFUL_COMMIT=$(curl -s https://circleci.com/api/v1.1/project/github/aelporg/aelp-app?circle-token=$CIRCLE_CI_PAT | jq '[.[] | select(.status=="success" or .status=="fixed")] | max_by(.build_num).vcs_revision')
       - run: echo $CIRCLE_CI_PAT
-      - run: echo $LAST_SUCCESSFUL_COMMIT
       - run: |
           export NEXT_PUBLIC_GOOGLE_CLIENT_ID=$AELP_APP_GOOGLE_CLIENT_ID
           export NEXT_PUBLIC_GRAPHQL_API_ENDPOINT=$AELP_APP_GRAPHQL_API_ENPOINT
