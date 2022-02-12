@@ -6,13 +6,20 @@ services:
       dockerfile: ./docker/workspace.Dockerfile
     # access docker daemon in the container
     volumes:
-      - .:/app
+      - ..:/app
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "4200:4200"
       - "3333:3333"
     command: /bin/sh -c "while sleep 1000; do :; done"
     user: node
+  piston:
+    image: ghcr.io/engineer-man/piston
+    volumes:
+      - piston-data:/piston
+    tmpfs:
+      - /piston/jobs
+    restart: always
   posgres:
     image: postgres
     environment:
@@ -30,3 +37,4 @@ services:
 
 volumes:
   postgres-data:
+  piston-data:

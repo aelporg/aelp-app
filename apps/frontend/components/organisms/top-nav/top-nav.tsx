@@ -5,7 +5,7 @@ import UserProfileMenu from './user-profile-menu/user-profile-menu'
 import { TopNavConsumer, TopNavProvider } from './top-nav.store'
 
 export interface TopNavProps {
-  heading: string
+  heading?: string | React.ReactNode
   actions?: React.ReactNode
 }
 

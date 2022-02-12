@@ -13,6 +13,7 @@
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
     "@hookform/resolvers": "^2.8.5",
+    "@monaco-editor/react": "^4.3.1",
     "@nestjs/common": "^8.2.2",
     "@nestjs/config": "^1.1.0",
     "@nestjs/core": "^8.2.2",
