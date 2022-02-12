@@ -8,6 +8,13 @@
       "targets": {
         "build": {
           "executor": "@nrwl/node:build",
+          "dependsOn": [
+            {
+              "target": "generate",
+              "configuration": "production",
+              "projects": "dependencies"
+            }
+          ],
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/api",
@@ -56,11 +63,6 @@
         "docker": {
           "executor": "@nrwl/workspace:run-commands",
           "dependsOn": [
-            {
-              "target": "generate",
-              "configuration": "production",
-              "projects": "dependencies"
-            },
             {
               "target": "build",
               "configuration": "production",
