@@ -6,7 +6,7 @@ jobs:
       - image: 'node:lts-alpine3.14'
     steps:
       - checkout
-      - run: apk add docker-cli git
+      - run: apk add docker-cli git curl jq
       - setup_remote_docker:
           docker_layer_caching: true
       - restore_cache:
