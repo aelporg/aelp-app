@@ -16,6 +16,7 @@ jobs:
           echo "export NEXT_PUBLIC_GOOGLE_CLIENT_ID=$AELP_APP_GOOGLE_CLIENT_ID" >> $BASH_ENV
           echo "export NEXT_PUBLIC_GRAPHQL_API_ENDPOINT=$AELP_APP_GRAPHQL_API_ENPOINT" >> $BASH_ENV
       - setup_remote_docker:
+          version: 20.10.11
           docker_layer_caching: true
       # - restore_cache:
       #     keys:
