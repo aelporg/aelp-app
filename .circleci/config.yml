@@ -19,6 +19,7 @@ jobs:
             - .yarn/cache
             - .yarn/unplugged
       - run: echo "$AELP_APP_DOCKER_PASSWORD" | docker login ghcr.io -u $AELP_APP_DOCKER_USERNAME --password-stdin
+      - run: curl -s https://circleci.com/api/v1.1/project/github/aelporg/aelp-app?circle-token=$CIRCLE_CI_PAT
       - run: export LAST_SUCCESSFUL_COMMIT=$(curl -s https://circleci.com/api/v1.1/project/github/aelporg/aelp-app?circle-token=$CIRCLE_CI_PAT | jq '[.[] | select(.status=="success" or .status=="fixed")] | max_by(.build_num).vcs_revision')
       - run: echo $CIRCLE_CI_PAT
       - run: echo $LAST_SUCCESSFUL_COMMIT
