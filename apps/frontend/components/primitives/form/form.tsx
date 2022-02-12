@@ -16,7 +16,7 @@ export interface FormProps<DataType>
 
 export function HForm<DataType>({
   hfOptions,
-  onSubmit = (data: UnpackNestedValue<DataType>) => {},
+  onSubmit = (data: UnpackNestedValue<DataType>) => false,
   children,
   ...rest
 }: FormProps<DataType>) {

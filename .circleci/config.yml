@@ -2,7 +2,7 @@ version: 2.1
 
 jobs:
   build-affected-docker-images-and-push:
-    docker: 
+    docker:
       - image: 'node:lts-alpine3.14'
     steps:
       - checkout
@@ -19,13 +19,14 @@ jobs:
             - .yarn/cache
             - .yarn/unplugged
       - run: echo "$AELP_APP_DOCKER_PASSWORD" | docker login ghcr.io -u $AELP_APP_DOCKER_USERNAME --password-stdin
+      - run: export LAST_SUCCESSFUL_COMMIT=$(curl -s https://circleci.com/api/v1.1/project/github/aelporg/aelp-app?circle-token=$CIRCLE_CI_PAT | jq '[.[] | select(.status=="success" or .status=="fixed")] | max_by(.build_num).vcs_revision')
       - run: |
           export NEXT_PUBLIC_GOOGLE_CLIENT_ID=$AELP_APP_GOOGLE_CLIENT_ID
           export NEXT_PUBLIC_GRAPHQL_API_ENDPOINT=$AELP_APP_GRAPHQL_API_ENPOINT
-      - run: yarn nx affected --target=docker --skip-nx-cache --base=origin/master~1 --head=origin/master
+      - run: yarn nx affected --target=docker --skip-nx-cache --base=$LAST_SUCCESSFUL_COMMIT --head=origin/master
 
 workflows:
-  deploy-docker: 
+  deploy-docker:
     jobs:
       - build-affected-docker-images-and-push:
           context:
