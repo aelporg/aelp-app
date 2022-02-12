@@ -11,15 +11,15 @@ jobs:
       - checkout
       - run: apk add docker-cli git curl jq
       - run: |
-         "export LAST_SUCCESSFUL_COMMIT=$(curl -s https://circleci.com/api/v1.1/project/github/aelporg/aelp-app?circle-token=$CIRCLE_CI_PAT | jq '[.[] | select(.status=="uccess" or .status=="fixed")] | max_by(.build_num).vcs_revision')" >> /etc/profile
+         echo "export LAST_SUCCESSFUL_COMMIT=$(curl -s https://circleci.com/api/v1.1/project/github/aelporg/aelp-app?circle-token=$CIRCLE_CI_PAT | jq '[.[] | select(.status=="success" or .status=="fixed")] | max_by(.build_num).vcs_revision')" >> /etc/profile
       - run: echo $LAST_SUCCESSFUL_COMMIT
       - run: |
           source $BASH_ENV
           echo $LAST_SUCCESSFUL_COMMIT
       - run: echo $LAST_SUCCESSFUL_COMMIT
       - run: |
-          "export NEXT_PUBLIC_GOOGLE_CLIENT_ID=$AELP_APP_GOOGLE_CLIENT_ID" >> $BASH_ENV
-          "export NEXT_PUBLIC_GRAPHQL_API_ENDPOINT=$AELP_APP_GRAPHQL_API_ENPOINT" >> $BASH_ENV
+          echo "export NEXT_PUBLIC_GOOGLE_CLIENT_ID=$AELP_APP_GOOGLE_CLIENT_ID" >> $BASH_ENV
+          echo "export NEXT_PUBLIC_GRAPHQL_API_ENDPOINT=$AELP_APP_GRAPHQL_API_ENPOINT" >> $BASH_ENV
       - run: echo $NEXT_PUBLIC_GOOGLE_CLIENT_ID
       - setup_remote_docker:
           docker_layer_caching: true
