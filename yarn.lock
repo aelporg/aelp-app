@@ -1682,6 +1682,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@devbookhq/splitter@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "@devbookhq/splitter@npm:1.3.2"
+  dependencies:
+    react-is: ^17.0.2
+  checksum: e80edef09c1542d7e45434b68890c55bfff60b84d067812749815c3e4a48372f7a42b3f72270ce3df080612c46bfaecad034515bd463384f1f65a347ab9f4f6e
+  languageName: node
+  linkType: hard
+
 "@endemolshinegroup/cosmiconfig-typescript-loader@npm:^1.0.0":
   version: 1.0.2
   resolution: "@endemolshinegroup/cosmiconfig-typescript-loader@npm:1.0.2"
@@ -3919,6 +3928,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-tabs@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "@radix-ui/react-tabs@npm:0.1.4"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/primitive": 0.1.0
+    "@radix-ui/react-context": 0.1.1
+    "@radix-ui/react-id": 0.1.4
+    "@radix-ui/react-primitive": 0.1.3
+    "@radix-ui/react-roving-focus": 0.1.4
+    "@radix-ui/react-use-callback-ref": 0.1.0
+    "@radix-ui/react-use-controllable-state": 0.1.0
+  peerDependencies:
+    react: ^16.8 || ^17.0
+  checksum: 1e7494efe0689bf7220908b21846f34c7e2bf95759b747a0513637af287c7bfa4c06f48b1c398b9a62560604c82599ea227af16d1e6f486701a7148000ea346c
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-toggle-group@npm:^0.1.1":
   version: 0.1.4
   resolution: "@radix-ui/react-toggle-group@npm:0.1.4"
@@ -5628,6 +5655,7 @@ __metadata:
   resolution: "aelp-app@workspace:."
   dependencies:
     "@apollo/client": ^3.4.17
+    "@devbookhq/splitter": ^1.3.2
     "@headlessui/react": ^1.4.2
     "@heroicons/react": ^1.0.5
     "@hookform/resolvers": ^2.8.5
@@ -5654,6 +5682,7 @@ __metadata:
     "@nrwl/workspace": ^13.2.3
     "@prisma/client": latest
     "@radix-ui/react-checkbox": ^0.1.4
+    "@radix-ui/react-tabs": ^0.1.4
     "@radix-ui/react-toggle-group": ^0.1.1
     "@testing-library/react": 12.1.2
     "@testing-library/react-hooks": 7.0.2
@@ -5699,8 +5728,11 @@ __metadata:
     joi: ^17.6.0
     joi-class-decorators: ^1.0.4
     moment: ^2.29.1
+    monaco: ^1.201704190613.0
     nestjs-joi: ^1.6.0
     next: ^12.0.10
+    next-compose-plugins: ^2.2.1
+    next-transpile-modules: ^9.0.0
     passport: ^0.5.0
     passport-jwt: ^4.0.0
     postcss: latest
@@ -14019,6 +14051,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"monaco@npm:^1.201704190613.0":
+  version: 1.201704190613.0
+  resolution: "monaco@npm:1.201704190613.0"
+  checksum: a5b804084d4a3df68a40b8150282b8cd1868013b02fb18d4929a06058269369869dc63040e5ec113a7110ab87b8db951b46276ec7419ab5ed01eb1327c53d7da
+  languageName: node
+  linkType: hard
+
 "ms@npm:2.0.0":
   version: 2.0.0
   resolution: "ms@npm:2.0.0"
@@ -14162,6 +14201,23 @@ __metadata:
     "@nestjs/core": ^7.0.0 || ^8.0.0
     joi: ^17.2.1
   checksum: 281d5c751a1d44c9d8deff46b8dd8987213f5030922261faec8efa33ee643be367f303b5266a33977e5b96e121797f82543324aa2e7a05b356e7444346b93ebd
+  languageName: node
+  linkType: hard
+
+"next-compose-plugins@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "next-compose-plugins@npm:2.2.1"
+  checksum: 771762fda2b12b81daf10431cbb494816cff96be02b44009692c6c0eefbacd62cbf51ddb93af8d3380ec00254c6a95d64d10f744d4b9ddadefc21efee7dc69fc
+  languageName: node
+  linkType: hard
+
+"next-transpile-modules@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "next-transpile-modules@npm:9.0.0"
+  dependencies:
+    enhanced-resolve: ^5.7.0
+    escalade: ^3.1.1
+  checksum: 9a5d86d80cedc2404b2b1d5bd4994f2f7bf60e5e20f24e8cc5cfec34da1418b4a439916f37a95ca336bcf6d81094c3647354ac6a0c6737b3df59e62b6380507d
   languageName: node
   linkType: hard
 

@@ -7,9 +7,16 @@ import { TopNavConsumer, TopNavProvider } from './top-nav.store'
 export interface TopNavProps {
   heading?: string | React.ReactNode
   actions?: React.ReactNode
+  persistentBorder?: boolean
+  sticky?: boolean
 }
 
-export function TopNav(props: TopNavProps) {
+export function TopNav({
+  persistentBorder,
+  actions,
+  heading,
+  sticky = true,
+}: TopNavProps) {
   const elementRef = useRef<HTMLDivElement>(null)
   const [sticking, setSticking] = useState(false)
 
@@ -40,8 +47,10 @@ export function TopNav(props: TopNavProps) {
       <div
         ref={elementRef}
         className={classNames(
-          'flex justify-between sticky self-start  z-10 py-2 pl-8 pr-4 items-center transition-all duration-200',
-          sticking && 'border-b bg-white'
+          'flex justify-between z-10 py-2 pl-8 pr-4 items-center transition-all duration-200',
+          sticking && 'border-b bg-white',
+          persistentBorder && 'border-b',
+          sticky && 'sticky'
         )}
         style={{
           // Sticky detection hack
@@ -49,11 +58,11 @@ export function TopNav(props: TopNavProps) {
           paddingTop: 'calc(.5rem + 1px)',
         }}
       >
-        <h3 className="text-3xl font-bold">{props.heading}</h3>
+        <h3 className="text-3xl font-bold">{heading}</h3>
         <div className="flex items-center">
-          {props.actions && (
+          {actions && (
             <Fragment>
-              {props.actions}
+              {actions}
               <div className="w-0.5 rounded-lg ml-4  bg-gray-300 mx-2 h-8"></div>
             </Fragment>
           )}

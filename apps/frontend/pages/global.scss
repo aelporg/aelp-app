@@ -2,4 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'satoshi.scss';
+
+
+@font-face {
+  font-family: AelpFiraCode;
+  src: url(../public/fonts/fira-code/fira-code-variable.ttf);
+}
+
 @import 'base.scss';

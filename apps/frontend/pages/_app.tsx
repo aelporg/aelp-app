@@ -1,7 +1,6 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import './global.scss';
-import { ApolloProvider } from '@apollo/client';
 import AuthStoreProvider from '@modules/auth/store/auth-store';
 import MeStoreProvider from '@modules/auth/store/me-store';
 

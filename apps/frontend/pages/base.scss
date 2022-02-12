@@ -1,14 +1,8 @@
 @layer base {
-  @font-face {
-    font-family: Satoshi;
-    src: url(/fonts/satohsi/satohsi-variable.ttf) format('ttf');
-  }
-
   body,
   html {
     @apply text-black;
   }
 }
-
 
 @import 'index.scss';
