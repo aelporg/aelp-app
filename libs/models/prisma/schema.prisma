@@ -7,9 +7,9 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../../../node_modules/.prisma/client"
-  binaryTargets = ["linux-musl", "native"]
+  provider        = "prisma-client-js"
+  output          = "../../../node_modules/.prisma/client"
+  binaryTargets   = ["linux-musl", "native"]
   previewFeatures = ["interactiveTransactions"]
 }
 
@@ -105,6 +105,23 @@ model Classroom {
   members                      ClassroomMember[]             @relation("classroom_members")
   assessments                  Assessment[]
   practiceProgrammingQuestions PracticeProgrammingQuestion[]
+  announcements                ClassroomAnnouncements[]
+}
+
+model ClassroomAnnouncements {
+  id          String                 @id @default(uuid())
+  classroom   Classroom              @relation(fields: [classroomId], references: [id])
+  classroomId String
+  content     String
+  attachments AnnoucmentAttachment[]
+}
+
+model AnnoucmentAttachment {
+  id                      String                 @id @default(uuid())
+  fileName                String
+  file                    Bytes
+  classroomAnnouncement   ClassroomAnnouncements @relation(fields: [classroomAnnouncementId], references: [id])
+  classroomAnnouncementId String
 }
 
 model ClassroomMember {
