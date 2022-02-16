@@ -3,6 +3,7 @@ import { Logo } from '@components/primitives'
 import Editor, { useMonaco } from '@monaco-editor/react'
 import { useEffect } from 'react'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
+import Tabs from '@components/primitives/tabs/tabs'
 
 export default function Environment() {
   const monaco = useMonaco()
@@ -39,7 +40,22 @@ export default function Environment() {
             draggerClassName="bg-slate-300"
             direction={SplitDirection.Vertical}
           >
-            <div className="flex-auto">hi</div>
+            <div className="flex-auto">
+              <Tabs>
+                <Tabs.List>
+                  <Tabs.Trigger value="whiteboard">Whiteboard</Tabs.Trigger>
+                  <Tabs.Trigger value="questionStatement">
+                    Statement
+                  </Tabs.Trigger>
+                </Tabs.List>
+                <Tabs.Content value="whiteboard">
+                  Whiteboard khul gya
+                </Tabs.Content>
+                <Tabs.Content value="questionStatement">
+                  Question statment khul gai
+                </Tabs.Content>
+              </Tabs>
+            </div>
             <div className="flex-auto">hi</div>
           </Splitter>
         </div>

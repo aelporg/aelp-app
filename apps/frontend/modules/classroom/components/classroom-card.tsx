@@ -6,9 +6,6 @@ import Link from 'next/link'
 import { useMemo } from 'react'
 import { ClassroomRole } from 'typings/graphql/globalTypes'
 import { MyClassroomsQuery_classrooms } from 'typings/graphql/MyClassroomsQuery'
-import MembersView from '../pages/members-view'
-import SidebarClassroomHeader from './sidebar-classroom-header'
-
 interface ClassroomCardProps {
   classroom: MyClassroomsQuery_classrooms
 }
@@ -24,7 +21,7 @@ function ClassroomCard({ classroom }: ClassroomCardProps) {
 
   return (
     <Link href={`/app/classroom/${classroom.id}`} passHref>
-      <div className="flex border hover:shadow-lg border-slate-200 duration-200 transition-all rounded-lg overflow-hidden flex-col cursor-pointer focus:ring-2 ring-red-100 select-none">
+      <div className="flex border-2 hover:shadow-lg border-slate-200 duration-200 transition-all rounded-lg overflow-hidden flex-col cursor-pointer focus:ring-2 ring-red-100 select-none">
         <div className="h-20 flex justify-end items-center bg-accent">
           {isMyClass && (
             <div className="translate-y-1/2 mx-4 transform">

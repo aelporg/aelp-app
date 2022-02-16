@@ -4,13 +4,13 @@ import { ConfigModule } from '@nestjs/config'
 import { RedisModule } from '@aelp-app/redis'
 import { ApolloDriver } from '@nestjs/apollo'
 
-import { GraphQLError } from 'graphql'
 import { join } from 'path'
 
 import UserModule from '../modules/user/user.module'
 import AuthModule from '../modules/auth/auth.module'
 import ClassroomModule from '../modules/classroom/classroom.module'
 import { environment } from '../environments/environment'
+import { EnvironmentModule } from '../modules/environment/environment.module'
 
 @Module({
   imports: [
@@ -21,10 +21,15 @@ import { environment } from '../environments/environment'
     UserModule,
     AuthModule,
     ClassroomModule,
+    EnvironmentModule,
 
     // Main GraphQL module
     GraphQLModule.forRoot({
       driver: ApolloDriver,
+      installSubscriptionHandlers: true,
+      subscriptions: {
+        'graphql-ws': true,
+      },
       autoSchemaFile: join(__dirname, './schema.gql'),
       playground: !environment.production,
       context: ({ req, res }) => ({ req, res }),

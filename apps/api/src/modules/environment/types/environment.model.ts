@@ -3,14 +3,14 @@ import { ObjectType } from '@nestjs/graphql'
 import { ID } from '@nestjs/graphql'
 import { EnvironmentCount } from './environment-count.output'
 import { EnvironmentPermission } from './environment-permission.model'
-
+import { File } from './file.model'
 @ObjectType()
 export class Environment {
   @Field(() => ID, { nullable: false })
   id!: string
 
-  // @Field(() => [File], {nullable:true})
-  // files?: Array<File>;
+  @Field(() => [File], { nullable: true })
+  files?: Array<File>
 
   @Field(() => String, { nullable: false })
   scratchPadData!: string
