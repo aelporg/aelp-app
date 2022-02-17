@@ -12,10 +12,11 @@ export default class AuthResolver {
     private ipAddressService: IPAddressLookUpService
   ) {}
 
+  // TODO: [AA-67] Check if already logged and skip the further processing.
   @Mutation(() => UserAuthInfo)
   async loginWithCreds(
     @Args('email') email: string,
-    @Args('password') password: string
+    @Args('password') password: string,
   ) {
     return this.authService.loginWithCreds(email, password)
   }
@@ -41,4 +42,6 @@ export default class AuthResolver {
       await this.ipAddressService.getCountryOfRequest(ctx)
     )
   }
+
+  // TODO: Create Github Auth
 }

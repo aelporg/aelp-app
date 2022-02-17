@@ -4,6 +4,7 @@ import { ID } from '@nestjs/graphql'
 import { EnvironmentCount } from './environment-count.output'
 import { EnvironmentPermission } from './environment-permission.model'
 import { File } from './file.model'
+import { ProgrammingQuestionAnswer } from './programming-question-answer.model'
 @ObjectType()
 export class Environment {
   @Field(() => ID, { nullable: false })
@@ -24,8 +25,8 @@ export class Environment {
   @Field(() => Date, { nullable: false })
   updatedAt!: Date
 
-  // @Field(() => [ProgrammingQuestionAnswer], {nullable:true})
-  // answers?: Array<ProgrammingQuestionAnswer>;
+  @Field(() => [ProgrammingQuestionAnswer], { nullable: true })
+  answers?: Array<ProgrammingQuestionAnswer>
 
   @Field(() => [EnvironmentPermission], { nullable: true })
   permissions?: Array<EnvironmentPermission>

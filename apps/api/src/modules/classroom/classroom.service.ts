@@ -30,7 +30,7 @@ export default class ClassroomService {
   }
 
   async generateUniqueInviteCode(retryNo = 0) {
-    const inviteCode = generate({ length: 8, charset: 'alphanumeric' })
+    const inviteCode = generate({ length: 6, charset: 'alphanumeric' })
 
     const classroomWithGeneratedCode =
       await this.prismaService.classroom.findUnique({

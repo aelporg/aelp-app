@@ -1,7 +1,11 @@
-import { PrismaService } from '@aelp-app/models'
+import { PrismaService, Prisma } from '@aelp-app/models'
 import { Injectable } from '@nestjs/common'
 import { UserInputError } from 'apollo-server-express'
-import { ProgrammingQuestionType, QuestionType } from '../../global-types'
+import {
+  EnvironmentPermissionLevel,
+  ProgrammingQuestionType,
+  QuestionType,
+} from '../../global-types'
 import { User } from '../user/types/user.model'
 
 @Injectable()
@@ -31,14 +35,23 @@ export class EnvironmentService {
       where: { id: questionId },
       include: {
         multipleChoiceQuestion: true,
-        programmingQuestion: true,
+        programmingQuestion: {
+          include: {
+            multipleFilesProgrammingQuestion: {
+              include: { defaultFiles: true, language: true },
+            },
+            singleFileProgrammingQuestion: {
+              include: { allowedLanguages: true },
+            },
+          },
+        },
         answers: {
           include: {
             programmingQuestionAnswer: true,
           },
           where: {
             userId: user.id,
-          }
+          },
         },
       },
     })
@@ -46,7 +59,9 @@ export class EnvironmentService {
     if (!question) return null
 
     if (question.answers.length > 0) {
-      return this.getById(question.answers[0].programmingQuestionAnswer.envirnmentId);
+      return this.getById(
+        question.answers[0].programmingQuestionAnswer.envirnmentId
+      )
     }
 
     if (question.questionType !== QuestionType.PROGRAMMING) {
@@ -57,9 +72,37 @@ export class EnvironmentService {
 
     // TODO: [AA-64] Handle multiple file programming questions
     const { programmingQuestion } = question
-    // programmingQuestion.programmingQuestionType === ProgrammingQuestionType.SINGLE_FILE
 
-    return this.prismaService.questionAnswer.create({
+    if (
+      programmingQuestion.singleFileProgrammingQuestion.allowedLanguages
+        .length < 1 &&
+      programmingQuestion.programmingQuestionType ===
+        ProgrammingQuestionType.SINGLE_FILE
+    )
+      throw new Error('No language available')
+
+    const files =
+      programmingQuestion.programmingQuestionType ===
+      ProgrammingQuestionType.MULTIPLE_FILE
+        ? {
+            createMany: {
+              data: programmingQuestion.multipleFilesProgrammingQuestion.defaultFiles.map(
+                file => ({
+                  name: file.name,
+                  data: file.data,
+                })
+              ),
+            },
+          }
+        : {
+            create: {
+              name: `main.${programmingQuestion.singleFileProgrammingQuestion.allowedLanguages[0].extension}`,
+              data: programmingQuestion.singleFileProgrammingQuestion
+                .defaultCode,
+            },
+          }
+
+    const answer = this.prismaService.questionAnswer.create({
       data: {
         question: {
           connect: {
@@ -67,12 +110,25 @@ export class EnvironmentService {
           },
         },
         programmingQuestionAnswer: {
-          connectOrCreate: {
-            create: { envirnment: { create: { scratchPadData: '{}' } } },
-            where: {},
+          create: {
+            envirnment: {
+              create: {
+                scratchPadData: '{}',
+                files,
+                permissions: {
+                  create: {
+                    permission: EnvironmentPermissionLevel.OWNER,
+                    user: {
+                      connect: {
+                        id: user.id,
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
         },
-        points: 0,
         assessmentSubmission: {
           connectOrCreate: {
             where: {
@@ -92,21 +148,66 @@ export class EnvironmentService {
                   id: user.id,
                 },
               },
-              recPoints: 0,
             },
           },
         },
       },
     })
+
+    return this.getById((await answer.programmingQuestionAnswer()).envirnmentId)
+  }
+
+  async allowedLanguages(environmentId: string) {
+    const environment = await this.prismaService.environment.findUnique({
+      where: { id: environmentId },
+      include: {
+        answers: {
+          select: {
+            baseAnswer: {
+              select: {
+                question: {
+                  select: {
+                    programmingQuestion: {
+                      select: {
+                        programmingQuestionType: true,
+                        singleFileProgrammingQuestion: {
+                          select: { allowedLanguages: true },
+                        },
+                        multipleFilesProgrammingQuestion: {
+                          select: { language: true },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+
+    if (environment.answers.length < 1) return []
+
+    const { programmingQuestion } = environment.answers[0].baseAnswer.question
+
+    return programmingQuestion.programmingQuestionType ===
+      ProgrammingQuestionType.MULTIPLE_FILE
+      ? [programmingQuestion.multipleFilesProgrammingQuestion.language]
+      : programmingQuestion.singleFileProgrammingQuestion.allowedLanguages
   }
 
   async getUserEnvPermission(environmentId: string, user: User) {
-    const permissions = await this.prismaService.environment
+    const permissions = await this.getEnvPermissions(environmentId)
+
+    return permissions.find(permission => permission.userId === user.id)
+  }
+
+  async getEnvPermissions(environmentId: string) {
+    return this.prismaService.environment
       .findUnique({
         where: { id: environmentId },
       })
       .permissions()
-
-    return permissions.find(permission => permission.userId === user.id)
   }
 }

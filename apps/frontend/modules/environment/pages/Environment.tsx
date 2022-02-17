@@ -1,12 +1,15 @@
 import TopNav from '@components/organisms/top-nav/top-nav'
+import Tabs from '@components/primitives/tabs/tabs'
+import { useRouter } from 'next/router'
 import { Logo } from '@components/primitives'
 import Editor, { useMonaco } from '@monaco-editor/react'
 import { useEffect } from 'react'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
-import Tabs from '@components/primitives/tabs/tabs'
 
 export default function Environment() {
   const monaco = useMonaco()
+  const router = useRouter()
+  const { id } = router.query
 
   useEffect(() => {
     if (!monaco) return

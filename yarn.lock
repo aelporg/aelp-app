@@ -5705,6 +5705,7 @@ __metadata:
     graphql: ^15.0.1
     graphql-anywhere: ^4.2.7
     graphql-fields: ^2.0.3
+    graphql-ws: ^5.5.5
     jest: 27.2.3
     joi: ^17.6.0
     joi-class-decorators: ^1.0.4
@@ -11102,7 +11103,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-ws@npm:5.5.5":
+"graphql-ws@npm:5.5.5, graphql-ws@npm:^5.5.5":
   version: 5.5.5
   resolution: "graphql-ws@npm:5.5.5"
   peerDependencies:
