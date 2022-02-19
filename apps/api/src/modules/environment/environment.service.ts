@@ -114,7 +114,8 @@ export class EnvironmentService {
             envirnment: {
               create: {
                 scratchPadData: '{}',
-                files,
+                // TODO: FIX THIS
+                // files: {createMany:{data:}},
                 permissions: {
                   create: {
                     permission: EnvironmentPermissionLevel.OWNER,

@@ -17,28 +17,28 @@ import { File } from './types/file.model'
 
 @Resolver(() => Environment)
 export default class EnvironmentResolver {
-  constructor(private envirnmentService: EnvironmentService) {}
+  constructor(private environmentService: EnvironmentService) {}
 
   @Query(() => [Environment])
   @UseGuards(JwtAuthGuard)
   async envirnoments(@LoggedInUser() user: User) {
-    return this.envirnmentService.getUserEnvironments(user)
+    return this.environmentService.getUserEnvironments(user)
   }
 
   @Mutation(() => Environment)
   @UseGuards(JwtAuthGuard)
-  async createEnvirnment(
+  async createEnvironment(
     @LoggedInUser() user: User,
     @Args('questionId') questionId: string
   ) {
-    return this.envirnmentService.createEnvirnment(questionId, user)
+    return this.environmentService.createEnvirnment(questionId, user)
   }
 
   @Query(() => Environment)
   @UseGuards(JwtAuthGuard)
   async envirnoment(@Args('id') id: string, @LoggedInUser() user: User) {
-    if (await this.envirnmentService.getUserEnvPermission(id, user)) {
-      return this.envirnmentService.getById(id)
+    if (await this.environmentService.getUserEnvPermission(id, user)) {
+      return this.environmentService.getById(id)
     }
 
     return null
@@ -47,7 +47,7 @@ export default class EnvironmentResolver {
   @UseGuards(JwtAuthGuard)
   @ResolveField(() => [File])
   async files(@Root() envirnment: Environment) {
-    return this.envirnmentService.getEnviromentFiles(envirnment.id)
+    return this.environmentService.getEnviromentFiles(envirnment.id)
   }
 
   @UseGuards(JwtAuthGuard)
@@ -55,6 +55,6 @@ export default class EnvironmentResolver {
   async permissions(
     @Root() envirnment: Environment,
   ) {
-    return this.envirnmentService.getEnvPermissions(envirnment.id)
+    return this.environmentService.getEnvPermissions(envirnment.id)
   }
 }
