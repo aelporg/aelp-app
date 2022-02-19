@@ -40,7 +40,7 @@ model User {
   linkedAccounts        LinkedAccount[]          @relation("user_linkedAccounts")
   joinedClassrooms      ClassroomMember[]        @relation("user_classroomMembers")
   assessmentAnswers     AssessmentAnswer[]
-  envirnmentPermissions EnvironmentPermission[]
+  environmentPermissions EnvironmentPermission[]
   competitionsJoined    CompetitionParticipant[]
   createdCompetitions   Competition[]
 }
@@ -113,10 +113,10 @@ model ClassroomAnnouncements {
   classroom   Classroom              @relation(fields: [classroomId], references: [id])
   classroomId String
   content     String
-  attachments AnnoucmentAttachment[]
+  attachments AnnouncementAttachment[]
 }
 
-model AnnoucmentAttachment {
+model AnnouncementAttachment {
   id                      String                 @id @default(uuid())
   fileName                String
   file                    Bytes

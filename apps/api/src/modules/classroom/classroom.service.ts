@@ -99,8 +99,4 @@ export default class ClassroomService {
       },
     })
   }
-
-  async getAnnoucements(classroomId: string, user: User) {
-    // TODO: Test
-  }
 }
