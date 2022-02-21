@@ -1,23 +1,22 @@
-import { Field } from '@nestjs/graphql';
-import { ObjectType } from '@nestjs/graphql';
-import { ID } from '@nestjs/graphql';
-import { ClassroomAnnouncements } from './classroom-announcements.model';
+import { Field } from '@nestjs/graphql'
+import { ObjectType } from '@nestjs/graphql'
+import { ID } from '@nestjs/graphql'
+import { ClassroomAnnouncement } from './classroom-announcement.model'
 
 @ObjectType()
 export class AnnoucmentAttachment {
+  @Field(() => ID, { nullable: false })
+  id!: string
 
-    @Field(() => ID, {nullable:false})
-    id!: string;
+  @Field(() => String, { nullable: false })
+  fileName!: string
 
-    @Field(() => String, {nullable:false})
-    fileName!: string;
+  @Field(() => String, { nullable: false })
+  file!: Buffer
 
-    @Field(() => String, {nullable:false})
-    file!: Buffer;
+  @Field(() => ClassroomAnnouncement, { nullable: false })
+  classroomAnnouncement?: ClassroomAnnouncement
 
-    @Field(() => ClassroomAnnouncements, {nullable:false})
-    classroomAnnouncement?: ClassroomAnnouncements;
-
-    @Field(() => String, {nullable:false})
-    classroomAnnouncementId!: string;
+  @Field(() => String, { nullable: false })
+  classroomAnnouncementId!: string
 }

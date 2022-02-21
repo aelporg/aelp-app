@@ -73,4 +73,9 @@ export default class ClassroomResolver {
       })
       .members()
   }
+
+  @ResolveField()
+  async annoucements(@Parent() classroom: Classroom) {
+    return this.classroomService.getAnnoucements(classroom.id)
+  }
 }

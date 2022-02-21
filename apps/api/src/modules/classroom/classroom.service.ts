@@ -1,5 +1,5 @@
 import { PrismaService } from '@aelp-app/models'
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { UserInputError } from 'apollo-server-errors'
 import { generate } from 'randomstring'
 import { Prisma } from '@aelp-app/models'
@@ -98,5 +98,14 @@ export default class ClassroomService {
         },
       },
     })
+  }
+
+  // This is specific to classroom, as we are getting announcements of a particular class
+  async getAnnoucements(classroomId: string) {
+    return this.prismaService.classroom
+      .findUnique({
+        where: { id: classroomId },
+      })
+      .announcements()
   }
 }
