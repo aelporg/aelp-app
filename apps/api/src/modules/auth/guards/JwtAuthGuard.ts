@@ -24,7 +24,7 @@ export class JwtAuthGuard extends AuthGuard(['jwt']) {
   }
 
   async activate(context: ExecutionContext) {
-    return super.canActivate(context)
+    return super.canActivate(context) as Promise<boolean>
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -38,7 +38,7 @@ export class JwtAuthGuard extends AuthGuard(['jwt']) {
 
     if (skipAuth) {
       this.logger.log('Skipping auth guard')
-      return true
+      return this.activate(context)
     }
 
     const accessToken = ExtractJwt.fromHeader('x-access-token')(req)
@@ -46,7 +46,7 @@ export class JwtAuthGuard extends AuthGuard(['jwt']) {
     const isAccessTokenValid = this.authService.verifyAuthToken(accessToken)
 
     if (isAccessTokenValid) {
-      return true
+      return this.activate(context)
     }
 
     if (!refreshToken) {
@@ -66,6 +66,6 @@ export class JwtAuthGuard extends AuthGuard(['jwt']) {
     req.headers['x-access-token'] = newToken
     gctx.res.setHeader('set-access-token', newToken)
 
-    return true
+    return this.activate(context)
   }
 }

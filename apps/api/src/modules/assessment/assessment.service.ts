@@ -1,9 +1,10 @@
 import { PrismaService } from '@aelp-app/models'
+import { Injectable } from '@nestjs/common'
 import { UserInputError } from 'apollo-server-express'
 import { ClassroomRole } from '../../global-types'
 import { User } from '../user/types/user.model'
 import { AssessmentCreateInput } from './types/assessment-create.input'
-
+@Injectable()
 export default class AssessmentService {
   constructor(private prismaService: PrismaService) {}
 
@@ -33,17 +34,6 @@ export default class AssessmentService {
         ...rest,
         user: { connect: { id: user.id } },
         classroom: classroomId ? { connect: { id: classroomId } } : undefined,
-      },
-    })
-  }
-
-  addQuestion(assessmentId: string, questionId: string) {
-    return this.prismaService.assessment.update({
-      where: { id: assessmentId },
-      data: {
-        questions: {
-          connect: { id: questionId },
-        },
       },
     })
   }

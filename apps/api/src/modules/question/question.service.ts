@@ -2,12 +2,13 @@ import { PrismaService } from '@aelp-app/models'
 import { Injectable } from '@nestjs/common'
 import { QuestionType } from '@prisma/client'
 import { UserInputError } from 'apollo-server-express'
+import { User } from '../user/types/user.model'
 import { QuestionCreateInput } from './types/question-create-input'
 @Injectable()
 export default class QuestionService {
   constructor(private prismaService: PrismaService) {}
 
-  async createQuestion(data: QuestionCreateInput) {
+  async createQuestion(data: QuestionCreateInput, user: User) {
     const {
       multipleChoiceQuestion,
       programmingQuestion,
@@ -31,7 +32,7 @@ export default class QuestionService {
       where: { id: assessmentId },
     })
 
-    if (!assessment) {
+    if (!assessment || assessment.userId !== user.id) {
       throw new UserInputError('Assessment not found')
     }
 
@@ -69,8 +70,18 @@ export default class QuestionService {
             create: {
               programmingQuestionType:
                 programmingQuestion.programmingQuestionType,
-              title: programmingQuestion.title,
               statementMrkdwn: programmingQuestion.statementMrkdwn,
+              title: programmingQuestion.title,
+              singleFileProgrammingQuestion: {
+                create: {
+                  defaultCode:
+                    programmingQuestion.singleFileProgrammingQuestion
+                      .defaultCode,
+                  allowedLanguages: {
+                    connect: { extension: 'cpp' },
+                  },
+                },
+              },
             },
           },
         },

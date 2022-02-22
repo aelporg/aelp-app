@@ -29,12 +29,12 @@ import { JwtAuthGuard } from './guards/JwtAuthGuard'
   ],
   providers: [
     AuthService,
-    JwtStrategy,
     IPAddressLookUpService,
     GoogleOAuthClientService,
     AuthResolver,
     JwtAuthGuard,
+    JwtStrategy,
   ],
-  exports: [AuthService],
+  exports: [AuthService, JwtAuthGuard],
 })
 export default class AuthModule {}

@@ -8,8 +8,6 @@ import {
   Resolver,
 } from '@nestjs/graphql'
 import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service'
-import { UseGuards } from '@nestjs/common'
-import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard'
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
 import { UserService } from './user.service'
 import { AuthService } from '../auth/auth.service'
@@ -41,7 +39,7 @@ export default class UserResolver {
     return user
   }
 
-  @ResolveField(type => ClassroomMember)
+  @ResolveField(() => ClassroomMember)
   async joinedClassrooms(@Parent() user: User) {
     return this.userService.getUserJoinedClassrooms(user)
   }

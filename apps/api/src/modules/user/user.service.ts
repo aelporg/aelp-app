@@ -95,6 +95,17 @@ export class UserService {
   async getUserById(id: string): Promise<User> {
     const user = await this.prismaService.user.findUnique({
       where: { id },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        userName: true,
+        email: true,
+        countryId: true,
+        role: true,
+        updatedAt: true,
+        createdAt: true,
+      },
     })
 
     if (!user) return null

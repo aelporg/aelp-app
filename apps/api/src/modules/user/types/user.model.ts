@@ -35,9 +35,6 @@ export class User {
   @Field(() => String, { nullable: false })
   email!: string
 
-  @HideField()
-  password!: string | null
-
   @Field(() => Country, { nullable: false })
   country?: Country
 

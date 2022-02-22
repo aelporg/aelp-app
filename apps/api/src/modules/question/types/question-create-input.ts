@@ -2,8 +2,46 @@ import { Field, InputType, Int } from '@nestjs/graphql'
 import { ProgrammingQuestionType, QuestionType } from '../../../global-types'
 
 @InputType()
+export class MultipleChoiceQuestionInput {
+  @Field(() => [String], { nullable: false })
+  choices!: string[]
+
+  @Field(() => Int, { nullable: false })
+  correctChoiceIndex!: number
+
+  @Field(() => String, { nullable: false })
+  description!: string
+}
+
+@InputType()
+export class SingleFileProgrammingQuestionInput {
+  @Field(() => String, { nullable: false })
+  defaultCode?: string
+}
+
+// @InputType()
+// export class MultipleFileProgrammingQuestionInput {}
+@InputType()
+export class ProgrammingQuestionInput {
+  @Field(() => ProgrammingQuestionType, { nullable: true })
+  programmingQuestionType!: ProgrammingQuestionType
+
+  @Field(() => SingleFileProgrammingQuestionInput, { nullable: true })
+  singleFileProgrammingQuestion?: SingleFileProgrammingQuestionInput
+
+  // @Field(() => MultipleFileProgrammingQuestionInput, { nullable: true })
+  // multipleFileProgrammingQuestion?: MultipleFileProgrammingQuestionInput
+
+  @Field(() => String, { nullable: false })
+  title!: string
+
+  @Field(() => String, { nullable: false })
+  statementMrkdwn!: string
+}
+
+@InputType()
 export class QuestionCreateInput {
-  @Field()
+  @Field(() => QuestionType, { nullable: false })
   questionType!: QuestionType
 
   @Field(() => Int, { nullable: true })
@@ -20,42 +58,3 @@ export class QuestionCreateInput {
   @Field(() => String, { nullable: true })
   assessmentId?: string
 }
-
-@InputType()
-export class MultipleChoiceQuestionInput {
-  @Field(() => [String], { nullable: false })
-  choices!: string[]
-
-  @Field(() => Int, { nullable: false })
-  correctChoiceIndex!: number
-
-  @Field(() => String, { nullable: false })
-  description!: string
-}
-
-@InputType()
-export class ProgrammingQuestionInput {
-  @Field(() => ProgrammingQuestionType, { nullable: true })
-  programmingQuestionType!: ProgrammingQuestionType
-
-  @Field(() => SingleFileProgrammingQuestionInput, { nullable: true })
-  singleFileProgrammingQuestion?: SingleFileProgrammingQuestionInput
-
-  @Field(() => MultipleFileProgrammingQuestionInput, { nullable: true })
-  multipleFileProgrammingQuestion?: MultipleFileProgrammingQuestionInput
-
-  @Field(() => String, { nullable: false })
-  title!: string
-
-  @Field(() => String, { nullable: false })
-  statementMrkdwn!: string
-}
-
-@InputType()
-export class SingleFileProgrammingQuestionInput {
-  @Field(() => String, { nullable: false })
-  defaultCode?: string
-}
-
-@InputType()
-export class MultipleFileProgrammingQuestionInput {}

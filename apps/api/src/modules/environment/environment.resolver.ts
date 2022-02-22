@@ -1,4 +1,3 @@
-import { UseGuards } from '@nestjs/common'
 import {
   Args,
   Mutation,
@@ -8,7 +7,6 @@ import {
   Root,
 } from '@nestjs/graphql'
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
-import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard'
 import { User } from '../user/types/user.model'
 import { EnvironmentService } from './environment.service'
 import { EnvironmentPermission } from './types/environment-permission.model'
