@@ -1,12 +1,18 @@
 import { PrismaService } from '@aelp-app/models'
 import { Injectable } from '@nestjs/common'
-import { QuestionType } from '@prisma/client'
+import { Prisma, Question, QuestionType } from '@prisma/client'
 import { UserInputError } from 'apollo-server-express'
 import { User } from '../user/types/user.model'
 import { QuestionCreateInput } from './types/question-create-input'
 @Injectable()
 export default class QuestionService {
   constructor(private prismaService: PrismaService) {}
+
+  getById(id: string): Prisma.Prisma__QuestionClient<Question> {
+    return this.prismaService.question.findUnique({
+      where: { id },
+    })
+  }
 
   async createQuestion(data: QuestionCreateInput, user: User) {
     const {

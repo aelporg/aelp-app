@@ -1,5 +1,6 @@
 import { PrismaService, Prisma } from '@aelp-app/models'
 import { Injectable } from '@nestjs/common'
+import { Environment } from '@prisma/client'
 import { UserInputError } from 'apollo-server-express'
 import {
   EnvironmentPermissionLevel,
@@ -12,7 +13,7 @@ import { User } from '../user/types/user.model'
 export class EnvironmentService {
   constructor(private prismaService: PrismaService) {}
 
-  async getById(id: string) {
+  getById(id: string): Prisma.Prisma__EnvironmentClient<Environment> {
     return this.prismaService.environment.findUnique({
       where: { id },
     })
@@ -114,8 +115,7 @@ export class EnvironmentService {
             envirnment: {
               create: {
                 scratchPadData: '{}',
-                // TODO: FIX THIS
-                // files: {createMany:{data:}},
+                files,
                 permissions: {
                   create: {
                     permission: EnvironmentPermissionLevel.OWNER,

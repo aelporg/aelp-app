@@ -9,10 +9,10 @@ import { ProgrammingQuestionAnswerCount } from './programming-question-answer-co
 @ObjectType()
 export class ProgrammingQuestionAnswer {
   @Field(() => ID, { nullable: false })
-  id!: string
+  id!: string 
 
-  @Field(() => QuestionAnswer, { nullable: true })
-  baseAnswer?: QuestionAnswer | null
+  @Field(() => QuestionAnswer, { nullable: false })
+  baseAnswer?: QuestionAnswer
 
   @Field(() => Environment, { nullable: false })
   envirnment?: Environment

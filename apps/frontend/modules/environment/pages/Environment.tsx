@@ -5,6 +5,8 @@ import { Logo } from '@components/primitives'
 import Editor, { useMonaco } from '@monaco-editor/react'
 import { useEffect } from 'react'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
+import { CogIcon } from '@heroicons/react/outline'
+import Markdown from 'react-markdown'
 
 export default function Environment() {
   const monaco = useMonaco()
@@ -21,13 +23,18 @@ export default function Environment() {
       <TopNav persistentBorder heading={<Logo href="/app" />} sticky={false} />
       <Splitter
         gutterClassName="bg-slate-100"
-        initialSizes={[15, 40, 45]}
+        initialSizes={[50, 50]}
         draggerClassName="bg-slate-300"
       >
-        <div className="bg-slate-100"></div>
+        {/* <div className="bg-slate-100"></div> */}
         <div className="flex-1 h-full w-full">
+          <div className="flex justify-between py-4 px-6 border-b uppercase font-bold text-gray-400">
+            Code Editor
+            <CogIcon className="w-5" />
+          </div>
           <Editor
             language="cpp"
+            className="pt-2"
             options={{
               fontSize: 16,
               mouseWheelZoom: true,
@@ -44,18 +51,22 @@ export default function Environment() {
             direction={SplitDirection.Vertical}
           >
             <div className="flex-auto">
-              <Tabs>
+              <Tabs defaultValue="questionStatement">
                 <Tabs.List>
-                  <Tabs.Trigger value="whiteboard">Whiteboard</Tabs.Trigger>
                   <Tabs.Trigger value="questionStatement">
-                    Statement
+                      Statment
                   </Tabs.Trigger>
+                  <Tabs.Trigger value="whiteboard">Whiteboard</Tabs.Trigger>
                 </Tabs.List>
                 <Tabs.Content value="whiteboard">
-                  Whiteboard khul gya
+                  <div className='w-20 h-20'>
+
+                  </div>
                 </Tabs.Content>
                 <Tabs.Content value="questionStatement">
-                  Question statment khul gai
+                  <Markdown className='mrkdown' >
+                    {"## Question Statement \n\nThis is a question statement"}
+                  </Markdown>
                 </Tabs.Content>
               </Tabs>
             </div>

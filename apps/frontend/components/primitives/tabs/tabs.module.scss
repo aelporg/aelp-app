@@ -1,0 +1,5 @@
+.tabOnActive {
+  &[data-state='active'] {
+    @apply text-accent border-accent;
+  }
+}

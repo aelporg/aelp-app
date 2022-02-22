@@ -7,6 +7,7 @@ import {
   Root,
 } from '@nestjs/graphql'
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
+import { QuestionAnswer } from '../question/types/question-answer.model'
 import { User } from '../user/types/user.model'
 import { EnvironmentService } from './environment.service'
 import { EnvironmentPermission } from './types/environment-permission.model'
@@ -47,5 +48,10 @@ export default class EnvironmentResolver {
   @ResolveField(() => [EnvironmentPermission])
   async permissions(@Root() envirnment: Environment) {
     return this.environmentService.getEnvPermissions(envirnment.id)
+  }
+
+  @ResolveField(() => [QuestionAnswer])
+  async answers(@Root() envirnment: Environment) {
+    return this.environmentService.getById(envirnment.id).answers()
   }
 }

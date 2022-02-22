@@ -5,6 +5,7 @@ import { Question } from './question.model'
 import { AssessmentAnswer } from '../../assessment/types/assessment-answer.model'
 import { Int } from '@nestjs/graphql'
 import { MultipleChoiceQuestionAnswer } from './multiple-choice-question-answer.model'
+import { ProgrammingQuestionAnswer } from '../../environment/types/programming-question-answer.model'
 
 @ObjectType()
 export class QuestionAnswer {
@@ -12,7 +13,7 @@ export class QuestionAnswer {
   id!: string
 
   @Field(() => Question, { nullable: false })
-  question?: Question
+  question!: Question
 
   @Field(() => String, { nullable: false })
   questionId!: string
@@ -23,8 +24,8 @@ export class QuestionAnswer {
   @Field(() => String, { nullable: true })
   multipleChoiceQuestionAnswerId!: string | null
 
-  // @Field(() => ProgrammingQuestionAnswer, {nullable:true})
-  // programmingQuestionAnswer?: ProgrammingQuestionAnswer | null;
+  @Field(() => ProgrammingQuestionAnswer, {nullable:true})
+  programmingQuestionAnswer?: ProgrammingQuestionAnswer | null;
 
   @Field(() => String, { nullable: true })
   programmingQuestionAnswerId!: string | null

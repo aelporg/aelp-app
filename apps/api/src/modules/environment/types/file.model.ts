@@ -14,9 +14,6 @@ export class File {
   name!: string
 
   @Field(() => String, { nullable: false })
-  extension!: string
-
-  @Field(() => String, { nullable: false })
   data!: string
 
   @Field(() => Date, { nullable: false })
