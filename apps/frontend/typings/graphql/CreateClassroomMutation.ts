@@ -14,7 +14,7 @@ export interface CreateClassroomMutation_createClassroom {
   name: string;
   subject: string | null;
   section: string | null;
-  inviteCode: string;
+  inviteCode: string | null;
   createdAt: any;
   updatedAt: any;
 }

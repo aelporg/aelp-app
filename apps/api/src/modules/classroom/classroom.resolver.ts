@@ -15,6 +15,8 @@ import { JoinClassroomInput } from './types/join-classroom-input-type'
 import { PrismaService } from '@aelp-app/models'
 import { Classroom } from './types/classroom.model'
 import { User } from '../user/types/user.model'
+import { ClassroomAnnouncement } from './types/classroom-announcement.model'
+import { ClassroomMember } from './types/classroom-member.model'
 
 @Resolver(() => Classroom)
 export default class ClassroomResolver {
@@ -65,12 +67,22 @@ export default class ClassroomResolver {
     return this.classroomService.joinClassroom(data.inviteCode, user)
   }
 
-  @ResolveField()
+  @ResolveField(() => [ClassroomMember])
   async members(@Parent() classroom: Classroom) {
     return this.prismaService.classroom
       .findUnique({
         where: { id: classroom.id },
       })
       .members()
+  }
+
+  @ResolveField(() => [ClassroomAnnouncement])
+  async annoucements(@Parent() classroom: Classroom) {
+    return this.classroomService.getAnnoucements(classroom.id)
+  }
+
+  @ResolveField(() => String)
+  async inviteCode(@Parent() classroom: Classroom, @LoggedInUser() user: User) {
+    return this.classroomService.getClassroomInviteCode(classroom.id, user)
   }
 }

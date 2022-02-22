@@ -34,6 +34,7 @@ module.exports = {
     fontFamily: {
       sans: ['Satoshi', 'sans-serif'],
     },
+
   },
   plugins: [],
 };

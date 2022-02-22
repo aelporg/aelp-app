@@ -24,11 +24,12 @@ export interface ClassroomQuery_classroom_members {
 export interface ClassroomQuery_classroom {
   __typename: "Classroom";
   id: string;
+  createdAt: any;
+  updatedAt: any;
   name: string;
   subject: string | null;
   section: string | null;
-  createdAt: any;
-  updatedAt: any;
+  inviteCode: string | null;
   members: ClassroomQuery_classroom_members[] | null;
 }
 

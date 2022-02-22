@@ -1,11 +1,16 @@
 import { PrismaService } from '@aelp-app/models'
-import { Injectable } from '@nestjs/common'
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { UserInputError } from 'apollo-server-errors'
 import { generate } from 'randomstring'
 import { Prisma } from '@aelp-app/models'
 import { CreateClassroomInput } from './types/create-classroom-input-type'
 import { User } from '../user/types/user.model'
 import { ClassroomRole } from '../../global-types/classroom-role.enum'
+import { Classroom } from '@prisma/client'
 
 export class ClassroomInviteCodeGenError extends Error {
   constructor() {
@@ -23,10 +28,20 @@ export default class ClassroomService {
     })
   }
 
-  async getClassroomById(id: string) {
+  getClassroomById(id: string): Prisma.Prisma__ClassroomClient<Classroom> {
     return this.prismaService.classroom.findUnique({
       where: { id },
     })
+  }
+
+  async getClassroomInviteCode(classroomId: string, user: User) {
+    const memberRecord = await this.getClassroomById(classroomId).members({
+      where: { userId: user.id },
+    })
+
+    if (memberRecord.length < 1 || memberRecord[0].classroomRole === ClassroomRole.STUDENT) return null;
+
+    return (await this.getClassroomById(classroomId)).inviteCode
   }
 
   async generateUniqueInviteCode(retryNo = 0) {
@@ -100,7 +115,12 @@ export default class ClassroomService {
     })
   }
 
-  async getAnnoucements(classroomId: string, user: User) {
-    // TODO: Test
+  // This is specific to classroom, as we are getting announcements of a particular class
+  async getAnnoucements(classroomId: string) {
+    return this.prismaService.classroom
+      .findUnique({
+        where: { id: classroomId },
+      })
+      .announcements()
   }
 }

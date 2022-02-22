@@ -24,25 +24,26 @@ generator nestgraphql {
 // --------------------
 
 model User {
-  id                    String                   @id @default(uuid())
-  firstName             String?
-  lastName              String?
-  userName              String                   @unique
-  email                 String                   @unique
+  id                     String                   @id @default(uuid())
+  firstName              String?
+  lastName               String?
+  userName               String                   @unique
+  email                  String                   @unique
   /// @HideField()
-  password              String?
-  country               Country                  @relation(fields: [countryId], references: [id], name: "user_country")
-  countryId             String
-  refreshTokens         UserRefreshToken[]       @relation("user_refreshTokens")
-  role                  Role                     @default(USER)
-  updatedAt             DateTime                 @updatedAt
-  createdAt             DateTime                 @default(now())
-  linkedAccounts        LinkedAccount[]          @relation("user_linkedAccounts")
-  joinedClassrooms      ClassroomMember[]        @relation("user_classroomMembers")
-  assessmentAnswers     AssessmentAnswer[]
-  envirnmentPermissions EnvironmentPermission[]
-  competitionsJoined    CompetitionParticipant[]
-  createdCompetitions   Competition[]
+  password               String?
+  country                Country                  @relation(fields: [countryId], references: [id], name: "user_country")
+  countryId              String
+  refreshTokens          UserRefreshToken[]       @relation("user_refreshTokens")
+  role                   Role                     @default(USER)
+  updatedAt              DateTime                 @updatedAt
+  createdAt              DateTime                 @default(now())
+  linkedAccounts         LinkedAccount[]          @relation("user_linkedAccounts")
+  joinedClassrooms       ClassroomMember[]        @relation("user_classroomMembers")
+  assessmentAnswers      AssessmentAnswer[]
+  environmentPermissions EnvironmentPermission[]
+  competitionsJoined     CompetitionParticipant[]
+  createdCompetitions    Competition[]
+  classroomAnnoucements  ClassroomAnnouncement[]
 }
 
 enum Role {
@@ -105,22 +106,24 @@ model Classroom {
   members                      ClassroomMember[]             @relation("classroom_members")
   assessments                  Assessment[]
   practiceProgrammingQuestions PracticeProgrammingQuestion[]
-  announcements                ClassroomAnnouncements[]
+  announcements                ClassroomAnnouncement[]
 }
 
-model ClassroomAnnouncements {
-  id          String                 @id @default(uuid())
-  classroom   Classroom              @relation(fields: [classroomId], references: [id])
+model ClassroomAnnouncement {
+  id          String                   @id @default(uuid())
+  classroom   Classroom                @relation(fields: [classroomId], references: [id])
   classroomId String
+  user        User                     @relation(fields: [userId], references: [id])
+  userId      String
   content     String
-  attachments AnnoucmentAttachment[]
+  attachments AnnouncementAttachment[]
 }
 
-model AnnoucmentAttachment {
-  id                      String                 @id @default(uuid())
+model AnnouncementAttachment {
+  id                      String                @id @default(uuid())
   fileName                String
   file                    Bytes
-  classroomAnnouncement   ClassroomAnnouncements @relation(fields: [classroomAnnouncementId], references: [id])
+  classroomAnnouncement   ClassroomAnnouncement @relation(fields: [classroomAnnouncementId], references: [id])
   classroomAnnouncementId String
 }
 
@@ -217,7 +220,6 @@ model ProgrammingQuestion {
   id                                 String                            @id @default(uuid())
   title                              String
   statementMrkdwn                    String
-  statementCompiled                  String
   programmingQuestionType            ProgrammingQuestionType
   singleFileProgrammingQuestion      SingleFileProgrammingQuestion?    @relation(name: "question_singleFileProgrammingQuestion", fields: [singleFileProgrammingQuestionId], references: [id])
   singleFileProgrammingQuestionId    String?                           @unique

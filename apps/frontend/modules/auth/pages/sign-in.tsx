@@ -13,6 +13,10 @@ import {
   LoginWithCreds,
   LoginWithCredsVariables,
 } from 'typings/graphql/LoginWithCreds'
+import {
+  LoginWithGoogle,
+  LoginWithGoogleVariables,
+} from 'typings/graphql/LoginWithGoogle'
 
 const LOGIN_WITH_CREDS_MUTATION = gql`
   mutation LoginWithCreds($email: String!, $password: String!) {
@@ -24,13 +28,29 @@ const LOGIN_WITH_CREDS_MUTATION = gql`
   }
 `
 
+const LOGIN_WITH_GOOGLE = gql`
+  mutation LoginWithGoogle($tokenId: String!) {
+    loginWithGoogle(tokenId: $tokenId) {
+      token
+      refreshToken
+      userId
+    }
+  }
+`
+
 export default function SignIn() {
   const authStore = useAuthStore()
 
-  const [loginWithCreds, { error, loading }] = useMutation<
-    LoginWithCreds,
-    LoginWithCredsVariables
-  >(LOGIN_WITH_CREDS_MUTATION)
+  const [loginWithCreds, { error: credsError, loading: credsLoading }] =
+    useMutation<LoginWithCreds, LoginWithCredsVariables>(
+      LOGIN_WITH_CREDS_MUTATION
+    )
+
+  const [loginWithGoogle, { error: googleError, loading: googleLoading }] =
+    useMutation<LoginWithGoogle, LoginWithGoogleVariables>(LOGIN_WITH_GOOGLE)
+
+  const error = credsError || googleError
+  const loading = credsLoading || googleLoading
 
   const handleLoginWithCreds = async (input: LoginWithCredsVariables) => {
     try {
@@ -42,7 +62,20 @@ export default function SignIn() {
     } catch (e) {
       // error
     }
+  }
 
+  const handleThirdPartyAuth = async (tokenId: string) => {
+    try {
+      const { data } = await loginWithGoogle({
+        variables: {
+          tokenId
+        },
+      })
+
+      authStore.login(data.loginWithGoogle)
+    } catch (e) {
+      // error
+    }
   }
 
   return (
@@ -87,7 +120,7 @@ export default function SignIn() {
               className="mt-2"
               variant="primary"
               type="submit"
-              loading={loading}
+              loading={credsLoading}
               disabled={loading}
             >
               Sign In
@@ -98,8 +131,13 @@ export default function SignIn() {
               </Button>
             </Link>
             <OrLine className="my-6" />
-            <ThirdPartyAuthButton variant="google" />
-            <ThirdPartyAuthButton variant="github" />
+            <ThirdPartyAuthButton
+              authType="google"
+              onSuccess={handleThirdPartyAuth}
+              disabled={loading}
+              loading={googleLoading}
+            />
+            <ThirdPartyAuthButton authType="github" disabled={loading} />
           </div>
         </HForm>
       </div>

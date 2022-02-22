@@ -24,10 +24,11 @@ export interface ClassroomDetails_members {
 export interface ClassroomDetails {
   __typename: "Classroom";
   id: string;
+  createdAt: any;
+  updatedAt: any;
   name: string;
   subject: string | null;
   section: string | null;
-  createdAt: any;
-  updatedAt: any;
+  inviteCode: string | null;
   members: ClassroomDetails_members[] | null;
 }

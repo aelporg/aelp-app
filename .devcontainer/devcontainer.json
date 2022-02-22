@@ -29,7 +29,8 @@
 		"bradlc.vscode-tailwindcss",
 		"visualstudioexptteam.vscodeintellicode",
 		"eamodio.gitlens",
-		"github.copilot"
+		"github.copilot",
+    "atlassian.atlascode"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],

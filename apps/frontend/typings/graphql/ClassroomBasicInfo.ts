@@ -12,4 +12,5 @@ export interface ClassroomBasicInfo {
   name: string;
   subject: string | null;
   section: string | null;
+  inviteCode: string | null;
 }
