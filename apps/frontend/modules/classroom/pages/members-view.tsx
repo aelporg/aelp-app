@@ -5,6 +5,10 @@ import Avatar from '@components/primitives/avatar'
 import { MyClassroomsQuery_classrooms_members } from 'typings/graphql/MyClassroomsQuery'
 import Button from '@components/primitives/button'
 import { UserAddIcon } from '@heroicons/react/outline'
+import useDisclosure from 'lib/hooks/useDisclosure'
+import Modal from '@components/primitives/modal/modal'
+import { useClassroomContext } from '../store/ClassroomContext'
+import Input from '@components/primitives/input/input'
 
 type MemberListItemProps = {
   member: MyClassroomsQuery_classrooms_members
@@ -55,27 +59,53 @@ function MemberList({ members, filter, className, title }: MemberListProps) {
 }
 
 function MemberViewNavActions() {
-  return <Button icon={<UserAddIcon />}>Invite</Button>
+  const { isOpen, onClose, onOpen } = useDisclosure()
+
+  const { userClassroomRole, data } = useClassroomContext()
+
+  if (
+    !userClassroomRole?.classroomRole ||
+    userClassroomRole.classroomRole === ClassroomRole.STUDENT
+  )
+    return null
+
+  return (
+    <>
+      <Modal onClose={onClose} isOpen={isOpen} title={'Invite Members'}>
+        Share the following invite code with your students or other instructors<br/>
+        <Input className='mt-4 text-5xl text-center' value={data?.classroom.inviteCode} />
+      </Modal>
+      <Button onClick={onOpen} icon={<UserAddIcon />}>
+        Invite
+      </Button>
+    </>
+  )
+}
+
+function MembersViewContent() {
+  const { data } = useClassroomContext()
+
+  return (
+    <div className="">
+      <MemberList
+        title="Teachers"
+        filter={member => member.classroomRole !== ClassroomRole.STUDENT}
+        members={data?.classroom.members}
+      />
+      <MemberList
+        className="mt-6"
+        title="Students"
+        filter={member => member.classroomRole === ClassroomRole.STUDENT}
+        members={data?.classroom.members}
+      />
+    </div>
+  )
 }
 
 function MembersView() {
   return (
     <ClassroomLayout topNavActions={<MemberViewNavActions />}>
-      {({ data }) => (
-        <div className="">
-          <MemberList
-            title="Teachers"
-            filter={member => member.classroomRole !== ClassroomRole.STUDENT}
-            members={data?.classroom.members}
-          />
-          <MemberList
-            className="mt-6"
-            title="Students"
-            filter={member => member.classroomRole === ClassroomRole.STUDENT}
-            members={data?.classroom.members}
-          />
-        </div>
-      )}
+      <MembersViewContent />
     </ClassroomLayout>
   )
 }

@@ -29,5 +29,6 @@ export interface ClassroomDetails {
   name: string;
   subject: string | null;
   section: string | null;
+  inviteCode: string | null;
   members: ClassroomDetails_members[] | null;
 }

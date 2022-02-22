@@ -8,6 +8,7 @@ import {
   CollectionIcon,
 } from '@heroicons/react/outline'
 import { Layout, LayoutProps } from '@modules/dashboard/components/layout'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import {
   ClassroomQuery,
@@ -15,6 +16,10 @@ import {
 } from 'typings/graphql/ClassroomQuery'
 import SidebarClassroomHeader from '../components/sidebar-classroom-header'
 import { CLASSROOM_QUERY } from '../graphql/classroom-query'
+import {
+  ClassroomContextConsumer,
+  ClassroomContextProvider,
+} from '../store/ClassroomContext'
 
 const ClassroomLinks = [
   {
@@ -49,11 +54,7 @@ const ClassroomLinks = [
   },
 ]
 
-type ClassroomLayoutProps = Omit<LayoutProps, 'links'> & {
-  children?: (
-    queryResult: QueryResult<ClassroomQuery, ClassroomQueryVariables>
-  ) => React.ReactNode | React.ReactNode
-}
+type ClassroomLayoutProps = Omit<LayoutProps, 'links'>
 
 export default function ClassroomLayout({
   children,
@@ -61,20 +62,24 @@ export default function ClassroomLayout({
 }: ClassroomLayoutProps) {
   const router = useRouter()
   const { id } = router.query
-  const queryResult = useQuery<ClassroomQuery, ClassroomQueryVariables>(CLASSROOM_QUERY, {
-    variables: { id: id as string },
-  })
 
   return (
-    <Layout
-      {...props}
-      sidebarBaseLink={`/app/classroom/${id}`}
-      sidebarLinks={ClassroomLinks}
-      sideBarBetweenElement={
-        <SidebarClassroomHeader classroom={queryResult.data?.classroom} />
-      }
-    >
-      {typeof children === "function" ? children(queryResult) : children}
-    </Layout>
+    <ClassroomContextProvider classroomId={id as string}>
+      <ClassroomContextConsumer>
+        {value => (
+          <Head>
+            <title>{value?.data?.classroom.name} | Classroom</title>
+          </Head>
+        )}
+      </ClassroomContextConsumer>
+      <Layout
+        {...props}
+        sidebarBaseLink={`/app/classroom/${id}`}
+        sidebarLinks={ClassroomLinks}
+        sideBarBetweenElement={<SidebarClassroomHeader />}
+      >
+        {children}
+      </Layout>
+    </ClassroomContextProvider>
   )
 }

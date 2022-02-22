@@ -80,4 +80,9 @@ export default class ClassroomResolver {
   async annoucements(@Parent() classroom: Classroom) {
     return this.classroomService.getAnnoucements(classroom.id)
   }
+
+  @ResolveField(() => String)
+  async inviteCode(@Parent() classroom: Classroom, @LoggedInUser() user: User) {
+    return this.classroomService.getClassroomInviteCode(classroom.id, user)
+  }
 }

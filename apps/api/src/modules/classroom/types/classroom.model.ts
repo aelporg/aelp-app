@@ -20,8 +20,8 @@ export class Classroom {
   @Field(() => String, { nullable: true })
   section!: string | null
 
-  @Field(() => String, { nullable: false })
-  inviteCode!: string
+  @Field(() => String, { nullable: true })
+  inviteCode?: string
 
   @Field(() => Date, { nullable: false })
   updatedAt!: Date

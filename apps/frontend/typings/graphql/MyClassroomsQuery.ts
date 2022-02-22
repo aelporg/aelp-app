@@ -34,6 +34,7 @@ export interface MyClassroomsQuery_classrooms {
   name: string;
   subject: string | null;
   section: string | null;
+  inviteCode: string | null;
   members: MyClassroomsQuery_classrooms_members[] | null;
   assessments: MyClassroomsQuery_classrooms_assessments[] | null;
 }

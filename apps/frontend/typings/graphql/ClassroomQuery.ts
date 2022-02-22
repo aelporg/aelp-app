@@ -29,6 +29,7 @@ export interface ClassroomQuery_classroom {
   name: string;
   subject: string | null;
   section: string | null;
+  inviteCode: string | null;
   members: ClassroomQuery_classroom_members[] | null;
 }
 

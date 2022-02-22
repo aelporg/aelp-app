@@ -77,9 +77,9 @@ export default function AuthStoreProvider(props: React.PropsWithChildren<any>) {
     [auth]
   )
 
-  const mainLink = createHttpLink({
+  const mainLink = useRef(createHttpLink({
     uri: process.env.NEXT_PUBLIC_GRAPHQL_API_ENDPOINT || '/graphql',
-  })
+  })).current
 
   const getApiLink = useCallback(() => {
     return from([authMiddleware, afterwareLink, mainLink])

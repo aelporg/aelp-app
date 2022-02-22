@@ -28,7 +28,7 @@ function ClassroomCard({ classroom }: ClassroomCardProps) {
         <div className="h-20 flex justify-end items-center bg-accent">
           {isMyClass && (
             <div className="translate-y-1/2 mx-4 transform">
-              <Avatar size="md" name={owner.name} />
+              <Avatar size="lg" name={owner.name} />
             </div>
           )}
         </div>

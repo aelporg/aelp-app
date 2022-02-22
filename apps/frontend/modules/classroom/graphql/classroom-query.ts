@@ -17,6 +17,7 @@ const CLASSROOM_BASIC_INFO_FRAGMENT = gql`
     name
     subject
     section
+    inviteCode
   }
 `
 

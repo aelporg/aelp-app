@@ -3,6 +3,10 @@
   html {
     @apply text-black;
   }
+
+  body {
+    @apply selection:bg-accent selection:bg-opacity-30
+  }
 }
 
 @import 'index.scss';
