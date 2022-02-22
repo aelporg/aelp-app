@@ -107,6 +107,8 @@ export class UserService {
       where: { id },
     })
 
+    if (!user) return null;
+
     return {
       ...user,
       name:
