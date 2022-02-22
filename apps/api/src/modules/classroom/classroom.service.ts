@@ -39,7 +39,11 @@ export default class ClassroomService {
       where: { userId: user.id },
     })
 
-    if (memberRecord.length < 1 || memberRecord[0].classroomRole === ClassroomRole.STUDENT) return null;
+    if (
+      memberRecord.length < 1 ||
+      memberRecord[0].classroomRole === ClassroomRole.STUDENT
+    )
+      return null
 
     return (await this.getClassroomById(classroomId)).inviteCode
   }

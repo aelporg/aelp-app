@@ -11,6 +11,8 @@ import AuthModule from '../modules/auth/auth.module'
 import ClassroomModule from '../modules/classroom/classroom.module'
 import { environment } from '../environments/environment'
 import { EnvironmentModule } from '../modules/environment/environment.module'
+import AssessmentModule from '../modules/assessment/assessment.module'
+import QuestionsModule from '../modules/question/question.module'
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { EnvironmentModule } from '../modules/environment/environment.module'
     AuthModule,
     ClassroomModule,
     EnvironmentModule,
+    AssessmentModule,
+    QuestionsModule,
 
     // Main GraphQL module
     GraphQLModule.forRoot({

@@ -33,10 +33,7 @@ export function QuestionCard(props: QuestionCardProps) {
             What is the best way to learn React?
           </h2>
           <p className="text-gray-500">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-            Lorem ipsum dolor sit amet
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat repellat, culpa voluptatum non nobis quis iusto inventore, commodi quod reiciendis asperiores amet a cum deleniti dignissimos minus, saepe harum eius.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Tag>#react</Tag>

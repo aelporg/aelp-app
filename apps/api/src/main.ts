@@ -8,13 +8,19 @@ import { JoiPipe } from 'nestjs-joi'
 import { NestFactory } from '@nestjs/core'
 
 import { AppModule } from './app/app.module'
+import AuthModule from './modules/auth/auth.module'
+import { JwtAuthGuard } from './modules/auth/guards/JwtAuthGuard'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   const validationPipe = new JoiPipe()
 
   app.enableCors({ exposedHeaders: ['set-access-token'] })
+
+  const jwtAuthGuard = app.select(AuthModule).get(JwtAuthGuard)
+
   app.useGlobalPipes(validationPipe)
+  app.useGlobalGuards(jwtAuthGuard)
 
   const port = process.env.PORT || 3333
 

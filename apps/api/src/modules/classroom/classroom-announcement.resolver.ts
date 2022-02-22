@@ -35,7 +35,6 @@ export default class ClassroomAnnouncementResolver {
     return this.userService.getUserById(annoucement.userId)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Mutation(() => ClassroomAnnouncement)
   async createAnnouncement(
     @Args('data') data: ClassroomAnnoucementCreateInput,

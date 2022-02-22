@@ -9,6 +9,7 @@ import { AuthService } from './auth.service'
 import UserModule from '../user/user.module'
 import { GoogleOAuthClientService } from './google-oauth-client.service'
 import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service'
+import { JwtAuthGuard } from './guards/JwtAuthGuard'
 
 @Global()
 @Module({
@@ -32,6 +33,7 @@ import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.s
     IPAddressLookUpService,
     GoogleOAuthClientService,
     AuthResolver,
+    JwtAuthGuard,
   ],
   exports: [AuthService],
 })

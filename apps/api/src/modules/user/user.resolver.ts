@@ -36,13 +36,11 @@ export default class UserResolver {
     return this.authService.authorizeWithRefreshToken(userId)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Query(() => User)
   me(@LoggedInUser() user: User) {
     return user
   }
 
-  @UseGuards(JwtAuthGuard)
   @ResolveField(type => ClassroomMember)
   async joinedClassrooms(@Parent() user: User) {
     return this.userService.getUserJoinedClassrooms(user)

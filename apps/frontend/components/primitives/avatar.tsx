@@ -18,7 +18,7 @@ function getAvatarClassNamesBySize(size: Size) {
     case 'md':
       return 'w-12 h-12 text-xl'
     case 'lg':
-      return 'w-16 h-16 text-2xl'
+      return 'w-20 h-20 text-3xl'
   }
 }
 

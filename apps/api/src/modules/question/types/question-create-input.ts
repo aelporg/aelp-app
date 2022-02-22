@@ -1,7 +1,5 @@
-import { Field, InputType, Int } from "@nestjs/graphql";
-import { ProgrammingQuestionType, QuestionType } from "../../../global-types";
-
-
+import { Field, InputType, Int } from '@nestjs/graphql'
+import { ProgrammingQuestionType, QuestionType } from '../../../global-types'
 
 @InputType()
 export class QuestionCreateInput {
@@ -35,7 +33,6 @@ export class MultipleChoiceQuestionInput {
   description!: string
 }
 
-
 @InputType()
 export class ProgrammingQuestionInput {
   @Field(() => ProgrammingQuestionType, { nullable: true })
@@ -62,5 +59,3 @@ export class SingleFileProgrammingQuestionInput {
 
 @InputType()
 export class MultipleFileProgrammingQuestionInput {}
-
-

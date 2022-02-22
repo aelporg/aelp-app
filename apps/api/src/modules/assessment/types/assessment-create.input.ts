@@ -5,9 +5,6 @@ import { AssessmentType } from '../../../global-types'
 
 @InputType()
 export class AssessmentCreateInput {
-  @Field(() => String, { nullable: true })
-  id?: string
-
   @Field(() => String, { nullable: false })
   title!: string
 
@@ -29,9 +26,6 @@ export class AssessmentCreateInput {
   @Field(() => Int, { nullable: true })
   totalPoints?: number
 
-  @Field(() => Date, { nullable: true })
-  updatedAt?: Date | string
-
-  @Field(() => Date, { nullable: true })
-  createdAt?: Date | string
+  @Field(() => String, { nullable: true })
+  classroomId?: string
 }

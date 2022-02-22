@@ -1,15 +1,21 @@
 import { PrismaService } from '@aelp-app/models'
-import { ExecutionContext, Injectable } from '@nestjs/common'
+import { ExecutionContext, Injectable, Logger } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { AuthGuard } from '@nestjs/passport'
 import { ExtractJwt } from 'passport-jwt'
 import { AuthService } from '../auth.service'
 import { Request, Response } from 'express'
 import { AuthenticationError } from 'apollo-server-express'
+import { Reflector } from '@nestjs/core'
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard(['jwt']) {
-  constructor(private readonly authService: AuthService) {
+  private readonly logger = new Logger(JwtAuthGuard.name)
+
+  constructor(
+    private readonly authService: AuthService,
+    private readonly reflector: Reflector
+  ) {
     super()
   }
 
@@ -18,19 +24,29 @@ export class JwtAuthGuard extends AuthGuard(['jwt']) {
   }
 
   async activate(context: ExecutionContext) {
-    return super.canActivate(context) as Promise<boolean>
+    return super.canActivate(context)
   }
 
-  async canActivate(context: ExecutionContext) {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const gctx = GqlExecutionContext.create(context).getContext()
     const req: Request = gctx.req
+
+    const skipAuth = this.reflector.get<boolean>(
+      'skipAuth',
+      context.getHandler()
+    )
+
+    if (skipAuth) {
+      this.logger.log('Skipping auth guard')
+      return true
+    }
 
     const accessToken = ExtractJwt.fromHeader('x-access-token')(req)
     const refreshToken = req.headers['x-refresh-token'] as string
     const isAccessTokenValid = this.authService.verifyAuthToken(accessToken)
 
     if (isAccessTokenValid) {
-      return this.activate(context)
+      return true
     }
 
     if (!refreshToken) {
@@ -50,6 +66,6 @@ export class JwtAuthGuard extends AuthGuard(['jwt']) {
     req.headers['x-access-token'] = newToken
     gctx.res.setHeader('set-access-token', newToken)
 
-    return this.activate(context)
+    return true
   }
 }

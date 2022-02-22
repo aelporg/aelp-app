@@ -20,13 +20,11 @@ export default class EnvironmentResolver {
   constructor(private environmentService: EnvironmentService) {}
 
   @Query(() => [Environment])
-  @UseGuards(JwtAuthGuard)
   async envirnoments(@LoggedInUser() user: User) {
     return this.environmentService.getUserEnvironments(user)
   }
 
   @Mutation(() => Environment)
-  @UseGuards(JwtAuthGuard)
   async createEnvironment(
     @LoggedInUser() user: User,
     @Args('questionId') questionId: string
@@ -35,7 +33,6 @@ export default class EnvironmentResolver {
   }
 
   @Query(() => Environment)
-  @UseGuards(JwtAuthGuard)
   async envirnoment(@Args('id') id: string, @LoggedInUser() user: User) {
     if (await this.environmentService.getUserEnvPermission(id, user)) {
       return this.environmentService.getById(id)
@@ -44,17 +41,13 @@ export default class EnvironmentResolver {
     return null
   }
 
-  @UseGuards(JwtAuthGuard)
   @ResolveField(() => [File])
   async files(@Root() envirnment: Environment) {
     return this.environmentService.getEnviromentFiles(envirnment.id)
   }
 
-  @UseGuards(JwtAuthGuard)
   @ResolveField(() => [EnvironmentPermission])
-  async permissions(
-    @Root() envirnment: Environment,
-  ) {
+  async permissions(@Root() envirnment: Environment) {
     return this.environmentService.getEnvPermissions(envirnment.id)
   }
 }

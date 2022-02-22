@@ -44,6 +44,7 @@ model User {
   competitionsJoined     CompetitionParticipant[]
   createdCompetitions    Competition[]
   classroomAnnoucements  ClassroomAnnouncement[]
+  assessments            Assessment[]
 }
 
 enum Role {
@@ -167,6 +168,8 @@ model Assessment {
   answers        AssessmentAnswer[]
   competition    Competition?       @relation(fields: [competitionId], references: [id])
   competitionId  String?            @unique
+  user           User               @relation(fields: [userId], references: [id])
+  userId         String
 }
 
 enum AssessmentType {
@@ -186,7 +189,7 @@ model Question {
   assessmentId             String?
   updatedAt                DateTime                @updatedAt
   createdAt                DateTime                @default(now())
-  answers                   QuestionAnswer[]        @relation("question_submission")
+  answers                  QuestionAnswer[]        @relation("question_submission")
 }
 
 enum QuestionType {

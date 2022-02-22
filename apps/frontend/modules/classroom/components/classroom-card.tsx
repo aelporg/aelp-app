@@ -1,5 +1,7 @@
 import { gql } from '@apollo/client'
 import Avatar from '@components/primitives/avatar'
+import Button from '@components/primitives/button'
+import { ClipboardListIcon } from '@heroicons/react/outline'
 import { useMeStore } from '@modules/auth/store/me-store'
 import classNames from 'classnames'
 import Link from 'next/link'
@@ -17,38 +19,40 @@ function ClassroomCard({ classroom }: ClassroomCardProps) {
   }, [classroom])
 
   const { me } = useMeStore()
-  const isMyClass = owner?.id !== me?.id && owner !== undefined
+  const isMyClass = owner?.id === me?.id && owner !== undefined
 
   return (
     <Link href={`/app/classroom/${classroom.id}`} passHref>
       <div className="flex border-2 hover:shadow-lg border-slate-200 duration-200 transition-all rounded-lg overflow-hidden flex-col cursor-pointer focus:ring-2 ring-red-100 select-none">
-        <div className="h-20 flex justify-end items-center bg-accent">
-          {isMyClass && (
+        <div className="flex justify-between bg-gray-50 border-b-2">
+          <div className={classNames('p-4', !isMyClass && 'w-8/12')}>
+            <h4
+              title={classroom.name}
+              className={classNames('text-2xl font-bold long-text')}
+            >
+              {classroom.name}
+            </h4>
+            <h6 className="text-slate-500 text-md long-text">
+              {classroom.subject}{' '}
+              {classroom.subject && classroom.section && '-'}{' '}
+              {classroom.section}
+            </h6>
+          </div>
+          {!isMyClass && (
             <div className="translate-y-1/2 mx-4 transform">
               <Avatar size="lg" name={owner.name} />
             </div>
           )}
         </div>
 
-        <div className="px-5 py-2.5 min-h-[10rem]">
-          <h4
-            title={classroom.name}
-            className={classNames(
-              'text-2xl font-bold  overflow-ellipsis overflow-hidden whitespace-nowrap',
-              isMyClass && 'w-9/12'
-            )}
-          >
-            {classroom.name}
-          </h4>
-          {isMyClass && (
+        <div className="px-5 py-2.5 min-h-[10em]">
+          {!isMyClass && (
             <div className="flex text-lg text-gray-600 font-bold items-center ">
               <span className="">{owner.name}</span>
             </div>
           )}
-          <h6 className="text-slate-500 text-md">
-            {classroom.subject} {classroom.subject && classroom.section && '-'}{' '}
-            {classroom.section}
-          </h6>
+
+          <div className="text-gray-500">You are all caught up!</div>
 
           {/* <h6 className="text-md mt-4 font-bold text-gray-500">
           Assessments Due Soon
@@ -69,7 +73,7 @@ function ClassroomCard({ classroom }: ClassroomCardProps) {
         <ChevronDownIcon className="ml-1 w-3 h-3" />
       </div> */}
         </div>
-        <div className="border-t p-5 min-h-[3rem]"></div>
+        <div className="border-t-2 p-5 min-h-[3rem]"></div>
       </div>
     </Link>
   )

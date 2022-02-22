@@ -25,13 +25,11 @@ export default class ClassroomResolver {
     private classroomService: ClassroomService
   ) {}
 
-  @UseGuards(JwtAuthGuard)
   @Query(() => [Classroom])
   async classrooms(@LoggedInUser() user: User) {
     return this.classroomService.getUserClassrooms(user)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Query(() => Classroom, { nullable: true })
   async classroom(@Args('id') id: string, @LoggedInUser() user: User) {
     const classroom = await this.classroomService.getClassroomById(id)
@@ -49,7 +47,6 @@ export default class ClassroomResolver {
     return classroom
   }
 
-  @UseGuards(JwtAuthGuard)
   @Mutation(() => Classroom)
   async createClassroom(
     @LoggedInUser() user: User,
@@ -58,7 +55,6 @@ export default class ClassroomResolver {
     return this.classroomService.createClassroom(data, user)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Mutation(() => Classroom)
   async joinClassroom(
     @LoggedInUser() user: User,

@@ -1,3 +1,7 @@
 .landing-page {
   width: min(60rem, 100%);
 }
+
+.long-text {
+  @apply whitespace-nowrap overflow-ellipsis overflow-hidden;
+}

@@ -1,8 +1,9 @@
 import { PrismaService } from '@aelp-app/models'
+import { Injectable } from '@nestjs/common'
 import { QuestionType } from '@prisma/client'
 import { UserInputError } from 'apollo-server-express'
 import { QuestionCreateInput } from './types/question-create-input'
-
+@Injectable()
 export default class QuestionService {
   constructor(private prismaService: PrismaService) {}
 
@@ -66,7 +67,8 @@ export default class QuestionService {
           ...commonData,
           programmingQuestion: {
             create: {
-              programmingQuestionType: programmingQuestion.programmingQuestionType,
+              programmingQuestionType:
+                programmingQuestion.programmingQuestionType,
               title: programmingQuestion.title,
               statementMrkdwn: programmingQuestion.statementMrkdwn,
             },
