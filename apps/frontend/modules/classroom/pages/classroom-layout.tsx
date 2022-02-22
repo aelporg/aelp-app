@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { QueryResult, useQuery } from '@apollo/client'
 import {
   InboxIcon,
   QuestionMarkCircleIcon,
@@ -49,7 +49,11 @@ const ClassroomLinks = [
   },
 ]
 
-type ClassroomLayoutProps = Omit<LayoutProps, 'links'>
+type ClassroomLayoutProps = Omit<LayoutProps, 'links'> & {
+  children?: (
+    queryResult: QueryResult<ClassroomQuery, ClassroomQueryVariables>
+  ) => React.ReactNode | React.ReactNode
+}
 
 export default function ClassroomLayout({
   children,
@@ -57,11 +61,7 @@ export default function ClassroomLayout({
 }: ClassroomLayoutProps) {
   const router = useRouter()
   const { id } = router.query
-  const {
-    data,
-    loading,
-    error,
-  } = useQuery<ClassroomQuery, ClassroomQueryVariables>(CLASSROOM_QUERY, {
+  const queryResult = useQuery<ClassroomQuery, ClassroomQueryVariables>(CLASSROOM_QUERY, {
     variables: { id: id as string },
   })
 
@@ -70,9 +70,11 @@ export default function ClassroomLayout({
       {...props}
       sidebarBaseLink={`/app/classroom/${id}`}
       sidebarLinks={ClassroomLinks}
-      sideBarBetweenElement={<SidebarClassroomHeader classroom={data?.classroom} />}
+      sideBarBetweenElement={
+        <SidebarClassroomHeader classroom={queryResult.data?.classroom} />
+      }
     >
-      {children}
+      {typeof children === "function" ? children(queryResult) : children}
     </Layout>
   )
 }

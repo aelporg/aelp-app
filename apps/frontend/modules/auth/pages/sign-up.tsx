@@ -95,8 +95,8 @@ export default function SignUp() {
             </Button>
           </Link>
           <OrLine className="my-6" />
-          <ThirdPartyAuthButton variant="google" createAccount />
-          <ThirdPartyAuthButton variant="github" createAccount />
+          <ThirdPartyAuthButton authType="google" createAccount />
+          <ThirdPartyAuthButton authType="github" createAccount />
         </HForm>
       </div>
     </div>

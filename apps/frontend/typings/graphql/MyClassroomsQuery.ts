@@ -29,11 +29,11 @@ export interface MyClassroomsQuery_classrooms_assessments {
 export interface MyClassroomsQuery_classrooms {
   __typename: "Classroom";
   id: string;
+  createdAt: any;
+  updatedAt: any;
   name: string;
   subject: string | null;
   section: string | null;
-  createdAt: any;
-  updatedAt: any;
   members: MyClassroomsQuery_classrooms_members[] | null;
   assessments: MyClassroomsQuery_classrooms_assessments[] | null;
 }

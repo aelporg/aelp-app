@@ -5,7 +5,7 @@ import { Size } from '../../typings/utils-types';
 type ButtonVariant = 'primary' | 'secondary' | 'custom';
 type ButtonSize = Size;
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   variant?: ButtonVariant;
   size?: ButtonSize;

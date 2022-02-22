@@ -21,31 +21,21 @@ export class UserService {
       let userName = await this.generateUserName(data.email)
 
       const hashedPassword = await hash(data.password, 10)
-      try {
-        const { id } = await this.prismaService.user.create({
-          data: {
-            email: data.email,
-            password: hashedPassword,
-            userName,
-            country: {
-              connect: {
-                countryCode: data.country || 'PK',
-              },
+
+      const { id } = await this.prismaService.user.create({
+        data: {
+          email: data.email,
+          password: hashedPassword,
+          userName,
+          country: {
+            connect: {
+              countryCode: data.country || 'PK',
             },
           },
-        })
+        },
+      })
 
-        return id
-      } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-          if (e.code === 'P2002') {
-            throw new Error(
-              `User with this ${(e.meta as any).target?.[0]} already exists.`
-            )
-          }
-        }
-        throw e
-      }
+      return id
     })
   }
 
@@ -107,7 +97,7 @@ export class UserService {
       where: { id },
     })
 
-    if (!user) return null;
+    if (!user) return null
 
     return {
       ...user,
