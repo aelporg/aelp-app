@@ -1,7 +1,5 @@
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql'
 import { UserAuthInfo } from './types/UserAuthInfo'
-import { UseGuards } from '@nestjs/common'
-import { JwtAuthGuard } from './guards/JwtAuthGuard'
 import { AuthService } from './auth.service'
 import { IPAddressLookUpService } from '../../helper-services/IPAdddressLookUp.service'
 import SkipAuth from './helpers/SkipAuth'
@@ -32,7 +30,7 @@ export default class AuthResolver {
   async refreshAuth(@Args('refreshToken') refreshToken: string) {
     return this.authService.refreshAuth(refreshToken)
   }
-
+  
   @SkipAuth()
   @Mutation(() => UserAuthInfo)
   async loginWithGoogle(

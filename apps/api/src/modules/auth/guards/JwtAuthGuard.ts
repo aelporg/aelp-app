@@ -38,7 +38,7 @@ export class JwtAuthGuard extends AuthGuard(['jwt']) {
 
     if (skipAuth) {
       this.logger.log('Skipping auth guard')
-      return this.activate(context)
+      return true
     }
 
     const accessToken = ExtractJwt.fromHeader('x-access-token')(req)

@@ -25,7 +25,7 @@ function ClassroomCard({ classroom }: ClassroomCardProps) {
     <Link href={`/app/classroom/${classroom.id}`} passHref>
       <div className="flex border-2 hover:shadow-lg border-slate-200 duration-200 transition-all rounded-lg overflow-hidden flex-col cursor-pointer focus:ring-2 ring-red-100 select-none">
         <div className="flex justify-between bg-gray-50 border-b-2">
-          <div className={classNames('p-4', !isMyClass && 'w-8/12')}>
+          <div className={classNames('p-4', !isMyClass ? 'w-8/12' : 'w-[95%]')}>
             <h4
               title={classroom.name}
               className={classNames('text-2xl font-bold long-text')}
