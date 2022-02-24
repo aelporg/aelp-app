@@ -1,5 +1,4 @@
 import ClassroomLayout from './classroom-layout'
-import { gql, useQuery } from '@apollo/client'
 import { ClassroomRole } from 'typings/graphql/globalTypes'
 import Avatar from '@components/primitives/avatar'
 import { MyClassroomsQuery_classrooms_members } from 'typings/graphql/MyClassroomsQuery'

@@ -81,7 +81,7 @@ export default function SignUp() {
             {error && error.message}
           </div>
           <Button
-            size="sm"
+            size="md"
             className="mt-6"
             type="submit"
             variant="primary"
@@ -90,7 +90,7 @@ export default function SignUp() {
             Sign Up
           </Button>
           <Link href="/auth/sign-in">
-            <Button size="sm" className="mt-2" variant="secondary">
+            <Button size="md" className="mt-2" variant="secondary">
               Already have an Account?
             </Button>
           </Link>

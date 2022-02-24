@@ -22,14 +22,14 @@ function ClassroomsViewActions({
   return (
     <div className="flex gap-3">
       <Button
-        size="sm"
+        size="md"
         variant="secondary"
         icon={<UserAddIcon />}
         onClick={onJoinClick}
       >
         Join
       </Button>
-      <Button size="sm" icon={<PlusIcon />} onClick={onCreateClick}>
+      <Button size="md" icon={<PlusIcon />} onClick={onCreateClick}>
         Create
       </Button>
     </div>

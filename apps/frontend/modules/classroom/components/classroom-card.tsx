@@ -64,7 +64,7 @@ function ClassroomCard({ classroom }: ClassroomCardProps) {
           Due in 2 Weeks / 24th Nov, 2021
           </p>
           </div>
-          <Button variant="secondary" size="sm" className="ml-4">
+          <Button variant="secondary" size="md" className="ml-4">
           View
           </Button>
         </div>

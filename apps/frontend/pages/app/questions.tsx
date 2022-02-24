@@ -11,7 +11,7 @@ export default function QuestionsList() {
   return (
     <MainDashboardLayout
       topNavActions={
-        <Button size="sm" icon={<AnnotationIcon />}>
+        <Button size="md" icon={<AnnotationIcon />}>
           Ask Question
         </Button>
       }

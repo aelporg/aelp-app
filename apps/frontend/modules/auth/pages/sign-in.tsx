@@ -116,7 +116,7 @@ export default function SignIn() {
               Forget your password?
             </a>
             <Button
-              size="sm"
+              size="md"
               className="mt-2"
               variant="primary"
               type="submit"
@@ -126,7 +126,7 @@ export default function SignIn() {
               Sign In
             </Button>
             <Link href="/auth/sign-up" passHref>
-              <Button size="sm" className="mt-2" variant="secondary">
+              <Button size="md" className="mt-2" variant="secondary">
                 Don&apos;t have an account?
               </Button>
             </Link>

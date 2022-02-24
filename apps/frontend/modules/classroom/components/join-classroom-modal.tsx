@@ -50,7 +50,7 @@ export default function JoinClassRoomModal({
           </FormGroup>
           <span className="text-error text-sm">{error?.message}</span>
 
-          <Button type="submit" loading={loading} className="mt-2" size="sm">
+          <Button type="submit" loading={loading} className="mt-2" size="md">
             Join
           </Button>
         </div>

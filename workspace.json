@@ -97,9 +97,7 @@
             "generatePackageJson": true
           },
           "configurations": {
-            "production": {
-
-            }
+            "production": {}
           }
         },
         "serve": {
@@ -226,7 +224,6 @@
               "docker push ghcr.io/aelporg/prisma:$CIRCLE_SHA1"
             ]
           }
-
         },
         "generate": {
           "executor": "@nrwl/workspace:run-commands",

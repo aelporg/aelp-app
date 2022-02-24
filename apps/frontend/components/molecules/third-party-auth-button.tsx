@@ -39,7 +39,7 @@ export function ThirdPartyAuthButton({
 
   return (
     <Button
-      size="sm"
+      size="md"
       disabled={disabled}
       loading={loading}
       className={classNames('mb-2', getButtonClassNamesByVariant(authType))}

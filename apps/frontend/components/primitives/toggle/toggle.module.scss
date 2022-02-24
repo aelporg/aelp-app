@@ -1,0 +1,7 @@
+.toggleOn {
+
+  &[data-state='on'] {
+    @apply bg-accent bg-opacity-10 text-accent;
+  }
+
+}

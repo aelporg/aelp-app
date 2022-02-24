@@ -1,5 +1,3 @@
-import ClassroomLayout from '@modules/classroom/pages/classroom-layout'
+import AnnouncementsView from '@modules/classroom/pages/announcements-view'
 
-export default function hi() {
-  return <ClassroomLayout></ClassroomLayout>
-}
+export default AnnouncementsView
