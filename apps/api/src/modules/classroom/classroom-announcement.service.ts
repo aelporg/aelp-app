@@ -50,7 +50,7 @@ export default class ClassroomAnnouncementsService {
       })
 
     // If annoucement user is trying to update is not created by them, throw an Unauthorized Exception
-    if (announcement.userId === user.id)
+    if (announcement.userId !== user.id)
       return new UnauthorizedException(
         'This announcement is not created by you.'
       )

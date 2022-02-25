@@ -46,6 +46,7 @@ model User {
   classroomAnnoucements  ClassroomAnnouncement[]
   assessments            Assessment[]
   DiscussionVote         DiscussionVote[]
+  Discussion             Discussion[]
 }
 
 enum Role {
@@ -464,6 +465,7 @@ model CompetitionParticipant {
 
 model Discussion {
   id          String               @id @default(uuid())
+  user        User                 @relation(fields: [userId], references: [id])
   title       String
   description String
   updatedAt   DateTime             @updatedAt
@@ -471,6 +473,7 @@ model Discussion {
   responces   DiscussionResponce[]
   votes       DiscussionVote[]
   tags        DiscussionTag[]
+  userId      String
 }
 
 model DiscussionResponce {
