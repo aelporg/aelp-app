@@ -34,25 +34,26 @@ export default class DiscussionResolver {
   @Mutation(() => Discussion)
   async createDiscussion(
     @LoggedInUser() user: User,
-    @Args('data') data: CreateClassroomInput,
+    @Args('data') data: CreateDiscussionInput,
   ) {
     return this.discussionService.createDiscussion(data, user)
   }
 
   @Mutation(() => Discussion)
   async updateDiscussion(
+    @Args('discussionId') discussionId: string,
     @LoggedInUser() user: User,
     @Args('data') data: CreateDiscussionInput
   ) {
-    return this.discussionService.updateDiscussion(data, user)
+    return this.discussionService.updateDiscussion(discussionId, data, user)
   }
 
   @Mutation(() => Discussion)
   async deleteDiscussion(
-    @LoggedInUser() user: User,
-    @Args('data') data: CreateDiscussionInput
+    @Args('discussionId') discussionId: string,
+    @LoggedInUser() user: User
   ) {
-    return this.discussionService.deleteDiscussion(data.discussionId, user)
+    return this.discussionService.deleteDiscussion(discussionId, user)
   }
 
   @ResolveField(() => [Discussion])
