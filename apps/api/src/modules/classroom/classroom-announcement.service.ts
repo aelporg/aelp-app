@@ -91,7 +91,8 @@ export default class ClassroomAnnouncementsService {
     })
   }
 
-  // This function will not be exposed to the api, so we can leave the authentication check
+  // This function will not be exposed to the api,
+  // so we can leave the authentication check
   async getAnnoucementAttachments(announcementId: string) {
     return this.prismaService.classroomAnnouncement
       .findUnique({
