@@ -1,0 +1,10 @@
+// OVERRIDES
+.w-md-editor-toolbar {
+  li {
+    button {
+      &:hover {
+        @apply text-accent;
+      }
+    }
+  }
+}
