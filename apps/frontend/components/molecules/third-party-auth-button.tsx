@@ -47,7 +47,7 @@ export function ThirdPartyAuthButton({
       onClick={authType === 'google' ? signIn : undefined}
       icon={authType === 'github' ? <GithubIcon /> : <GoogleIcon />}
     >
-      Sign {createAccount ? 'Up' : 'In'} with {capitalize(authType)}
+      Connect with {capitalize(authType)}
     </Button>
   )
 }

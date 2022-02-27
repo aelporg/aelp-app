@@ -40,7 +40,7 @@ function AnnouncementViewContent() {
 
   return (
     <div className="flex">
-      <div className="flex-1">
+      <div className="flex-1 max-w-4xl">
         <div className="mb-3">
           <AnnouncementCreateForm />
         </div>
@@ -49,7 +49,7 @@ function AnnouncementViewContent() {
           <AnnouncementCard key={announcement.id} announcement={announcement} />
         ))}
       </div>
-      <div className="flex-1"></div>
+      <div className="w-96"></div>
     </div>
   )
 }

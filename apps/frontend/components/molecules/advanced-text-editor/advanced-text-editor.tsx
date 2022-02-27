@@ -6,7 +6,6 @@ import type { MDEditorProps } from '@uiw/react-md-editor'
 // import rehypeSanitize from 'rehype-sanitize'
 // import rehypeKatex from 'rehype-katex'
 // import rehypeMermaid from 'rehype-mermaid'
-import './advanced-text-editor.module.scss'
 
 const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then(mod => mod.default),
@@ -65,7 +64,7 @@ export default function AdvancedTextEditor({
               // rehypePlugins: [[rehypeSanitize], [rehypeKatex], [rehypeMermaid]],
               style: {
                 fontFamily: 'sans-serif',
-                
+
               },
             }}
             style={{

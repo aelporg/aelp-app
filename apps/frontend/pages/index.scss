@@ -6,8 +6,13 @@
   @apply whitespace-nowrap overflow-ellipsis overflow-hidden;
 }
 
-
 .mrkdown {
+  font-family: Satoshi, sans-serif !important;
+
+  pre, code {
+    font-family: AelpFiraCode !important;
+  }
+
   h1 {
     @apply font-bold text-3xl;
   }
@@ -32,7 +37,7 @@
     @apply font-bold text-sm;
   }
 
-  // p {
-  //   @apply text-md;
-  // }
+  p {
+    @apply font-medium;
+  }
 }
