@@ -45,6 +45,8 @@ model User {
   createdCompetitions    Competition[]
   classroomAnnoucements  ClassroomAnnouncement[]
   assessments            Assessment[]
+  DiscussionVote         DiscussionVote[]
+  Discussion             Discussion[]
 }
 
 enum Role {
@@ -457,4 +459,47 @@ model CompetitionParticipant {
   updatedAt     DateTime    @updatedAt
 
   @@id([competitionId, userId])
+}
+
+// --------------------------
+// --- DISCUSSION RELATED ---
+// --------------------------
+
+model Discussion {
+  id          String               @id @default(uuid())
+  user        User                 @relation(fields: [userId], references: [id])
+  title       String
+  description String
+  updatedAt   DateTime             @updatedAt
+  createdAt   DateTime             @default(now())
+  responces   DiscussionResponce[]
+  votes       DiscussionVote[]
+  tags        DiscussionTag[]
+  userId      String
+}
+
+model DiscussionResponce {
+  id           String     @id @default(uuid())
+  discussionId String
+  responce     String
+  updatedAt    DateTime   @updatedAt
+  createdAt    DateTime   @default(now())
+  discussion   Discussion @relation(fields: [discussionId], references: [id])
+}
+
+model DiscussionVote {
+  id           String     @id @default(uuid())
+  user         User       @relation(fields: [userId], references: [id])
+  isUpvote     Boolean    @default(false)
+  discussionId String
+  discussion   Discussion @relation(fields: [discussionId], references: [id])
+  userId       String
+}
+
+model DiscussionTag {
+  id          String       @id @default(uuid())
+  name        String
+  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime     @default(now())
+  discussions Discussion[]
 }
