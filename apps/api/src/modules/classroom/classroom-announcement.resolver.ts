@@ -1,7 +1,5 @@
-import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql'
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
-import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard'
 import { User } from '../user/types/user.model'
 import { UserService } from '../user/user.service'
 import ClassroomAnnouncementsService from './classroom-announcement.service'

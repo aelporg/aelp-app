@@ -1,6 +1,7 @@
 import { UseGuards } from '@nestjs/common'
 import {
   Args,
+  ID,
   Mutation,
   Parent,
   Query,
@@ -31,7 +32,10 @@ export default class ClassroomResolver {
   }
 
   @Query(() => Classroom, { nullable: true })
-  async classroom(@Args('id') id: string, @LoggedInUser() user: User) {
+  async classroom(
+    @Args('id', { type: () => ID }) id: string,
+    @LoggedInUser() user: User
+  ) {
     const classroom = await this.classroomService.getClassroomById(id)
 
     if (!classroom) {
@@ -73,7 +77,7 @@ export default class ClassroomResolver {
   }
 
   @ResolveField(() => [ClassroomAnnouncement])
-  async annoucements(@Parent() classroom: Classroom) {
+  async announcements(@Parent() classroom: Classroom) {
     return this.classroomService.getAnnoucements(classroom.id)
   }
 

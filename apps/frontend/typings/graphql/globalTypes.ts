@@ -14,6 +14,22 @@ export enum ClassroomRole {
   TA = "TA",
 }
 
+export enum EnvironmentPermissionLevel {
+  OWNER = "OWNER",
+  READ = "READ",
+  READ_WRITE = "READ_WRITE",
+}
+
+export enum ProgrammingQuestionType {
+  MULTIPLE_FILE = "MULTIPLE_FILE",
+  SINGLE_FILE = "SINGLE_FILE",
+}
+
+export interface ClassroomAnnoucementCreateInput {
+  classroomId: string;
+  content: string;
+}
+
 export interface CreateClassroomInput {
   name: string;
   subject?: string | null;

@@ -53,7 +53,7 @@ export function Modal(props: ModalProps) {
                   {props.title}
                 </Dialog.Title>
 
-                <Button className="rounded-full px-2" variant="secondary" onClick={() => props.onClose()} icon={<XIcon />}></Button>
+                <Button className="rounded-full px-1.5" size="sm" variant="secondary" onClick={() => props.onClose()} icon={<XIcon />}></Button>
               </div>
               {props.children}
             </div>

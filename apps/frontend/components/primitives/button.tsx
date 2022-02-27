@@ -31,7 +31,7 @@ function getButtonClassNamesForSize(size: ButtonSize) {
     case 'sm':
       return 'py-1.5 px-2.5 text-sm rounded-md'
     case 'md':
-      return 'py-2 px-4 text-lg rounded-lg'
+      return 'py-2 px-4 text-md rounded-lg'
     case 'lg':
       return 'py-3 px-6 text-xl rounded-lg'
     case 'xl':

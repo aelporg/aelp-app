@@ -1,4 +1,3 @@
-import { UseGuards } from '@nestjs/common'
 import {
   Args,
   Mutation,
@@ -9,14 +8,12 @@ import {
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
 import DiscussionService from './discussion.service'
 import { CreateDiscussionInput } from './types/create-discussion-input-type'
-import { PrismaService } from '@aelp-app/models'
 import { Discussion } from './types/discussion.model'
 import { User } from '../user/types/user.model'
 
 @Resolver(() => Discussion)
 export default class DiscussionResolver {
   constructor(
-    private prismaService: PrismaService,
     private discussionService: DiscussionService
   ) {}
 
@@ -56,9 +53,9 @@ export default class DiscussionResolver {
     return this.discussionService.deleteDiscussion(discussionId, user)
   }
 
-  @ResolveField(() => [Discussion])
-  async discussions() {
-    return this.discussionService.getDiscussions()
-  }
+  // @ResolveField(() => [Discussion])
+  // async discussions() {
+  //   return this.discussionService.getDiscussions()
+  // }
 
 }

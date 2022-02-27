@@ -1,13 +1,41 @@
 import { gql } from "@apollo/client";
 
 export const ENVIRNOMENT_QUERY = gql`
-  query EnvironmentQuery($id: ID!) {
-    environment(id: $id) {
+  query EnvironmentQuery($id: String!) {
+    envirnoment(id: $id) {
       id
-      name
-      description
+      files {
+        name
+        data
+      }
+      answers {
+        id
+        baseAnswer {
+          id
+          question {
+            id
+            programmingQuestion {
+              id
+              statementMrkdwn
+              programmingQuestionType
+              title
+              evaluationCriterias {
+                name
+              }
+            }
+          }
+        }
+      }
+      scratchPadData
       createdAt
       updatedAt
+      permissions {
+        user {
+          id
+          name
+        }
+        permission
+      }
     }
   }
-`;
+`

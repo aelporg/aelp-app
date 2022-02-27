@@ -3,14 +3,21 @@ import dynamic from 'next/dynamic'
 import '@uiw/react-md-editor/markdown-editor.css'
 import '@uiw/react-markdown-preview/markdown.css'
 import type { MDEditorProps } from '@uiw/react-md-editor'
-import rehypeSanitize from 'rehype-sanitize'
-import rehypeKatex from 'rehype-katex'
-import rehypeMermaid from 'rehype-mermaid'
+// import rehypeSanitize from 'rehype-sanitize'
+// import rehypeKatex from 'rehype-katex'
+// import rehypeMermaid from 'rehype-mermaid'
 import './advanced-text-editor.module.scss'
 
 const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then(mod => mod.default),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-[75px] justify-center items-center">
+        Loading your editor
+      </div>
+    ),
+  }
 ) as React.ComponentType<MDEditorProps>
 
 export interface TextEditorProps {
@@ -21,19 +28,6 @@ export interface TextEditorProps {
   onBlur?: MDEditorProps['onBlur']
   placeholder?: string
 }
-
-const getCode = (arr = []) =>
-  arr
-    .map(dt => {
-      if (typeof dt === 'string') {
-        return dt
-      }
-      if (dt.props && dt.props.children) {
-        return getCode(dt.props.children)
-      }
-    })
-    .filter(Boolean)
-    .join('')
 
 export default function AdvancedTextEditor({
   onFocus,
@@ -52,11 +46,11 @@ export default function AdvancedTextEditor({
     >
       {!expanded && (
         <textarea
-          className="pt-1.5 h-8 w-full resize-none"
+          className="pt-1.5 h-8 w-full resize-none placeholder:font-medium"
           onFocus={e => onFocus(e as any)}
           placeholder={placeholder}
           readOnly={true}
-        ></textarea>
+        />
       )}
       {expanded && (
         <div className={'min-h-[75px]'}>
@@ -64,14 +58,18 @@ export default function AdvancedTextEditor({
             value={value}
             onChange={onChange}
             autoFocus={true}
-            // commands={[{ icon: <FiBold /> }]}
             hideToolbar={!expanded}
             height={250}
             onFocus={onFocus}
             previewOptions={{
-              rehypePlugins: [[rehypeSanitize], [rehypeKatex], [rehypeMermaid]],
+              // rehypePlugins: [[rehypeSanitize], [rehypeKatex], [rehypeMermaid]],
+              style: {
+                fontFamily: 'sans-serif',
+                
+              },
             }}
             style={{
+              fontFamily: 'sans-serif',
               boxShadow: 'none',
             }}
             placeholder="Write something..."

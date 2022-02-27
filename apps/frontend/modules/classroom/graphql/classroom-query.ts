@@ -35,7 +35,7 @@ const CLASSROOM_DETAILS_FRAGMENT = gql`
 
 export const CLASSROOM_QUERY = gql`
   ${CLASSROOM_DETAILS_FRAGMENT}
-  query ClassroomQuery($id: String!) {
+  query ClassroomQuery($id: ID!) {
     classroom(id: $id) {
       ...ClassroomDetails
     }

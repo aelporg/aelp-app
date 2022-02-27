@@ -35,14 +35,15 @@ export function ClassroomContextProvider(props: {
     CLASSROOM_QUERY,
     {
       variables: { id: props.classroomId },
-    }
+      fetchPolicy: props.classroomId ? 'cache-and-network' : 'standby',
+    },
   )
 
   const { me } = useMeStore()
   const userClassroomRole = useMemo(
     () =>
       queryResult.data?.classroom?.members.find(
-        member => member.user.id === me.id
+        member => member.user?.id === me?.id
       ),
     [me, queryResult]
   )

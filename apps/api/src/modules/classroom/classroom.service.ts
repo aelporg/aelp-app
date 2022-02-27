@@ -1,9 +1,5 @@
 import { PrismaService } from '@aelp-app/models'
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { UserInputError } from 'apollo-server-errors'
 import { generate } from 'randomstring'
 import { Prisma } from '@aelp-app/models'
@@ -125,6 +121,6 @@ export default class ClassroomService {
       .findUnique({
         where: { id: classroomId },
       })
-      .announcements()
+      .announcements({ orderBy: [{ createdAt: 'desc' }] })
   }
 }

@@ -65,9 +65,8 @@ export default class DiscussionService {
     })
   }
 
-  async getDiscussions() {
-    return this.prismaService.discussion
-      .findMany()
-      .discussions()
-  }
+  // async getDiscussions() {
+  //   return this.prismaService.discussion
+  //     .findMany()
+  // }
 }

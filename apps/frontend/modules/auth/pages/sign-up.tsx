@@ -33,7 +33,9 @@ export default function SignUp() {
       })
       authStore.login(data.register)
       reset()
-    } catch (e) {}
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return (
@@ -89,7 +91,7 @@ export default function SignUp() {
           >
             Sign Up
           </Button>
-          <Link href="/auth/sign-in">
+          <Link href="/auth/sign-in" passHref>
             <Button size="md" className="mt-2" variant="secondary">
               Already have an Account?
             </Button>

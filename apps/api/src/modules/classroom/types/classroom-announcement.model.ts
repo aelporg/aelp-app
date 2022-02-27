@@ -26,6 +26,12 @@ export class ClassroomAnnouncement {
   @Field(() => String, { nullable: false })
   content!: string
 
+  @Field(() => Date, { nullable: false })
+  createdAt!: Date
+
+  @Field(() => Date, { nullable: false })
+  updatedAt!: Date
+
   @Field(() => [AnnoucmentAttachment], { nullable: true })
   attachments?: Array<AnnoucmentAttachment>
 
