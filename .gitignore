@@ -47,5 +47,6 @@ Thumbs.db
 /.yarn/cache
 /.pnp.*
 node_modules
+.pnpm-store
 
 .env*

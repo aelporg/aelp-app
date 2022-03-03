@@ -225,10 +225,10 @@
             ]
           }
         },
-        "generate": {
+        "generate-client": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["yarn prisma generate"],
+            "commands": ["pnpm exec prisma generate"],
             "cwd": "libs/models"
           }
         },
