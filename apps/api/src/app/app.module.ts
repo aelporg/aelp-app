@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
 import { ConfigModule } from '@nestjs/config'
 import { RedisModule } from '@aelp-app/redis'
-import { ApolloDriver } from '@nestjs/apollo'
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 
 import { join } from 'path'
 
@@ -13,6 +13,16 @@ import { environment } from '../environments/environment'
 import { EnvironmentModule } from '../modules/environment/environment.module'
 import AssessmentModule from '../modules/assessment/assessment.module'
 import QuestionsModule from '../modules/question/question.module'
+
+function onWebsocketConnection(connectionParams: any) {
+  return {
+    connection: {
+      context: {
+        headers: connectionParams,
+      },
+    },
+  }
+}
 
 @Module({
   imports: [
@@ -28,15 +38,27 @@ import QuestionsModule from '../modules/question/question.module'
     QuestionsModule,
 
     // Main GraphQL module
-    GraphQLModule.forRoot({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      installSubscriptionHandlers: true,
       subscriptions: {
-        'graphql-ws': true,
+        'graphql-ws': {
+          onConnect: onWebsocketConnection,
+        },
+        'subscriptions-transport-ws': {
+          onConnect: onWebsocketConnection,
+        },
       },
+      introspection: true,
       autoSchemaFile: join(__dirname, './schema.gql'),
       playground: !environment.production,
-      context: ({ req, res }) => ({ req, res }),
+      context: ({ req, res, connection, payload }) => {
+        return {
+          req,
+          res,
+          connection,
+          payload,
+        }
+      },
     }),
   ],
 })

@@ -91,15 +91,22 @@ export class EnvironmentService {
                 file => ({
                   name: file.name,
                   data: file.data,
+                  languageId: file.languageId,
                 })
               ),
             },
           }
         : {
             create: {
-              name: `main.${programmingQuestion.singleFileProgrammingQuestion.allowedLanguages[0].extension}`,
+              name: `${programmingQuestion.singleFileProgrammingQuestion.allowedLanguages[0].defaultFileName}`,
               data: programmingQuestion.singleFileProgrammingQuestion
                 .defaultCode,
+              language: {
+                connect: {
+                  id: programmingQuestion.singleFileProgrammingQuestion
+                    .allowedLanguages[0].id,
+                },
+              },
             },
           }
 
@@ -200,6 +207,8 @@ export class EnvironmentService {
 
   async getUserEnvPermission(environmentId: string, user: User) {
     const permissions = await this.getEnvPermissions(environmentId)
+
+    if (!permissions) return null
 
     return permissions.find(permission => permission.userId === user.id)
   }

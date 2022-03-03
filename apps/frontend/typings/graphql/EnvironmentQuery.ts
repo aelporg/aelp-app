@@ -9,10 +9,19 @@ import { ProgrammingQuestionType, EnvironmentPermissionLevel } from "./globalTyp
 // GraphQL query operation: EnvironmentQuery
 // ====================================================
 
+export interface EnvironmentQuery_envirnoment_files_language {
+  __typename: "Language";
+  id: string;
+  name: string;
+  editorConfigName: string;
+}
+
 export interface EnvironmentQuery_envirnoment_files {
   __typename: "File";
+  id: string;
   name: string;
   data: string;
+  language: EnvironmentQuery_envirnoment_files_language;
 }
 
 export interface EnvironmentQuery_envirnoment_answers_baseAnswer_question_programmingQuestion_evaluationCriterias {
@@ -71,7 +80,7 @@ export interface EnvironmentQuery_envirnoment {
 }
 
 export interface EnvironmentQuery {
-  envirnoment: EnvironmentQuery_envirnoment;
+  envirnoment: EnvironmentQuery_envirnoment | null;
 }
 
 export interface EnvironmentQueryVariables {

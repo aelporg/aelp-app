@@ -16,6 +16,9 @@ export class Language {
   @Field(() => String, { nullable: false })
   extension!: string
 
+  @Field(() => String, { nullable: false })
+  editorConfigName!: string
+
   @Field(() => [SingleFileProgrammingQuestion], { nullable: true })
   singleFileQuestions?: Array<SingleFileProgrammingQuestion>
 

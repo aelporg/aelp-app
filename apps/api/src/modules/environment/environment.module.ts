@@ -4,6 +4,7 @@ import EnvironmentPermissionResolver from './environment-permission.resolver'
 import EnvironmentPermissionService from './environment-permission.service'
 import EnvironmentResolver from './environment.resolver'
 import { EnvironmentService } from './environment.service'
+import FileResolver from './file.resolver'
 
 @Module({
   imports: [ModelsModule],
@@ -12,6 +13,7 @@ import { EnvironmentService } from './environment.service'
     EnvironmentResolver,
     EnvironmentPermissionResolver,
     EnvironmentPermissionService,
+    // FileResolver
   ],
 })
 export class EnvironmentModule {}

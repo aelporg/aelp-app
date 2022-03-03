@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql'
 import { ObjectType } from '@nestjs/graphql'
 import { ID } from '@nestjs/graphql'
+import { Language } from '../../language/types/language.model'
 import { MultipleFilesProgrammingQuestion } from '../../question/types/multiple-files-programming-question.model'
 import { Environment } from './environment.model'
 import { FileCount } from './file-count.output'
@@ -15,6 +16,9 @@ export class File {
 
   @Field(() => String, { nullable: false })
   data!: string
+
+  @Field(() => Language, { nullable: true })
+  language?: Language | null
 
   @Field(() => Date, { nullable: false })
   updatedAt!: Date

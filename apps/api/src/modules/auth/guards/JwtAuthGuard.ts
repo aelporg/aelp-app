@@ -20,7 +20,12 @@ export class JwtAuthGuard extends AuthGuard(['jwt']) {
   }
 
   getRequest(context: ExecutionContext) {
-    return GqlExecutionContext.create(context).getContext().req
+    const ctx = GqlExecutionContext.create(context)
+    const { req, connection } = ctx.getContext()
+
+    return connection && connection.context && connection.context.headers
+      ? connection.context
+      : req
   }
 
   async activate(context: ExecutionContext) {
@@ -29,7 +34,7 @@ export class JwtAuthGuard extends AuthGuard(['jwt']) {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const gctx = GqlExecutionContext.create(context).getContext()
-    const req: Request = gctx.req
+    const req: Request = this.getRequest(context)
 
     const skipAuth = this.reflector.get<boolean>(
       'skipAuth',
@@ -53,18 +58,19 @@ export class JwtAuthGuard extends AuthGuard(['jwt']) {
       throw new AuthenticationError('Unathenticated')
     }
 
-    let newToken: string | null
-
     const { token } = await this.authService.refreshAuth(refreshToken)
 
-    newToken = token
+    const newToken = token
 
     if (!newToken) {
       throw new AuthenticationError('Unathenticated')
     }
 
     req.headers['x-access-token'] = newToken
-    gctx.res.setHeader('set-access-token', newToken)
+
+    if (gctx.res) {
+      gctx.res.setHeader('set-access-token', newToken)
+    }
 
     return this.activate(context)
   }

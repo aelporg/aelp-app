@@ -1,3 +1,3 @@
-import Environment from "@modules/environment/pages/Environment";
+import Environment from "@modules/environment/environment.page";
 
 export default Environment

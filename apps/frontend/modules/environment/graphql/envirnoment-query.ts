@@ -5,8 +5,14 @@ export const ENVIRNOMENT_QUERY = gql`
     envirnoment(id: $id) {
       id
       files {
+        id
         name
         data
+        language {
+          id
+          name
+          editorConfigName
+        }
       }
       answers {
         id
