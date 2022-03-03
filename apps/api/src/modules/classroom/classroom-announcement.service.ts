@@ -89,9 +89,11 @@ export default class ClassroomAnnouncementsService {
       )
     }
 
-    return this.prismaService.classroomAnnouncement.delete({
+    await this.prismaService.classroomAnnouncement.delete({
       where: { id: announcementId },
     })
+
+    return true;
   }
 
   // This function will not be exposed to the api,

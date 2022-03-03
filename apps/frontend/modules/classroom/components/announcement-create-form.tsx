@@ -23,6 +23,8 @@ export default function AnnouncementCreateForm() {
   >(CREATE_ANNOUNCEMENT_MUTATION, { refetchQueries: [ANNOUNCEMENTS_QUERY] })
 
   const postAnnouncement = () => {
+    if (value.length < 1) return
+
     postAnnouncementMutation({
       variables: {
         data: {
@@ -74,6 +76,7 @@ export default function AnnouncementCreateForm() {
             size="sm"
             className="ml-1"
             loading={loading}
+            disabled={value === ""}
             onClick={postAnnouncement}
           >
             Post

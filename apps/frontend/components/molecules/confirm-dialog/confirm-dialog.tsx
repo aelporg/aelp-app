@@ -29,9 +29,9 @@ export default function ConfirmDialog({
   return (
     <Modal isOpen={isOpen} onClose={onCancel} title={title}>
       <div className="flex flex-col">
-        {message}
+        <p className='text-sm'>{message}</p>
         <div className="flex justify-end gap-1 mt-2">
-          <Button onClick={onCancel} size="md" variant="ghost">
+          <Button onClick={onCancel} size="sm" variant="ghost">
             {closeButtonMessage}
           </Button>
           <Button
@@ -39,7 +39,7 @@ export default function ConfirmDialog({
               onConfirm()
             }}
             loading={confirmLoading}
-            size="md"
+            size="sm"
             variant={variant === 'normal' ? 'primary' : 'danger'}
           >
             {confirmButtonMessage}

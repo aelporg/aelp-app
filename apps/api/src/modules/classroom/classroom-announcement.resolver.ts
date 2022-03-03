@@ -11,6 +11,7 @@ import { User } from '../user/types/user.model'
 import { UserService } from '../user/user.service'
 import ClassroomAnnouncementsService from './classroom-announcement.service'
 import ClassroomService from './classroom.service'
+import { ClassroomAnnouncementUpdateInput } from './types/classroom-announcement-update.input'
 import { ClassroomAnnouncement } from './types/classroom-announcement.model'
 import { Classroom } from './types/classroom.model'
 import { ClassroomAnnoucementCreateInput } from './types/create-announcement-input-type'
@@ -46,6 +47,15 @@ export default class ClassroomAnnouncementResolver {
     @LoggedInUser() user: User
   ) {
     return this.classroomAnnouncementService.createAnnoucement(data, user)
+  }
+
+  @Mutation(() => ClassroomAnnouncement)
+  async updateAnnouncement(
+    @Args('data') data: ClassroomAnnouncementUpdateInput,
+    @Args('id', { type: () => ID }) id: string,
+    @LoggedInUser() user: User
+  ) {
+    return this.classroomAnnouncementService.updateAnnouncement(id, data, user)
   }
 
   @Mutation(() => Boolean)

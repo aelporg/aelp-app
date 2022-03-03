@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 import type { MarkdownPreviewProps } from '@uiw/react-markdown-preview'
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
+import rehypeKatex from 'rehype-katex'
 
 const MarkdownPreview = dynamic(
   () => import('@uiw/react-markdown-preview').then(mod => mod.default),
@@ -29,10 +30,12 @@ export default function AdvancedMarkdownPreview(props: MarkdownPreviewProps) {
                 // List of all allowed tokens:
                 ['className'],
               ],
+              div: [...(defaultSchema.attributes.div || []), ['class']],
               code: [['className']],
             },
           },
         ],
+        [rehypeKatex],
       ]}
       className="mrkdown"
       {...props}

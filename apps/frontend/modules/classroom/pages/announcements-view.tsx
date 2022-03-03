@@ -9,6 +9,7 @@ import {
   AnnouncementsQuery,
   AnnouncementsQueryVariables,
 } from 'typings/graphql/AnnouncementsQuery'
+import { ClassroomRole } from 'typings/graphql/globalTypes'
 
 export const ANNOUNCEMENTS_QUERY = gql`
   query AnnouncementsQuery($classroomId: ID!) {
@@ -37,13 +38,21 @@ function AnnouncementViewContent() {
     variables: { classroomId },
     fetchPolicy: classroomId ? 'cache-and-network' : 'standby',
   })
+  const { userClassroomRole } = useClassroomContext()
+
+  const announcements = announcementsData?.classroom?.announcements || []
 
   return (
     <div className="flex ">
       <div className="flex-1 max-w-4xl">
-        <div className="mb-4">
-          <AnnouncementCreateForm />
-        </div>
+        {[ClassroomRole.INSTRUCTOR, ClassroomRole.OWNER].includes(
+          userClassroomRole
+        ) && (
+          <div className="mb-4">
+            <AnnouncementCreateForm />
+          </div>
+        )}
+
         {loading && (
           <Facebook
             className="p-5 bg-white border rounded-lg"
@@ -53,7 +62,12 @@ function AnnouncementViewContent() {
             speed={2}
           />
         )}
-        {announcementsData?.classroom?.announcements.map(announcement => (
+        {announcements.length < 1 && !loading && (
+          <div className="text-center text-gray-500">
+            There are no announcements yet.
+          </div>
+        )}
+        {announcements.map(announcement => (
           <AnnouncementCard key={announcement.id} announcement={announcement} />
         ))}
       </div>

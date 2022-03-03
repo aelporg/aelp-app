@@ -3,9 +3,9 @@ import dynamic from 'next/dynamic'
 import '@uiw/react-md-editor/markdown-editor.css'
 import '@uiw/react-markdown-preview/markdown.css'
 import type { MDEditorProps } from '@uiw/react-md-editor'
-// import rehypeSanitize from 'rehype-sanitize'
-// import rehypeKatex from 'rehype-katex'
-// import rehypeMermaid from 'rehype-mermaid'
+import rehypeSanitize from 'rehype-sanitize'
+import rehypeKatex from 'rehype-katex'
+import rehypeMermaid from 'rehype-mermaid'
 
 const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then(mod => mod.default),
@@ -61,11 +61,11 @@ export default function AdvancedTextEditor({
             height={250}
             onFocus={onFocus}
             previewOptions={{
-              // rehypePlugins: [[rehypeSanitize], [rehypeKatex], [rehypeMermaid]],
+              rehypePlugins: [[rehypeSanitize], [rehypeKatex]],
               style: {
                 fontFamily: 'sans-serif',
-
               },
+              className: 'mrkdown',
             }}
             style={{
               fontFamily: 'sans-serif',

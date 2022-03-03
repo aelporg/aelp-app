@@ -1,7 +1,4 @@
-import { gql } from '@apollo/client'
 import Avatar from '@components/primitives/avatar'
-import Button from '@components/primitives/button'
-import { ClipboardListIcon } from '@heroicons/react/outline'
 import { useMeStore } from '@modules/auth/store/me-store'
 import classNames from 'classnames'
 import Link from 'next/link'

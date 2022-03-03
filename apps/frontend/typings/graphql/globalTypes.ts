@@ -30,6 +30,10 @@ export interface ClassroomAnnoucementCreateInput {
   content: string;
 }
 
+export interface ClassroomAnnouncementUpdateInput {
+  content?: StringFieldUpdateOperationsInput | null;
+}
+
 export interface CreateClassroomInput {
   name: string;
   subject?: string | null;
@@ -38,6 +42,10 @@ export interface CreateClassroomInput {
 
 export interface JoinClassroomInput {
   inviteCode: string;
+}
+
+export interface StringFieldUpdateOperationsInput {
+  set?: string | null;
 }
 
 export interface UserRegisterInput {

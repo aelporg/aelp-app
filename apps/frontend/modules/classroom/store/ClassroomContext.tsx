@@ -10,7 +10,7 @@ import { CLASSROOM_QUERY } from '../graphql/classroom-query'
 
 type ClassroomContextType =
   | (QueryResult<ClassroomQuery, ClassroomQueryVariables> & {
-      userClassroomRole: ClassroomQuery_classroom_members
+      userClassroomRole: ClassroomQuery_classroom_members['classroomRole']
     })
   | undefined
 
@@ -44,7 +44,7 @@ export function ClassroomContextProvider(props: {
     () =>
       queryResult.data?.classroom?.members.find(
         member => member.user?.id === me?.id
-      ),
+      )?.classroomRole,
     [me, queryResult]
   )
 
