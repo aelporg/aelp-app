@@ -34,6 +34,7 @@
     "@radix-ui/react-toolbar": "^0.1.4",
     "@tldraw/core": "^1.8.0",
     "@types/tailwindcss": "^2.2.4",
+    "@uiw/react-markdown-preview": "^3.5.1",
     "@uiw/react-md-editor": "^3.9.6",
     "apollo-server-errors": "^3.3.1",
     "apollo-server-express": "^3.5.0",

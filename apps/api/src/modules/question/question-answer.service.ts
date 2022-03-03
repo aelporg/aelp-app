@@ -1,6 +1,6 @@
 import { PrismaService } from '@aelp-app/models'
 import { Injectable } from '@nestjs/common'
-import { Prisma, QuestionAnswer } from '.prisma/client'
+import { Prisma, QuestionAnswer } from '@prisma/client'
 
 @Injectable()
 export default class QuestionAnswerService {

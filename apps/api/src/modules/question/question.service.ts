@@ -1,6 +1,6 @@
 import { PrismaService } from '@aelp-app/models'
 import { Injectable } from '@nestjs/common'
-import { Prisma, Question, QuestionType } from '.prisma/client'
+import { Prisma, Question, QuestionType } from '@prisma/client'
 import { UserInputError } from 'apollo-server-express'
 import { User } from '../user/types/user.model'
 import { QuestionCreateInput } from './types/question-create-input'

@@ -3,7 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { Prisma } from '@aelp-app/models'
 import { CreateDiscussionInput } from './types/create-discussion-input-type'
 import { User } from '../user/types/user.model'
-import { Discussion } from '.prisma/client'
+import { Discussion } from '@prisma/client'
 
 @Injectable()
 export default class DiscussionService {

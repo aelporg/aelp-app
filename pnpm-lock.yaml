@@ -54,6 +54,7 @@ specifiers:
   '@types/tailwindcss': ^2.2.4
   '@typescript-eslint/eslint-plugin': ^5.12.1
   '@typescript-eslint/parser': ^5.12.1
+  '@uiw/react-markdown-preview': ^3.5.1
   '@uiw/react-md-editor': ^3.9.6
   apollo: ^2.33.9
   apollo-server-errors: ^3.3.1
@@ -153,6 +154,7 @@ dependencies:
   '@radix-ui/react-toolbar': 0.1.4_react@17.0.2
   '@tldraw/core': 1.8.0_4e589064ce40a783661f96d46f38f574
   '@types/tailwindcss': 2.2.4
+  '@uiw/react-markdown-preview': 3.5.1_7510db4ec16e957d3f42221e7066b6f6
   '@uiw/react-md-editor': 3.9.6_7510db4ec16e957d3f42221e7066b6f6
   apollo-server-errors: 3.3.1_graphql@15.8.0
   apollo-server-express: 3.6.1_graphql@15.8.0
@@ -7170,6 +7172,30 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-markdown: 7.1.2_0d9ae6029f9b6856f7d6fb45bd27ecc7
+      rehype-attr: 2.0.7
+      rehype-autolink-headings: 6.1.1
+      rehype-raw: 6.1.1
+      rehype-rewrite: 3.0.4
+      rehype-slug: 5.0.1
+      remark-gfm: 3.0.1
+    transitivePeerDependencies:
+      - '@types/react'
+      - supports-color
+    dev: false
+
+  /@uiw/react-markdown-preview/3.5.1_7510db4ec16e957d3f42221e7066b6f6:
+    resolution: {integrity: sha512-KR8H/wnOoX8cT/Ny4oTlBOQOEPxrLNjs6E59mHH3TZXGQllHUqd1B07ql8FnFtiS0LfLAWm4s6dtORTLqB653A==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@babel/runtime': 7.17.2
+      '@mapbox/rehype-prism': 0.8.0
+      '@uiw/copy-to-clipboard': 1.0.12
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-markdown: 8.0.0_0d9ae6029f9b6856f7d6fb45bd27ecc7
       rehype-attr: 2.0.7
       rehype-autolink-headings: 6.1.1
       rehype-raw: 6.1.1
