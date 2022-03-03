@@ -7,7 +7,7 @@ import { Discussion } from '@prisma/client'
 
 @Injectable()
 export default class DiscussionService {
-  constructor(private prismaService: PrismaService) { }
+  constructor(private prismaService: PrismaService) {}
 
   getById(id: string): Prisma.Prisma__DiscussionClient<Discussion> {
     return this.prismaService.discussion.findUnique({
@@ -29,17 +29,14 @@ export default class DiscussionService {
     input: CreateDiscussionInput,
     user: User
   ) {
-    const discussion =
-      await this.prismaService.discussion.findUnique({
-        where: { id: discussionId },
-      })
+    const discussion = await this.prismaService.discussion.findUnique({
+      where: { id: discussionId },
+    })
 
     // If discussion user is trying to update
     // that is not created by them, throw an Unauthorized Exception
     if (discussion.userId !== user.id)
-      return new UnauthorizedException(
-        'This discussion is not created by you.'
-      )
+      return new UnauthorizedException('This discussion is not created by you.')
 
     return this.prismaService.discussion.update({
       where: { id: discussionId },
@@ -48,10 +45,9 @@ export default class DiscussionService {
   }
 
   async deleteDiscussion(discussionId: string, user: User) {
-    const discussion =
-      await this.prismaService.discussion.findUnique({
-        where: { id: discussionId },
-      })
+    const discussion = await this.prismaService.discussion.findUnique({
+      where: { id: discussionId },
+    })
 
     // If discussion user is trying to delete
     // that is not created by them, throw an Unauthorized Exception
@@ -66,13 +62,13 @@ export default class DiscussionService {
   }
 
   async vote(discussionId: string, user: User, vote: boolean) {
-    const isVoted = await this.prismaService.discussionVote.findUnique({
-      where: { discussionId, userId: user.id },
+    const prevVote = await this.prismaService.discussionVote.findUnique({
+      where: { discussionId_userId: { discussionId, userId: user.id } },
     })
 
-    if (isVoted) {
+    if (prevVote) {
       return this.prismaService.discussionVote.update({
-        where: { discussionId, userId: user.id },
+        where: { id: prevVote.id },
         data: { isUpvote: vote },
       })
     }
@@ -82,7 +78,7 @@ export default class DiscussionService {
         isUpvote: vote,
         user: { connect: { id: user.id } },
         discussion: { connect: { id: discussionId } },
-      }
+      },
     })
   }
 
@@ -92,18 +88,15 @@ export default class DiscussionService {
     })
   }
 
-  async createResponce(
-    discussionId: string,
-    user: User,
-    responce: string
-  ) {
-    const alreadyResponced = await this.prismaService.discussionResponce.findUnique({
-      where: { discussionId, userId: user.id },
-    })
+  async createResponce(discussionId: string, user: User, responce: string) {
+    const alreadyResponced =
+      await this.prismaService.discussionResponce.findUnique({
+        where: { discussionId_userId: { discussionId, userId: user.id } },
+      })
 
     if (alreadyResponced) {
       return this.prismaService.discussionResponce.update({
-        where: { discussionId, userId: user.id },
+        where: { discussionId_userId: { discussionId, userId: user.id } },
         data: { responce: responce },
       })
     }
@@ -112,8 +105,8 @@ export default class DiscussionService {
       data: {
         responce: responce,
         user: { connect: { id: user.id } },
-        discussion: { connect: { id: discussionId } }
-      }
+        discussion: { connect: { id: discussionId } },
+      },
     })
   }
 
