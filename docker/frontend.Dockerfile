@@ -4,10 +4,8 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
-RUN yarn global add next
+RUN npm install -g next
 
-COPY ./dist/apps/frontend/package.json ./
-RUN yarn install
 COPY ./dist/apps/frontend ./
 
 CMD ["npx", "next", "start"]

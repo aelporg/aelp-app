@@ -13,6 +13,9 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
+  experimental: {
+    outputStandalone: true,
+  }
 };
 
 module.exports = removeImports(withNx(nextConfig));

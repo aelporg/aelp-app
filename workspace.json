@@ -10,7 +10,7 @@
           "executor": "@nrwl/node:build",
           "dependsOn": [
             {
-              "target": "generate",
+              "target": "generate-client",
               "configuration": "production",
               "projects": "dependencies"
             }
@@ -157,7 +157,7 @@
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "yarn apollo codegen:generate --target typescript --outputFlat typings/graphql"
+              "pnpm exec apollo codegen:generate --target typescript --outputFlat typings/graphql"
             ],
             "cwd": "apps/frontend"
           }
