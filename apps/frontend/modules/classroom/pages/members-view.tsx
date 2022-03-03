@@ -63,8 +63,8 @@ function MemberViewNavActions() {
   const { userClassroomRole, data } = useClassroomContext()
 
   if (
-    !userClassroomRole?.classroomRole ||
-    userClassroomRole.classroomRole === ClassroomRole.STUDENT
+    !userClassroomRole ||
+    userClassroomRole === ClassroomRole.STUDENT
   )
     return null
 
