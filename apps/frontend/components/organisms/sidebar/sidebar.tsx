@@ -24,11 +24,10 @@ export function Sidebar({
   betweenElement,
 }: SidebarProps) {
   const router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="bg-white">
-      <div className="w-80 border-r-2 fixed h-screen bg-accent bg-opacity-5  p-8">
+    <div>
+      <div className="w-80 border-r fixed h-screen bg-accent bg-opacity-5  p-8">
         <div className="flex justify-between mb-5">
           <Logo href={'/app'} />
           <button className="self-end hover:bg-black hover:bg-opacity-5 rounded-md p-1">

@@ -5,13 +5,29 @@ import classNames from 'classnames'
 import GithubIcon from '@components/primitives/icons/github-icon'
 import GoogleIcon from '@components/primitives/icons/google-icon'
 import { useGoogleLogin } from 'react-google-login'
+import { gql, useMutation } from '@apollo/client'
+import {
+  LoginWithGoogle,
+  LoginWithGoogleVariables,
+  LoginWithGoogle_loginWithGoogle,
+} from 'typings/graphql/LoginWithGoogle'
 
 type ThirdPartyAuthType = 'github' | 'google'
 
+const LOGIN_WITH_GOOGLE = gql`
+  mutation LoginWithGoogle($tokenId: String!) {
+    loginWithGoogle(tokenId: $tokenId) {
+      token
+      refreshToken
+      userId
+    }
+  }
+`
+
 export interface ThirdPartyAuthButtonProps extends ButtonProps {
   authType: ThirdPartyAuthType
-  createAccount?: boolean
-  onSuccess?: (code: string) => void
+  onSuccess?: (data: LoginWithGoogle_loginWithGoogle) => void
+  onAuthError?: (error: Error) => void
 }
 
 function getButtonClassNamesByVariant(authType: ThirdPartyAuthType) {
@@ -25,15 +41,33 @@ function getButtonClassNamesByVariant(authType: ThirdPartyAuthType) {
 
 export function ThirdPartyAuthButton({
   authType,
-  createAccount = false,
   onSuccess,
+  onAuthError,
   disabled,
-  loading,
 }: ThirdPartyAuthButtonProps) {
+  const [loginWithGoogle, { loading: googleLoading }] = useMutation<
+    LoginWithGoogle,
+    LoginWithGoogleVariables
+  >(LOGIN_WITH_GOOGLE)
+
+  const handleThirdPartyAuth = async (tokenId: string) => {
+    try {
+      const { data } = await loginWithGoogle({
+        variables: {
+          tokenId,
+        },
+      })
+
+      onSuccess(data.loginWithGoogle)
+    } catch (e) {
+      onAuthError && onAuthError(e)
+    }
+  }
+
   const { signIn } = useGoogleLogin({
     clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
     onSuccess: (response: any) => {
-      onSuccess(response.tokenId)
+      handleThirdPartyAuth(response.tokenId)
     },
   })
 
@@ -41,9 +75,9 @@ export function ThirdPartyAuthButton({
     <Button
       size="md"
       disabled={disabled}
-      loading={loading}
       className={classNames('mb-2', getButtonClassNamesByVariant(authType))}
       variant="custom"
+      loading={googleLoading}
       onClick={authType === 'google' ? signIn : undefined}
       icon={authType === 'github' ? <GithubIcon /> : <GoogleIcon />}
     >

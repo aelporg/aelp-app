@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { Size } from '../../typings/utils-types'
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'custom'
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'custom' | 'danger'
 type ButtonSize = Size
 
 export interface ButtonProps
@@ -23,6 +23,8 @@ function getButtonClassNamesForVariant(variant: ButtonVariant) {
       return 'text-accent bg-accent bg-opacity-10 hover:bg-opacity-20 active:bg-opacity-30 hover:text-accent-darker'
     case 'ghost':
       return 'bg-transparent hover:bg-black hover:bg-opacity-20 ring-black ring-opacity-75 text-gray-600'
+    case 'danger':
+      return 'text-white bg-error'
   }
 }
 

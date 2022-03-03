@@ -1,12 +1,10 @@
-@layer base {
-  body,
-  html {
-    @apply text-black;
-  }
+body,
+html {
+  @apply text-black bg-gray-50;
+}
 
-  body {
-    @apply selection:bg-accent selection:bg-opacity-30;
-  }
+body {
+  @apply selection:bg-accent selection:bg-opacity-30;
 }
 
 @import 'index.scss';

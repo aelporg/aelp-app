@@ -1,19 +1,19 @@
-import './checkbox.module.scss';
-import React from 'react';
-import * as CheckboxPrim from '@radix-ui/react-checkbox';
+import './checkbox.module.scss'
+import React from 'react'
+import * as CheckboxPrim from '@radix-ui/react-checkbox'
 import {
   Path,
   useController,
   UseControllerProps,
   useFormContext,
-} from 'react-hook-form';
-import { CheckIcon } from '@heroicons/react/outline';
-import classNames from 'classnames';
+} from 'react-hook-form'
+import { CheckIcon } from '@heroicons/react/outline'
+import classNames from 'classnames'
 
 export type CheckboxProps = CheckboxPrim.CheckboxProps & {
-  invalidText?: string;
-  invalid?: boolean;
-};
+  invalidText?: string
+  invalid?: boolean
+}
 
 const Checkbox = React.forwardRef(
   ({
@@ -52,18 +52,18 @@ const Checkbox = React.forwardRef(
           <div className="mt-1 text-error text-xs">{invalidText}</div>
         )}
       </div>
-    );
+    )
   }
-);
+)
 
-Checkbox.displayName = 'Checkbox';
+Checkbox.displayName = 'Checkbox'
 
 export type HFCheckboxProps<K> = Omit<
   CheckboxProps,
   'checked' | 'onCheckedChange' | 'invalid' | 'invalidText'
 > & {
-  rules?: UseControllerProps<K>['rules'];
-};
+  rules?: UseControllerProps<K>['rules']
+}
 
 export function HFCheckbox<K = any>({
   name,
@@ -74,11 +74,11 @@ export function HFCheckbox<K = any>({
   const {
     control,
     formState: { errors },
-  } = useFormContext<K>();
+  } = useFormContext<K>()
 
   const {
     field: { onBlur, onChange, ref, value },
-  } = useController({ control, name: name as Path<K>, rules });
+  } = useController({ control, name: name as Path<K>, rules })
 
   return (
     <Checkbox
@@ -92,7 +92,7 @@ export function HFCheckbox<K = any>({
     >
       {children}
     </Checkbox>
-  );
+  )
 }
 
-export default Checkbox;
+export default Checkbox

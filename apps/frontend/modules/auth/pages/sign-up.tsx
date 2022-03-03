@@ -19,10 +19,13 @@ import { REGISTER_WITH_EMAIL } from 'graphql/mutations/user/register-with-email-
 
 export default function SignUp() {
   const authStore = useAuthStore()
-  const [registerUser, { error, loading, reset }] = useMutation<
+  const [registerUser, { error: registerError, loading, reset }] = useMutation<
     RegisterWithEmail,
     RegisterWithEmailVariables
   >(REGISTER_WITH_EMAIL)
+  const [connectError, setConnectError] = React.useState<Error>(undefined)
+
+  const error = connectError || registerError
 
   const onSubmit = async (input: RegisterWithEmailVariables['data']) => {
     try {
@@ -97,8 +100,12 @@ export default function SignUp() {
             </Button>
           </Link>
           <OrLine className="my-6" />
-          <ThirdPartyAuthButton authType="google" createAccount />
-          <ThirdPartyAuthButton authType="github" createAccount />
+          <ThirdPartyAuthButton
+            authType="google"
+            onSuccess={success => authStore.login(success)}
+            onAuthError={setConnectError}
+          />
+          <ThirdPartyAuthButton authType="github" />
         </HForm>
       </div>
     </div>

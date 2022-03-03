@@ -42,7 +42,7 @@ export default function AnnouncementCreateForm() {
   }
 
   return (
-    <div className="border-2 p-4 flex flex-col rounded-lg ">
+    <div className="border shadow-md p-4 flex flex-col rounded-lg bg-white">
       <div className="font-medium flex items-center overflow-y-auto">
         {!expanded && (
           <div className="self-start">

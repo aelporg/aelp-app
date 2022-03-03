@@ -39,12 +39,20 @@ function AnnouncementViewContent() {
   })
 
   return (
-    <div className="flex">
+    <div className="flex ">
       <div className="flex-1 max-w-4xl">
-        <div className="mb-3">
+        <div className="mb-4">
           <AnnouncementCreateForm />
         </div>
-        {loading && <Facebook />}
+        {loading && (
+          <Facebook
+            className="p-5 bg-white border rounded-lg"
+            backgroundColor={'#e1e1e1'}
+            foregroundColor={'#f1f1f1'}
+            interval={0}
+            speed={2}
+          />
+        )}
         {announcementsData?.classroom?.announcements.map(announcement => (
           <AnnouncementCard key={announcement.id} announcement={announcement} />
         ))}

@@ -1,5 +1,5 @@
 import { PrismaService } from '@aelp-app/models'
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { ClassroomRole } from '../../global-types'
 import { User } from '../user/types/user.model'
 import { ClassroomAnnouncementUpdateInput } from './types/classroom-announcement-update.input'
@@ -66,6 +66,9 @@ export default class ClassroomAnnouncementsService {
       await this.prismaService.classroomAnnouncement.findUnique({
         where: { id: announcementId },
       })
+
+    if (!annoucement)
+      return new NotFoundException('Annoucement not found')
 
     const memberRecord = await this.prismaService.classroomMember.findUnique({
       where: {

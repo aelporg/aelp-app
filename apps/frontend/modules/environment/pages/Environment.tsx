@@ -33,7 +33,7 @@ export default function Environment() {
             <CogIcon className="w-5" />
           </div>
           <Editor
-            language="cpp"
+            language="python"
             className="pt-2"
             options={{
               fontSize: 16,
