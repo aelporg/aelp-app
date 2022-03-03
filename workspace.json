@@ -242,6 +242,29 @@
       },
       "tags": []
     },
+    "piston": {
+      "root": "libs/piston",
+      "sourceRoot": "libs/piston/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/piston/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/piston"],
+          "options": {
+            "jestConfig": "libs/piston/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "redis": {
       "root": "libs/redis",
       "sourceRoot": "libs/redis/src",

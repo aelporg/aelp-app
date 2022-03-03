@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@aelp-app/models": ["libs/models/src/index.ts"],
+      "@aelp-app/piston": ["libs/piston/src/index.ts"],
       "@aelp-app/redis": ["libs/redis/src/index.ts"],
       "@aelp-app/validators": ["libs/validators/src/index.ts"]
     }

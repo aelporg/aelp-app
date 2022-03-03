@@ -1,5 +1,6 @@
 import {
   Args,
+  ID,
   Mutation,
   Query,
   ResolveField,
@@ -12,6 +13,7 @@ import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
 import { QuestionAnswer } from '../question/types/question-answer.model'
 import { User } from '../user/types/user.model'
 import { EnvironmentService } from './environment.service'
+import PistonService from './piston.service'
 import { EnvironmentPermission } from './types/environment-permission.model'
 import { Environment } from './types/environment.model'
 import { File } from './types/file.model'
@@ -20,7 +22,10 @@ const pubSub = new PubSub()
 
 @Resolver(() => Environment)
 export default class EnvironmentResolver {
-  constructor(private environmentService: EnvironmentService) {}
+  constructor(
+    private environmentService: EnvironmentService,
+    private piston: PistonService
+  ) {}
 
   @Query(() => [Environment])
   async envirnoments(@LoggedInUser() user: User) {
@@ -46,6 +51,23 @@ export default class EnvironmentResolver {
       return this.environmentService.getById(id)
     }
     return null
+  }
+
+  @Mutation(() => String)
+  async runCode(@Args('id', { type: () => ID }) id: string) {
+    const files = await this.environmentService
+      .getById(id)
+      .files({ include: { language: true } })
+
+    if (files && files.length > 0) {
+      const file = files[0]
+      const code = file.data
+      const language = file.language.editorConfigName
+
+      return (await this.piston.client.execute(language, code)).run.output
+    }
+
+    throw new Error('test')
   }
 
   @ResolveField(() => [File])

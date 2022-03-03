@@ -3,7 +3,7 @@ import Tabs from '@components/primitives/tabs/tabs'
 import { useRouter } from 'next/router'
 import { Logo } from '@components/primitives'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
-import { CogIcon } from '@heroicons/react/outline'
+import { CogIcon, PlayIcon } from '@heroicons/react/outline'
 import AdvancedMarkdownPreview from '@components/molecules/advanced-markdown-preview/advanced-markdown-review'
 import IconButton from '@components/primitives/icon-button/icon-button'
 import CodeEditor from './code-editor.component'
@@ -14,7 +14,7 @@ import {
 } from './environment.context'
 import Loader from '@components/primitives/loader'
 import ScreenCenter from '@components/primitives/screen-center'
-
+import Button from '@components/primitives/button'
 const splitterDefaultProps = {
   gutterClassName: 'bg-slate-100',
   draggerClassName: 'bg-slate-300',
@@ -32,7 +32,20 @@ export default function Environment() {
 }
 
 function EnvironmentPageContent() {
-  const { environment, loading } = useEnvironmentContext()
+  const {
+    environment,
+    environmentLoading: loading,
+    operations: {
+      runCode: {
+        func: runCode,
+        result: runCodeResult,
+        loading: runCodeLoading,
+      },
+      updateFile: {
+        loading: updateFileLoading,
+      }
+    },
+  } = useEnvironmentContext()
 
   if (loading) {
     return (
@@ -54,7 +67,18 @@ function EnvironmentPageContent() {
         <div className="flex-1 h-full w-full">
           <div className="flex justify-between py-4 px-6 border-b uppercase font-bold text-gray-400">
             Code Editor
-            <IconButton icon={<CogIcon />} />
+            <div className="flex gap-2">
+              <Button
+                icon={<PlayIcon />}
+                loading={runCodeLoading}
+                disabled={updateFileLoading}
+                onClick={() => runCode().catch(console.error)}
+                size="sm"
+              >
+                Run Code
+              </Button>
+              <IconButton icon={<CogIcon />} />
+            </div>
           </div>
           <CodeEditor />
         </div>
@@ -84,7 +108,9 @@ function EnvironmentPageContent() {
                 </Tabs.Content>
               </Tabs>
             </div>
-            <div className="flex-auto">hi</div>
+            <div className="flex-auto p-2 ">
+              <pre>{runCodeResult?.runCode}</pre>
+            </div>
           </Splitter>
         </div>
       </Splitter>

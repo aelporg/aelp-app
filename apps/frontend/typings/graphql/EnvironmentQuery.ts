@@ -21,7 +21,7 @@ export interface EnvironmentQuery_envirnoment_files {
   id: string;
   name: string;
   data: string;
-  language: EnvironmentQuery_envirnoment_files_language;
+  language: EnvironmentQuery_envirnoment_files_language | null;
 }
 
 export interface EnvironmentQuery_envirnoment_answers_baseAnswer_question_programmingQuestion_evaluationCriterias {
