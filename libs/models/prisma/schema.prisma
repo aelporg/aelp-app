@@ -46,6 +46,7 @@ model User {
   assessments            Assessment[]
   DiscussionVote         DiscussionVote[]
   Discussion             Discussion[]
+  DiscussionResponce     DiscussionResponce[]
 }
 
 enum Role {
@@ -484,11 +485,15 @@ model Discussion {
 
 model DiscussionResponce {
   id           String     @id @default(uuid())
+  user         User       @relation(fields: [userId], references: [id])
   discussionId String
   responce     String
   updatedAt    DateTime   @updatedAt
   createdAt    DateTime   @default(now())
   discussion   Discussion @relation(fields: [discussionId], references: [id])
+  userId       String
+
+  @@unique([discussionId, userId])
 }
 
 model DiscussionVote {
@@ -498,6 +503,8 @@ model DiscussionVote {
   discussionId String
   discussion   Discussion @relation(fields: [discussionId], references: [id])
   userId       String
+
+  @@unique([discussionId, userId])
 }
 
 model DiscussionTag {

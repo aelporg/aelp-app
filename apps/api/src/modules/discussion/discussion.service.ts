@@ -64,4 +64,61 @@ export default class DiscussionService {
       where: { id: discussionId },
     })
   }
+
+  async vote(discussionId: string, user: User, vote: boolean) {
+    const isVoted = await this.prismaService.discussionVote.findUnique({
+      where: { discussionId, userId: user.id },
+    })
+
+    if (isVoted) {
+      return this.prismaService.discussionVote.update({
+        where: { discussionId, userId: user.id },
+        data: { isUpvote: vote },
+      })
+    }
+
+    return this.prismaService.discussionVote.create({
+      data: {
+        isUpvote: vote,
+        user: { connect: { id: user.id } },
+        discussion: { connect: { id: discussionId } },
+      }
+    })
+  }
+
+  async getVotes(discussionId: string) {
+    return this.prismaService.discussionVote.findMany({
+      where: { discussionId },
+    })
+  }
+
+  async createResponce(
+    discussionId: string,
+    user: User,
+    responce: string
+  ) {
+    const alreadyResponced = await this.prismaService.discussionResponce.findUnique({
+      where: { discussionId, userId: user.id },
+    })
+
+    if (alreadyResponced) {
+      return this.prismaService.discussionResponce.update({
+        where: { discussionId, userId: user.id },
+        data: { responce: responce },
+      })
+    }
+
+    return this.prismaService.discussionResponce.create({
+      data: {
+        responce: responce,
+        user: { connect: { id: user.id } },
+        discussion: { connect: { id: discussionId } }
+      }
+    })
+  }
+
+  // async getDiscussions() {
+  //   return this.prismaService.discussion
+  //     .findMany()
+  // }
 }
