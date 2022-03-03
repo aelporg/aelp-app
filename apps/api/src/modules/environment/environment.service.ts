@@ -1,6 +1,6 @@
 import { PrismaService, Prisma } from '@aelp-app/models'
 import { Injectable } from '@nestjs/common'
-import { Environment } from '@prisma/client'
+import { Environment } from '.prisma/client'
 import { UserInputError } from 'apollo-server-express'
 import {
   EnvironmentPermissionLevel,

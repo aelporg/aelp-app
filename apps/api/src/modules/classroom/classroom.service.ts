@@ -6,7 +6,7 @@ import { Prisma } from '@aelp-app/models'
 import { CreateClassroomInput } from './types/create-classroom-input-type'
 import { User } from '../user/types/user.model'
 import { ClassroomRole } from '../../global-types/classroom-role.enum'
-import { Classroom } from '@prisma/client'
+import { Classroom } from '.prisma/client'
 
 export class ClassroomInviteCodeGenError extends Error {
   constructor() {

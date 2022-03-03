@@ -4,7 +4,7 @@ RUN apk add git zsh curl sudo shadow
 
 WORKDIR /app
 
-RUN yarn global add nx
+RUN npm install -g nx pnpm
 RUN chown node:node -R .
 
 USER node

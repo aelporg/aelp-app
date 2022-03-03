@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   OnModuleInit,
   INestApplication,
   Injectable,
   Logger,
 } from '@nestjs/common'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '.prisma/client'
 
 @Injectable()
 export default class PrismaService

@@ -228,15 +228,13 @@
         "generate-client": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["pnpm exec prisma generate"],
-            "cwd": "libs/models"
+            "commands": ["pnpm exec prisma generate --schema libs/models/prisma/schema.prisma"]
           }
         },
         "studio": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["yarn prisma studio"],
-            "cwd": "libs/models"
+            "commands": ["pnpm exec prisma studio --schema libs/models/prisma/schema.prisma"]
           }
         }
       },
