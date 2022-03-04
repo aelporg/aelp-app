@@ -228,13 +228,25 @@
         "generate-client": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["pnpm exec prisma generate --schema libs/models/prisma/schema.prisma"]
+            "commands": [
+              "pnpm exec prisma generate --schema libs/models/prisma/schema.prisma"
+            ]
+          }
+        },
+        "migrate-deploy": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "pnpm exec prisma migrate deploy --schema libs/models/prisma/schema.prisma"
+            ]
           }
         },
         "studio": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["pnpm exec prisma studio --schema libs/models/prisma/schema.prisma"]
+            "commands": [
+              "pnpm exec prisma studio --schema libs/models/prisma/schema.prisma"
+            ]
           }
         }
       },
