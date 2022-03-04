@@ -1,5 +1,6 @@
 node_modules/*
 !node_modules/.prisma/
+.pnpm-store
 *.Dockerfile*
 *docker-compose*.yml
 .env*
