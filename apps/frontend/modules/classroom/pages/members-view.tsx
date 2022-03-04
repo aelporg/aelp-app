@@ -38,7 +38,7 @@ function MemberList({ members, filter, className, title }: MemberListProps) {
     if (membersAfterFilter.length < 1) {
       return (
         <span className="text-gray-500">
-          There is currently {title?.toLowerCase() || 'members'} in this
+          There are currently no {title?.toLowerCase() || 'members'} in this
           classroom
         </span>
       )
