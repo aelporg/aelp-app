@@ -244,10 +244,20 @@ enum ProgrammingQuestionType {
 }
 
 model SingleFileProgrammingQuestion {
-  id                      String               @id @default(uuid())
-  baseProgrammingQuestion ProgrammingQuestion? @relation("question_singleFileProgrammingQuestion")
-  defaultCode             String
-  allowedLanguages        Language[]
+  id                      String                                     @id @default(uuid())
+  baseProgrammingQuestion ProgrammingQuestion?                       @relation("question_singleFileProgrammingQuestion")
+  defaultCodes            SingleFileProgrammingQuestionDefaultCode[] @relation("singleFileProgrammingQuestion_defaultCode")
+}
+
+model SingleFileProgrammingQuestionDefaultCode {
+  id                              String                        @id @default(uuid())
+  singleFileProgrammingQuestion   SingleFileProgrammingQuestion @relation(name: "singleFileProgrammingQuestion_defaultCode", fields: [singleFileProgrammingQuestionId], references: [id])
+  singleFileProgrammingQuestionId String
+  defaultCode                     String?
+  language                        Language                      @relation(fields: [languageId], references: [id])
+  updatedAt                       DateTime                      @updatedAt
+  createdAt                       DateTime                      @default(now())
+  languageId                      String
 }
 
 model MultipleFilesProgrammingQuestion {
@@ -382,17 +392,21 @@ enum Difficulty {
 // --- PROGRAMMING RELATED ---
 // ---------------------------
 model Language {
-  id                               String                             @id @default(uuid())
-  name                             String                             @unique
-  extension                        String                             @unique
-  singleFileQuestions              SingleFileProgrammingQuestion[]
-  createdAt                        DateTime                           @default(now())
-  updatedAt                        DateTime                           @updatedAt
-  defaultFileName                  String                             @default("main.${extension}")
-  editorConfigName                 String                             @default("${extension}")
-  MultipleFilesProgrammingQuestion MultipleFilesProgrammingQuestion[]
-  File                             File[]
+  id                  String   @id @default(uuid())
+  name                String   @unique
+  extension           String   @unique
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  defaultFileName     String   @default("main.${extension}")
+  editorConfigName    String   @default("${extension}")
+  defaultCode         String   @default("")
+  compilerPackageName String   @default("")
+  version             String   @default("")
 
+  File                                     File[]
+  Environment                              Environment[]
+  MultipleFilesProgrammingQuestion         MultipleFilesProgrammingQuestion[]
+  SingleFileProgrammingQuestionDefaultCode SingleFileProgrammingQuestionDefaultCode[]
   @@index([name, extension])
 }
 
@@ -416,6 +430,8 @@ model Environment {
   id             String                      @id @default(uuid())
   files          File[]                      @relation("environment_files")
   scratchPadData String
+  language       Language                    @relation(fields: [languageId], references: [id])
+  languageId     String
   submitted      Boolean                     @default(false)
   createdAt      DateTime                    @default(now())
   updatedAt      DateTime                    @updatedAt
