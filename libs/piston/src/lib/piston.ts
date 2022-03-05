@@ -28,19 +28,17 @@ export default class Piston {
   }
 
   public async install(language: string, version?: string) {
-    try {
-      const { data } = await this.axios.post<ExecutionResult>(
-        '/api/v2/packages',
-        {
-          language,
-          version: version || versionMap[language],
-        }
-      )
-      return data
-    } catch (e) {
-      console.log(e.response.data)
-      throw e
-    }
+    const { data } = await this.axios.post<ExecutionResult>(
+      '/api/v2/packages',
+      {
+        language,
+        version: version || versionMap[language],
+      }
+    )
+
+    this._runtimes = await this.runtimes()
+
+    return data
   }
 
   public async execute(language: string, code: string) {
@@ -50,9 +48,7 @@ export default class Piston {
     const runtime = this._runtimes.find(r => r.language === language)
 
     if (!runtime) {
-      await this.install(language)
-      this._runtimes = await this.runtimes()
-      return this.execute(language, code)
+      throw new PistonRuntimeNotFoundError()
     }
 
     const { data } = await this.axios.post<ExecutionResult>('/api/v2/execute', {
@@ -73,5 +69,13 @@ export default class Piston {
     })
 
     return data
+  }
+}
+
+// ERRORS
+
+export class PistonRuntimeNotFoundError extends Error {
+  constructor() {
+    super('Piston runtime not found')
   }
 }

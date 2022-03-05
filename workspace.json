@@ -157,7 +157,7 @@
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "pnpm exec apollo codegen:generate --target typescript --outputFlat typings/graphql"
+              "npx apollo codegen:generate --target typescript --outputFlat typings/graphql"
             ],
             "cwd": "apps/frontend"
           }

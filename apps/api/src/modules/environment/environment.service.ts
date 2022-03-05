@@ -1,5 +1,5 @@
 import { PrismaService, Prisma } from '@aelp-app/models'
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { Environment } from '@aelp-app/models'
 import { UserInputError } from 'apollo-server-express'
 import {
@@ -8,10 +8,28 @@ import {
   QuestionType,
 } from '../../global-types'
 import { User } from '../user/types/user.model'
+import PistonService from './piston.service'
+import { PistonRuntimeNotFoundError } from '@aelp-app/piston'
 
 @Injectable()
 export class EnvironmentService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private piston: PistonService
+  ) {}
+
+  static permissionLevelMap = {
+    [EnvironmentPermissionLevel.OWNER]: [
+      EnvironmentPermissionLevel.OWNER,
+      EnvironmentPermissionLevel.READ_WRITE,
+      EnvironmentPermissionLevel.READ,
+    ],
+    [EnvironmentPermissionLevel.READ_WRITE]: [
+      EnvironmentPermissionLevel.READ_WRITE,
+      EnvironmentPermissionLevel.READ,
+    ],
+    [EnvironmentPermissionLevel.READ]: [EnvironmentPermissionLevel.READ],
+  }
 
   getById(id: string): Prisma.Prisma__EnvironmentClient<Environment> {
     return this.prismaService.environment.findUnique({
@@ -20,7 +38,11 @@ export class EnvironmentService {
   }
 
   async getEnviromentFiles(id: string) {
-    return this.prismaService.environment.findUnique({ where: { id } }).files()
+    // const environment = await this.getById(id)
+
+    return this.prismaService.environment.findUnique({ where: { id } }).files({
+      /*  where: { languageId: environment.languageId } */
+    })
   }
 
   async getUserEnvironments(user: User) {
@@ -29,6 +51,38 @@ export class EnvironmentService {
         permissions: { some: { userId: user.id } },
       },
     })
+  }
+
+  async runCode(id: string) {
+    const env = await this.getById(id)
+    const files = await this.getById(id).files({
+      include: { language: true },
+      where: { languageId: env.languageId },
+    })
+
+    if (files && files.length > 0) {
+      const file = files[0]
+      const code = file.data
+      const language = file.language
+
+      try {
+        return (
+          await this.piston.client.execute(language.name.toLowerCase(), code)
+        ).run.output
+      } catch (e) {
+        if (e instanceof PistonRuntimeNotFoundError) {
+          this.piston.client
+            .install(language.compilerPackageName, language.version)
+            .then(e => {
+              console.log('Installed', e)
+            })
+        }
+
+        throw e
+      }
+    }
+
+    throw new Error('No files found')
   }
 
   async createEnvirnment(questionId: string, user: User) {
@@ -42,7 +96,7 @@ export class EnvironmentService {
               include: { defaultFiles: true, language: true },
             },
             singleFileProgrammingQuestion: {
-              include: { allowedLanguages: true },
+              include: { defaultCodes: { include: { language: true } } },
             },
           },
         },
@@ -75,12 +129,12 @@ export class EnvironmentService {
     const { programmingQuestion } = question
 
     if (
-      programmingQuestion.singleFileProgrammingQuestion.allowedLanguages
-        .length < 1 &&
+      programmingQuestion.singleFileProgrammingQuestion.defaultCodes.length <
+        1 &&
       programmingQuestion.programmingQuestionType ===
         ProgrammingQuestionType.SINGLE_FILE
     )
-      throw new Error('No language available')
+      throw new Error('Aw :(')
 
     const files =
       programmingQuestion.programmingQuestionType ===
@@ -97,18 +151,20 @@ export class EnvironmentService {
             },
           }
         : {
-            create: {
-              name: `${programmingQuestion.singleFileProgrammingQuestion.allowedLanguages[0].defaultFileName}`,
-              data: programmingQuestion.singleFileProgrammingQuestion
-                .defaultCode,
-              language: {
-                connect: {
-                  id: programmingQuestion.singleFileProgrammingQuestion
-                    .allowedLanguages[0].id,
-                },
-              },
+            createMany: {
+              data: programmingQuestion.singleFileProgrammingQuestion.defaultCodes.map(
+                code => ({
+                  name: code.language.defaultFileName,
+                  data: code.defaultCode || code.language.defaultCode,
+                  languageId: code.languageId,
+                })
+              ),
             },
           }
+
+    const defaultLanguageId =
+      programmingQuestion.singleFileProgrammingQuestion?.defaultCodes[0]?.id ||
+      programmingQuestion.multipleFilesProgrammingQuestion.languageId
 
     const answer = this.prismaService.questionAnswer.create({
       data: {
@@ -123,6 +179,11 @@ export class EnvironmentService {
               create: {
                 scratchPadData: '{}',
                 files,
+                language: {
+                  connect: {
+                    id: defaultLanguageId,
+                  },
+                },
                 permissions: {
                   create: {
                     permission: EnvironmentPermissionLevel.OWNER,
@@ -179,7 +240,9 @@ export class EnvironmentService {
                       select: {
                         programmingQuestionType: true,
                         singleFileProgrammingQuestion: {
-                          select: { allowedLanguages: true },
+                          select: {
+                            defaultCodes: { include: { language: true } },
+                          },
                         },
                         multipleFilesProgrammingQuestion: {
                           select: { language: true },
@@ -202,7 +265,9 @@ export class EnvironmentService {
     return programmingQuestion.programmingQuestionType ===
       ProgrammingQuestionType.MULTIPLE_FILE
       ? [programmingQuestion.multipleFilesProgrammingQuestion.language]
-      : programmingQuestion.singleFileProgrammingQuestion.allowedLanguages
+      : programmingQuestion.singleFileProgrammingQuestion.defaultCodes.map(
+          code => code.language
+        )
   }
 
   async getUserEnvPermission(environmentId: string, user: User) {
@@ -213,11 +278,76 @@ export class EnvironmentService {
     return permissions.find(permission => permission.userId === user.id)
   }
 
+  async hasPermission(
+    environmentId: string,
+    user: User,
+    permission: EnvironmentPermissionLevel
+  ) {
+    const permissionLevel = await this.getUserEnvPermission(environmentId, user)
+
+    if (!permissionLevel) return false
+
+    return EnvironmentService.permissionLevelMap[
+      permissionLevel.permission
+    ].includes(permission)
+  }
+
   async getEnvPermissions(environmentId: string) {
-    return this.prismaService.environment
-      .findUnique({
-        where: { id: environmentId },
+    return this.getById(environmentId).permissions()
+  }
+
+  async changeLanguage(environmentId: string, languageId: string, user: User) {
+    if (
+      !(await this.hasPermission(
+        environmentId,
+        user,
+        EnvironmentPermissionLevel.READ_WRITE
+      ))
+    )
+      throw new UnauthorizedException(
+        'User does not have permission to change language'
+      )
+
+    const allowedLanguages = await this.allowedLanguages(environmentId)
+    const requestedLanguage = allowedLanguages.find(
+      language => language.id === languageId
+    )
+
+    if (!requestedLanguage)
+      throw new UserInputError(
+        'Language is not allowed for this programming question'
+      )
+
+    await this.prismaService.$transaction(async () => {
+      const files = await this.prismaService.environment
+        .update({
+          where: { id: environmentId },
+          data: { language: { connect: { id: languageId } } },
+        })
+        .files()
+
+      if (files.find(file => file.languageId === languageId)) {
+        return
+      }
+
+      await this.prismaService.file.create({
+        data: {
+          name: requestedLanguage.defaultFileName,
+          data: requestedLanguage.defaultCode,
+          language: {
+            connect: {
+              id: languageId,
+            },
+          },
+          environment: {
+            connect: {
+              id: environmentId,
+            },
+          },
+        },
       })
-      .permissions()
+    })
+
+    return this.getById(environmentId)
   }
 }

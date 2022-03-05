@@ -68,6 +68,13 @@ export interface EnvironmentQuery_envirnoment_permissions {
   permission: EnvironmentPermissionLevel;
 }
 
+export interface EnvironmentQuery_envirnoment_language {
+  __typename: "Language";
+  id: string;
+  name: string;
+  editorConfigName: string;
+}
+
 export interface EnvironmentQuery_envirnoment {
   __typename: "Environment";
   id: string;
@@ -77,6 +84,7 @@ export interface EnvironmentQuery_envirnoment {
   createdAt: any;
   updatedAt: any;
   permissions: EnvironmentQuery_envirnoment_permissions[] | null;
+  language: EnvironmentQuery_envirnoment_language;
 }
 
 export interface EnvironmentQuery {

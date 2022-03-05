@@ -15,6 +15,7 @@ import {
 import Loader from '@components/primitives/loader'
 import ScreenCenter from '@components/primitives/screen-center'
 import Button from '@components/primitives/button'
+import Select from '@components/primitives/select/select.component'
 const splitterDefaultProps = {
   gutterClassName: 'bg-slate-100',
   draggerClassName: 'bg-slate-300',
@@ -40,10 +41,10 @@ function EnvironmentPageContent() {
         func: runCode,
         result: runCodeResult,
         loading: runCodeLoading,
+        error: runCodeError,
       },
-      updateFile: {
-        loading: updateFileLoading,
-      }
+      updateFile: { loading: updateFileLoading },
+      changeLanguage: { func: changeLanguage, loading: changeLanguageLoading },
     },
   } = useEnvironmentContext()
 
@@ -65,19 +66,36 @@ function EnvironmentPageContent() {
       <Splitter initialSizes={[50, 50]} {...splitterDefaultProps}>
         {/* <div className="bg-slate-100"></div> */}
         <div className="flex-1 h-full w-full">
-          <div className="flex justify-between py-4 px-6 border-b uppercase font-bold text-gray-400">
-            Code Editor
-            <div className="flex gap-2">
+          <div className="flex justify-between items-center py-4 px-6 border-b ">
+            <h3 className="uppercase font-bold text-gray-400">Code Editor</h3>
+            <div className="flex gap-2 items-stretch">
+              <Select
+                className="w-32"
+                options={environment.files
+                  .map(file => file.language)
+                  .map(language => ({
+                    label: language.name,
+                    value: language.id,
+                  }))}
+                onChange={value => {
+                  changeLanguage({
+                    variables: { id: environment.id, languageId: value },
+                  }).catch(console.error)
+                }}
+                value={environment.language.id}
+              ></Select>
               <Button
                 icon={<PlayIcon />}
                 loading={runCodeLoading}
-                disabled={updateFileLoading}
+                disabled={updateFileLoading || changeLanguageLoading}
                 onClick={() => runCode().catch(console.error)}
                 size="sm"
               >
                 Run Code
               </Button>
-              <IconButton icon={<CogIcon />} />
+              <div className="flex items-center">
+                <IconButton icon={<CogIcon />} />
+              </div>
             </div>
           </div>
           <CodeEditor />
@@ -109,7 +127,10 @@ function EnvironmentPageContent() {
               </Tabs>
             </div>
             <div className="flex-auto p-2 ">
-              <pre>{runCodeResult?.runCode}</pre>
+              <pre>
+                {runCodeResult?.runCode ||
+                  JSON.stringify(runCodeError, null, 2)}
+              </pre>
             </div>
           </Splitter>
         </div>

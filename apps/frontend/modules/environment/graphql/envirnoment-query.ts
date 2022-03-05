@@ -42,6 +42,11 @@ export const ENVIRNOMENT_QUERY = gql`
         }
         permission
       }
+      language {
+        id
+        name
+        editorConfigName
+      }
     }
   }
 `

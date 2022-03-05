@@ -1,6 +1,10 @@
 import { useMutation, useQuery, useSubscription } from '@apollo/client'
 import React from 'react'
 import {
+  EnvironmentChangeLanguage,
+  EnvironmentChangeLanguageVariables,
+} from 'typings/graphql/EnvironmentChangeLanguage'
+import {
   EnvironmentQuery,
   EnvironmentQueryVariables,
 } from 'typings/graphql/EnvironmentQuery'
@@ -11,15 +15,16 @@ import {
 import { ENVIRNOMENT_QUERY } from './graphql/envirnoment-query'
 import { ENVIRONMENT_RUN_CODE_MUTATION } from './graphql/envirnoment-run-code-mutation'
 import { UPDATE_FILE_MUTATION } from './graphql/envirnoment-update-code-mutation'
+import { ENVIRONEMENT_CHANGE_LANG_MUTATION } from './graphql/environment-change-lang-mutation'
 
-interface Operation {
+interface Operation<T = any> {
   func: (...args: any[]) => any
   loading: boolean
-  result: any
+  result: T
   error: any
 }
 
-type operations = 'updateFile' | 'runCode'
+type operations = 'updateFile' | 'runCode' | 'changeLanguage'
 interface IEnvironmentContext {
   environment?: EnvironmentQuery['envirnoment']
   environmentLoading: boolean
@@ -55,6 +60,18 @@ export function EnviromentProvider(props: {
   })
 
   const environment = data?.envirnoment
+
+  const [
+    changeLanguage,
+    {
+      data: changeLanguageResult,
+      loading: changeLanguageLoading,
+      error: changeLanguageError,
+    },
+  ] = useMutation<
+    EnvironmentChangeLanguage,
+    EnvironmentChangeLanguageVariables
+  >(ENVIRONEMENT_CHANGE_LANG_MUTATION, { refetchQueries: [ENVIRNOMENT_QUERY] })
 
   const [
     updateFile,
@@ -129,6 +146,12 @@ export function EnviromentProvider(props: {
             loading: runCodeLoading,
             error: runCodeError,
             result: runCodeResult,
+          },
+          changeLanguage: {
+            func: changeLanguage,
+            loading: changeLanguageLoading,
+            error: changeLanguageError,
+            result: changeLanguageResult,
           },
         },
       }}

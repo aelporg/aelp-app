@@ -1,5 +1,5 @@
 REACT_EDITOR=code
-NEXT_PUBLIC_GRAPHQL_API_ENDPOINT=http://localhost:3334/graphql
+NEXT_PUBLIC_GRAPHQL_API_ENDPOINT=http://localhost:3333/graphql
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=1056009967233-0snpfsllf47biajcc1dftnekf5drlb2o.apps.googleusercontent.com
 MAIN_DATABASE_URL=postgresql://postgres:mypassword@posgres:5432/aelpcore
 JWT_SECRET=this_is_long_and_strong_as_well

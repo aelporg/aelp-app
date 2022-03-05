@@ -10,10 +10,10 @@ import {
 } from '@nestjs/graphql'
 import { PubSub } from 'graphql-subscriptions'
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
+import { Language } from '../language/types/language.model'
 import { QuestionAnswer } from '../question/types/question-answer.model'
 import { User } from '../user/types/user.model'
 import { EnvironmentService } from './environment.service'
-import PistonService from './piston.service'
 import { EnvironmentPermission } from './types/environment-permission.model'
 import { Environment } from './types/environment.model'
 import { File } from './types/file.model'
@@ -24,7 +24,6 @@ const pubSub = new PubSub()
 export default class EnvironmentResolver {
   constructor(
     private environmentService: EnvironmentService,
-    private piston: PistonService
   ) {}
 
   @Query(() => [Environment])
@@ -38,6 +37,15 @@ export default class EnvironmentResolver {
     @Args('questionId') questionId: string
   ) {
     return this.environmentService.createEnvirnment(questionId, user)
+  }
+
+  @Mutation(() => Environment)
+  async changeLanguage(
+    @Args('id', { type: () => ID }) id: string,
+    @Args('languageId', { type: () => ID }) languageId: string,
+    @LoggedInUser() user: User
+  ) {
+    return this.environmentService.changeLanguage(id, languageId, user)
   }
 
   @Subscription(() => String)
@@ -55,19 +63,7 @@ export default class EnvironmentResolver {
 
   @Mutation(() => String)
   async runCode(@Args('id', { type: () => ID }) id: string) {
-    const files = await this.environmentService
-      .getById(id)
-      .files({ include: { language: true } })
-
-    if (files && files.length > 0) {
-      const file = files[0]
-      const code = file.data
-      const language = file.language.editorConfigName
-
-      return (await this.piston.client.execute(language, code)).run.output
-    }
-
-    throw new Error('test')
+    return this.environmentService.runCode(id)
   }
 
   @ResolveField(() => [File])
@@ -83,5 +79,10 @@ export default class EnvironmentResolver {
   @ResolveField(() => [QuestionAnswer])
   async answers(@Root() envirnment: Environment) {
     return this.environmentService.getById(envirnment.id).answers()
+  }
+
+  @ResolveField(() => Language)
+  async language(@Root() envirnment: Environment) {
+    return this.environmentService.getById(envirnment.id).language()
   }
 }

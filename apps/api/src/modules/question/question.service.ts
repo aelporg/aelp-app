@@ -80,11 +80,8 @@ export default class QuestionService {
               title: programmingQuestion.title,
               singleFileProgrammingQuestion: {
                 create: {
-                  defaultCode:
-                    programmingQuestion.singleFileProgrammingQuestion
-                      .defaultCode,
-                  allowedLanguages: {
-                    connect: { extension: 'cpp' },
+                  defaultCodes: {
+                    createMany: { data: [] }, // TODO: Fix this
                   },
                 },
               },

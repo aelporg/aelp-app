@@ -6,8 +6,12 @@ ENV NODE_ENV production
 
 COPY ./dist/apps/api/package.json ./
 
-RUN yarn install
+RUN npm i -g pnpm@latest
+RUN pnpm install
 
+COPY libs/models/prisma ./prisma
+RUN node ./prisma/remove-nestjsgraphql.js
+RUN pnpm exec prisma generate
 COPY dist/apps/api ./
 
 CMD ["node", "main.js"]
