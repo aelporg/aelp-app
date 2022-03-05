@@ -16,7 +16,7 @@ export class ClassroomInviteCodeGenError extends Error {
 
 @Injectable()
 export default class ClassroomService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private prismaService: PrismaService) { }
 
   async getUserClassrooms(user: User) {
     return this.prismaService.classroom.findMany({
@@ -112,6 +112,68 @@ export default class ClassroomService {
           ],
         },
       },
+    })
+  }
+
+  async updateClassroom(
+    classroomId: string,
+    user: User,
+    data: CreateClassroomInput
+  ) {
+    const memberInAction = await this.prismaService.classroomMember.findUnique({
+      where: { classroomId, userId: user.id },
+    })
+
+    if (!memberInAction) {
+      throw new UserInputError('You are not a member of this classroom')
+    }
+
+    if (memberInAction.classroomRole !== ClassroomRole.OWNER) {
+      throw new UserInputError('You are not allowed to update this classroom')
+    }
+
+    return this.prismaService.classroom.update({
+      where: { classroomId },
+      data,
+    })
+  }
+
+  async resetInviteCode(classroomId: string, user: User) {
+    const memberInAction = await this.prismaService.classroomMember.findUnique({
+      where: { classroomId, userId: user.id },
+    })
+
+    if (!memberInAction) {
+      throw new UserInputError('You are not a member of this classroom')
+    }
+
+    if(memberInAction.classroomRole === ClassroomRole.STUDENT){
+      throw new UserInputError('You are not allowed to update this classroom')
+    }
+
+    const inviteCode = await this.generateUniqueInviteCode()
+
+    return this.prismaService.classroom.update({
+      where: { classroomId },
+      data: { inviteCode },
+    })
+  }
+
+  async deleteClassroom(classroomId: string, user: User) {
+    const memberInAction = await this.prismaService.classroomMember.findUnique({
+      where: { classroomId, userId: user.id },
+    })
+
+    if (!memberInAction) {
+      throw new UserInputError('You are not a member of this classroom')
+    }
+
+    if (memberInAction.classroomRole !== ClassroomRole.OWNER) {
+      throw new UserInputError('You are not allowed to update this classroom')
+    }
+
+    return this.prismaService.classroom.delete({
+      where: { classroomId }
     })
   }
 
