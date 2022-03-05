@@ -35,7 +35,6 @@ export default function CodeEditor() {
 
   useEffect(() => {
     console.log(extractFile().data)
-    // setValue(extractFile().data)
   }, [environment.language, environment.files, extractFile])
 
   useEffect(() => {
@@ -48,15 +47,16 @@ export default function CodeEditor() {
   useDebounce(
     () => {
       !changeLanguageLoading &&
+        extractFile().data !== value &&
         updateFile({
           variables: {
-            id: environment.files[0].id,
+            id: extractFile().id,
             data: value,
           },
         })
     },
     250,
-    [value, environment.files]
+    [value, extractFile]
   )
 
   return (
