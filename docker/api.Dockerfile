@@ -8,6 +8,7 @@ COPY ./dist/apps/api/package.json ./
 
 RUN npm i -g pnpm@latest
 RUN pnpm install
+RUN pnpm i tslib
 
 COPY libs/models/prisma ./prisma
 RUN node ./prisma/remove-nestjsgraphql.js
