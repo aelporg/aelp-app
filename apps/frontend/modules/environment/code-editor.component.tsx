@@ -29,13 +29,13 @@ export default function CodeEditor() {
     return environment.files.find(
       file => file.language.id === environment.language.id
     )
-  }, [environment.files, environment.language.id])
+  }, [environment.files, environment.language])
 
   const [value, setValue] = useState(extractFile().data)
 
   useEffect(() => {
     console.log(extractFile().data)
-  }, [environment.language, environment.files, extractFile])
+  }, [extractFile])
 
   useEffect(() => {
     if (monaco) {

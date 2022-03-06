@@ -15,6 +15,7 @@ import { UserAuthInfo } from '../auth/types/UserAuthInfo'
 import { UserRegisterInput } from './types/user-register-input-type'
 import { User } from './types/user.model'
 import { ClassroomMember } from '../classroom/types/classroom-member.model'
+import SkipAuth from '../auth/helpers/SkipAuth'
 
 @Resolver(() => User)
 export default class UserResolver {
@@ -24,6 +25,7 @@ export default class UserResolver {
     private ipAddressService: IPAddressLookUpService
   ) {}
 
+  @SkipAuth()
   @Mutation(() => UserAuthInfo)
   async register(@Args('data') data: UserRegisterInput, @Context() ctx) {
     const userId = await this.userService.registerUserWithCreds({
