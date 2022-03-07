@@ -34,10 +34,6 @@ export default function CodeEditor() {
   const [value, setValue] = useState(extractFile().data)
 
   useEffect(() => {
-    console.log(extractFile().data)
-  }, [extractFile])
-
-  useEffect(() => {
     if (monaco) {
       monaco.editor.defineTheme('myTheme', theme)
       monaco.editor.setTheme('myTheme')
@@ -69,6 +65,7 @@ export default function CodeEditor() {
         fontSize: 16,
         mouseWheelZoom: true,
         tabSize: 2,
+        theme: 'myTheme',
         // fontFamily: 'AelpFiraCode',
         fontLigatures: true,
         minimap: { enabled: false },

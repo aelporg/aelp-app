@@ -60,7 +60,7 @@ export default function CreateClassRoomModal(props: CreateClassRoomModalProps) {
             <HFInput name="section" placeholder="Section" />
           </FormGroup>
           {error && <span className="text-error text-sm">{error.message}</span>}
-          <Button type="submit" className="mt-2" size="sm" loading={loading}>
+          <Button type="submit" className="mt-2" size="md" loading={loading}>
             Create
           </Button>
         </div>
