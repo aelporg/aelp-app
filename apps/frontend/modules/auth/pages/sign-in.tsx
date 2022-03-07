@@ -2,7 +2,7 @@ import React from 'react'
 import Logo from '@components/primitives/logo/logo'
 import Button from '@components/primitives/button'
 import FormGroup from '@components/primitives/form-group/form-group'
-import ThirdPartyAuthButton from '@components/molecules/third-party-auth-button'
+import GoogleConnectButton from '@components/molecules/google-connect-button'
 import OrLine from '@components/primitives/or-line'
 import { gql, useMutation } from '@apollo/client'
 import Link from 'next/link'
@@ -79,12 +79,11 @@ export default function SignIn() {
                 {error.message}
               </span>
             )}
-            <a
-              href="/test"
-              className="text-sm mb-3 font-semibold text-accent hover:underline"
-            >
-              Forget your password?
-            </a>
+            <Link href="/auth/forgot-password" passHref>
+              <span className="text-sm mb-3 font-semibold text-accent hover:underline">
+                Forget your password?
+              </span>
+            </Link>
             <Button
               size="md"
               className="mt-2"
@@ -101,15 +100,13 @@ export default function SignIn() {
               </Button>
             </Link>
             <OrLine className="my-6" />
-            <ThirdPartyAuthButton
-              authType="google"
+            <GoogleConnectButton
               onSuccess={success => {
                 authStore.login(success)
               }}
               onAuthError={error => setGoogleError(error)}
               disabled={loading}
             />
-            <ThirdPartyAuthButton authType="github" disabled={loading} />
           </div>
         </HForm>
       </div>

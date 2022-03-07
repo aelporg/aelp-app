@@ -2,7 +2,7 @@ import React from 'react'
 import Logo from '@components/primitives/logo/logo'
 import Button from '@components/primitives/button'
 import FormGroup from '@components/primitives/form-group/form-group'
-import ThirdPartyAuthButton from '@components/molecules/third-party-auth-button'
+import GoogleConnectButton from '@components/molecules/google-connect-button'
 import OrLine from '@components/primitives/or-line'
 import { HFInput } from '@components/primitives/input/input'
 import Link from 'next/link'
@@ -100,12 +100,10 @@ export default function SignUp() {
             </Button>
           </Link>
           <OrLine className="my-6" />
-          <ThirdPartyAuthButton
-            authType="google"
+          <GoogleConnectButton
             onSuccess={success => authStore.login(success)}
             onAuthError={setConnectError}
           />
-          <ThirdPartyAuthButton authType="github" />
         </HForm>
       </div>
     </div>
