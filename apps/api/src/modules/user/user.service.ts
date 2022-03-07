@@ -10,7 +10,7 @@ interface RegisterUserArgs extends UserRegisterInput {
   country?: string
 }
 
-export const userNameRegex = /^[a-zA-Z_][a-zA-Z0-9]{4,10}$/
+export const userNameRegex = /^[a-zA-Z_][a-zA-Z0-9]{4,15}$/
 
 @Injectable()
 export class UserService {
@@ -18,9 +18,17 @@ export class UserService {
 
   async registerUserWithCreds(data: RegisterUserArgs) {
     return this.prismaService.$transaction(async () => {
-      let userName = await this.generateUserName(data.email)
+      const userName = await this.generateUserName(data.email)
 
       const hashedPassword = await hash(data.password, 10)
+
+      if (
+        await this.prismaService.user.findUnique({
+          where: { email: data.email },
+        })
+      ) {
+        throw new Error('Email already exists')
+      }
 
       const { id } = await this.prismaService.user.create({
         data: {
@@ -46,8 +54,7 @@ export class UserService {
       userName = generateUsername('', 3, 7)
     }
 
-    let tries = 0,
-      foundUnqiueUserName = false
+    let tries = 0
 
     while (tries < 3) {
       const user = await this.prismaService.user.findUnique({
@@ -55,11 +62,10 @@ export class UserService {
       })
 
       if (!user) {
-        foundUnqiueUserName = true
         break
       }
 
-      userName = generateUsername('', 3, 7)
+      userName = generateUsername('-', 3, 13)
       tries++
     }
 
@@ -67,6 +73,14 @@ export class UserService {
   }
 
   async registerUserWithGoogle(payload: TokenPayload, country: string) {
+    if (
+      await this.prismaService.user.findUnique({
+        where: { email: payload.email },
+      })
+    ) {
+      throw new Error(`Email ${payload.email} already exists, please proceed to login with password`)
+    }
+
     const userName = await this.generateUserName(payload.email)
 
     return this.prismaService.user.create({
