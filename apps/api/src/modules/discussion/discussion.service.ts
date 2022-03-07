@@ -89,18 +89,6 @@ export default class DiscussionService {
   }
 
   async createResponce(discussionId: string, user: User, responce: string) {
-    const alreadyResponced =
-      await this.prismaService.discussionResponce.findUnique({
-        where: { discussionId_userId: { discussionId, userId: user.id } },
-      })
-
-    if (alreadyResponced) {
-      return this.prismaService.discussionResponce.update({
-        where: { discussionId_userId: { discussionId, userId: user.id } },
-        data: { responce: responce },
-      })
-    }
-
     return this.prismaService.discussionResponce.create({
       data: {
         responce: responce,
