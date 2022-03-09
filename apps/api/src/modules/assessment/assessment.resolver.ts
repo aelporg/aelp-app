@@ -1,5 +1,4 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql'
-import { boolean } from 'joi'
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
 import { User } from '../user/types/user.model'
 import AssessmentService from './assessment.service'

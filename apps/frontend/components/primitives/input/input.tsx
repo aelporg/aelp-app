@@ -1,18 +1,18 @@
-import classNames from 'classnames';
-import React, { LegacyRef } from 'react';
-import { Path, useFormContext } from 'react-hook-form';
+import classNames from 'classnames'
+import React, { LegacyRef } from 'react'
+import { Path, useFormContext } from 'react-hook-form'
 
-export interface InputProps<T = string>
+export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  name?: string;
-  prefixIcon?: React.ReactNode;
-  invalid?: boolean;
-  invalidText?: string;
+  name?: string
+  prefixIcon?: React.ReactNode
+  invalid?: boolean
+  invalidText?: string
 }
 
 const Input = React.forwardRef(
-  <T extends any>(
-    { className, prefixIcon, invalid, invalidText, ...rest }: InputProps<T>,
+  (
+    { className, prefixIcon, invalid, invalidText, ...rest }: InputProps,
     ref: LegacyRef<HTMLInputElement>
   ) => {
     return (
@@ -41,30 +41,30 @@ const Input = React.forwardRef(
           <div className="text-xs text-error mt-2">{invalidText}</div>
         )}
       </div>
-    );
+    )
   }
-);
+)
 
-Input.displayName = 'Input';
+Input.displayName = 'Input'
 
-export interface HFInputProps<T = string> extends InputProps<T> {
-  name: string;
+export interface HFInputProps<T> extends Omit<InputProps, 'name'> {
+  name: Path<T>
 }
 
-export function HFInput<T extends any, K = any>({ name, ...rest }: HFInputProps<T>) {
+export function HFInput<T = any>({ name, ...rest }: HFInputProps<T>) {
   const {
     register,
     formState: { errors },
-  } = useFormContext<K>();
+  } = useFormContext<T>()
 
   return (
     <Input
-      {...register(name as Path<K>)}
-      invalidText={errors[name]?.message}
-      invalid={errors[name]}
+      {...register(name)}
+      invalidText={errors[name as string]?.message}
+      invalid={errors[name as string]}
       {...rest}
     />
-  );
+  )
 }
 
-export default Input;
+export default Input

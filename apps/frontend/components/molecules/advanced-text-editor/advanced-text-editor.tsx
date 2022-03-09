@@ -5,15 +5,15 @@ import '@uiw/react-markdown-preview/markdown.css'
 import type { MDEditorProps } from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeKatex from 'rehype-katex'
-import rehypeMermaid from 'rehype-mermaid'
+import Loader from '@components/primitives/loader'
 
 const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then(mod => mod.default),
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-[75px] justify-center items-center">
-        Loading your editor
+      <div className="flex min-h-[200px]  justify-center items-center">
+        <Loader />
       </div>
     ),
   }

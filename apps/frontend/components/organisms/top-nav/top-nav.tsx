@@ -2,7 +2,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import UserProfileHeaderIcon from '@components/organisms/top-nav/user-profile-header-icon/user-profile-header-icon'
 import classNames from 'classnames'
 import UserProfileMenu from './user-profile-menu/user-profile-menu'
-import { TopNavConsumer, TopNavProvider } from './top-nav.store'
+import { TopNavProvider } from './top-nav.store'
 
 export interface TopNavProps {
   heading?: string | React.ReactNode

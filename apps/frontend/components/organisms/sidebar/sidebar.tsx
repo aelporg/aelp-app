@@ -42,7 +42,7 @@ export function Sidebar({
                 <div
                   className={classNames(
                     'flex items-center px-2 py-2 select-none cursor-pointer rounded-lg transition-colors duration-200',
-                    router.asPath === baseLink + link.href
+                    router.asPath.startsWith(baseLink + link.href)
                       ? 'bg-black bg-opacity-10'
                       : 'hover:bg-black hover:bg-opacity-5'
                   )}

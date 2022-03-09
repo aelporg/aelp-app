@@ -2,14 +2,15 @@ import dynamic from 'next/dynamic'
 import type { MarkdownPreviewProps } from '@uiw/react-markdown-preview'
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import rehypeKatex from 'rehype-katex'
+import Loader from '@components/primitives/loader'
 
 const MarkdownPreview = dynamic(
   () => import('@uiw/react-markdown-preview').then(mod => mod.default),
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-[75px] justify-center items-center">
-        Loading Preview...
+      <div className="flex min-h-[200px] justify-center items-center">
+        <Loader />
       </div>
     ),
   }

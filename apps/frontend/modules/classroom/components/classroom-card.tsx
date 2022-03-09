@@ -25,11 +25,11 @@ function ClassroomCard({ classroom }: ClassroomCardProps) {
           <div className={classNames('p-4', !isMyClass ? 'w-8/12' : 'w-[95%]')}>
             <h4
               title={classroom.name}
-              className={classNames('text-2xl font-bold long-text')}
+              className={classNames('text-xl font-bold long-text')}
             >
               {classroom.name}
             </h4>
-            <h6 className="text-slate-500 text-md long-text">
+            <h6 className="text-slate-500 text-sm long-text">
               {classroom.subject}{' '}
               {classroom.subject && classroom.section && '-'}{' '}
               {classroom.section}
