@@ -1,8 +1,10 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import './global.scss'
+import 'react-toastify/dist/ReactToastify.css'
 import AuthStoreProvider from '@modules/auth/store/auth-store'
 import MeStoreProvider from '@modules/auth/store/me-store'
+import { ToastContainer } from 'react-toastify'
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
@@ -36,6 +38,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
             </MeStoreProvider>
           </AuthStoreProvider>
         </main>
+        <ToastContainer hideProgressBar position='bottom-right' className={"font-sans"}   toastClassName={"rounded-xl p-4"} />
       </div>
     </>
   )

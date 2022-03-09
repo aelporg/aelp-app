@@ -1,16 +1,21 @@
+import Button from '@components/primitives/button'
 import ScreenCenter from '@components/primitives/screen-center'
+import { useRef } from 'react'
+import { toast } from 'react-toastify'
+
 
 export default function Test() {
+  const count = useRef(0)
+
   return (
     <ScreenCenter>
-      {/* <Select value={'test4'} onChange={value => value}>
-        <Select.Option value={'test'}> Test</Select.Option>
-        <Select.Option value={'test2'}> Test</Select.Option>
-        <Select.Option value={'test3'}> Test</Select.Option>
-        <Select.Option value={'test4'}> Test</Select.Option>
-        <Select.Option value={'test5'}> Test</Select.Option>
-        <Select.Option value={'test6'}> Test</Select.Option>
-      </Select> */}
+      <Button
+        onClick={() => {
+          toast.error("Hello world!")
+        }}
+      >
+        Show toast
+      </Button>
     </ScreenCenter>
   )
 }
