@@ -1,5 +1,4 @@
 import {
-  AnnouncementsQuery,
   AnnouncementsQuery_classroom_announcements,
 } from 'typings/graphql/AnnouncementsQuery'
 import moment from 'moment'

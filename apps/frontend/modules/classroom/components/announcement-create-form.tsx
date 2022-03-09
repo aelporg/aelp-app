@@ -3,6 +3,7 @@ import AdvancedTextEditor from '@components/molecules/advanced-text-editor/advan
 import Avatar from '@components/primitives/avatar'
 import Button from '@components/primitives/button'
 import { useState } from 'react'
+import { toast, useToast } from 'react-toastify'
 import {
   CreateAnnouncementMutation,
   CreateAnnouncementMutationVariables,
@@ -22,6 +23,7 @@ export default function AnnouncementCreateForm() {
     CreateAnnouncementMutationVariables
   >(CREATE_ANNOUNCEMENT_MUTATION, { refetchQueries: [ANNOUNCEMENTS_QUERY] })
 
+
   const postAnnouncement = () => {
     if (value.length < 1) return
 
@@ -39,7 +41,7 @@ export default function AnnouncementCreateForm() {
         reset()
       })
       .catch(err => {
-        console.log(err)
+        toast(err.message)
       })
   }
 
@@ -59,7 +61,7 @@ export default function AnnouncementCreateForm() {
           onFocus={() => setExpaned(true)}
         />
       </div>
-      {error && <div className="text-error">{error.message}</div>}
+      {error && <div className="text-error mt-2">{error.message}</div>}
       {expanded && (
         <div className="self-end mt-2">
           <Button

@@ -1,4 +1,3 @@
-import { QueryResult, useQuery } from '@apollo/client'
 import {
   InboxIcon,
   QuestionMarkCircleIcon,
@@ -10,12 +9,8 @@ import {
 import { Layout, LayoutProps } from '@modules/dashboard/components/layout'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import {
-  ClassroomQuery,
-  ClassroomQueryVariables,
-} from 'typings/graphql/ClassroomQuery'
+import { ClassroomRole } from 'typings/graphql/globalTypes'
 import SidebarClassroomHeader from '../components/sidebar-classroom-header'
-import { CLASSROOM_QUERY } from '../graphql/classroom-query'
 import {
   ClassroomContextConsumer,
   ClassroomContextProvider,
@@ -50,6 +45,7 @@ const ClassroomLinks = [
   {
     name: 'Settings',
     icon: CogIcon,
+    allowedOnly: [ClassroomRole.OWNER],
     href: '/settings',
   },
 ]
@@ -67,19 +63,25 @@ export default function ClassroomLayout({
     <ClassroomContextProvider classroomId={id as string}>
       <ClassroomContextConsumer>
         {value => (
-          <Head>
-            <title>{value?.data?.classroom.name} | Classroom</title>
-          </Head>
+          <>
+            <Head>
+              <title>{value?.data?.classroom.name} | Classroom</title>
+            </Head>
+            <Layout
+              {...props}
+              sidebarBaseLink={`/app/classroom/${id}`}
+              sidebarLinks={ClassroomLinks.filter(
+                link =>
+                  !link.allowedOnly ||
+                  link.allowedOnly?.includes(value?.userClassroomRole)
+              )}
+              sideBarBetweenElement={<SidebarClassroomHeader />}
+            >
+              {children}
+            </Layout>
+          </>
         )}
       </ClassroomContextConsumer>
-      <Layout
-        {...props}
-        sidebarBaseLink={`/app/classroom/${id}`}
-        sidebarLinks={ClassroomLinks}
-        sideBarBetweenElement={<SidebarClassroomHeader />}
-      >
-        {children}
-      </Layout>
     </ClassroomContextProvider>
   )
 }

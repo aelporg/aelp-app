@@ -9,6 +9,9 @@ import { useQuery } from '@apollo/client'
 import { MyClassroomsQuery } from 'typings/graphql/MyClassroomsQuery'
 import MainDashboardLayout from '@modules/dashboard/components/main-dashboard-layout'
 import { MY_CLASSROOMS_QUERY } from '../graphql/classroom-query'
+import Loader from '@components/primitives/loader'
+import Center from '@components/primitives/center'
+import NoResultMessage from '@components/templates/NoResultMessage'
 
 interface ClassroomsViewActionsProps {
   onJoinClick: () => void
@@ -20,7 +23,7 @@ function ClassroomsViewActions({
   onCreateClick,
 }: ClassroomsViewActionsProps) {
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-2">
       <Button
         size="md"
         variant="secondary"
@@ -61,6 +64,19 @@ export default function ClassroomsView() {
     >
       <CreateClassRoomModal isOpen={isCreateOpen} onClose={onCreateClose} />
       <JoinClassRoomModal isOpen={isJoinOpen} onClose={onJoinClose} />
+      {loading && (
+        <Center>
+          <Loader />
+        </Center>
+      )}
+      {data && data.classrooms && data.classrooms.length < 1 && (
+        <Center>
+          <NoResultMessage title="Oh, it's lonely here.">
+            You are not a part of any classroom, join or create classroom to get
+            started.
+          </NoResultMessage>
+        </Center>
+      )}
       {data && <ClassRoomList classrooms={data.classrooms} />}
     </MainDashboardLayout>
   )

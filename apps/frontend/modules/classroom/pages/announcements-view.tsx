@@ -1,15 +1,16 @@
 import ClassroomLayout from './classroom-layout'
 
 import AnnouncementCreateForm from '../components/announcement-create-form'
-import { gql, useQuery } from '@apollo/client'
-import { Facebook } from 'react-content-loader'
+import { gql } from '@apollo/client'
 import { useClassroomContext } from '../store/ClassroomContext'
-import AnnouncementCard from '../components/announcement-card'
+import Announcement from '../components/announcement.component'
 import {
   AnnouncementsQuery,
   AnnouncementsQueryVariables,
 } from 'typings/graphql/AnnouncementsQuery'
 import { ClassroomRole } from 'typings/graphql/globalTypes'
+import Query from '@components/templates/Query'
+import NoResultMessage from '@components/templates/NoResultMessage'
 
 export const ANNOUNCEMENTS_QUERY = gql`
   query AnnouncementsQuery($classroomId: ID!) {
@@ -31,46 +32,46 @@ export const ANNOUNCEMENTS_QUERY = gql`
 function AnnouncementViewContent() {
   const { data } = useClassroomContext()
   const classroomId = data?.classroom?.id
-  const { loading, data: announcementsData } = useQuery<
-    AnnouncementsQuery,
-    AnnouncementsQueryVariables
-  >(ANNOUNCEMENTS_QUERY, {
-    variables: { classroomId },
-    fetchPolicy: classroomId ? 'cache-and-network' : 'standby',
-  })
   const { userClassroomRole } = useClassroomContext()
 
-  const announcements = announcementsData?.classroom?.announcements || []
-
   return (
-    <div className="flex ">
-      <div className="flex-1 max-w-4xl">
-        {[ClassroomRole.INSTRUCTOR, ClassroomRole.OWNER].includes(
-          userClassroomRole
-        ) && (
-          <div className="mb-4">
-            <AnnouncementCreateForm />
-          </div>
-        )}
+    <div className="flex">
+      <Query<AnnouncementsQuery, AnnouncementsQueryVariables>
+        query={ANNOUNCEMENTS_QUERY}
+        variables={{ classroomId }}
+        disabled={!classroomId}
+      >
+        {data => {
+          const announcements = data?.classroom?.announcements || []
+          const canPostAnnouncement = [
+            ClassroomRole.INSTRUCTOR,
+            ClassroomRole.OWNER,
+          ].includes(userClassroomRole)
 
-        {loading && (
-          <Facebook
-            className="p-5 bg-white border rounded-lg"
-            backgroundColor={'#e1e1e1'}
-            foregroundColor={'#f1f1f1'}
-            interval={0}
-            speed={2}
-          />
-        )}
-        {announcements.length < 1 && !loading && (
-          <div className="text-center text-gray-500">
-            There are no announcements yet.
-          </div>
-        )}
-        {announcements.map(announcement => (
-          <AnnouncementCard key={announcement.id} announcement={announcement} />
-        ))}
-      </div>
+          return (
+            <div className="flex-1 max-w-4xl">
+              {canPostAnnouncement && <AnnouncementCreateForm />}
+
+              {announcements.length < 1 && (
+                <div className="min-h-[70vh] flex items-center justify-center">
+                  <NoResultMessage title="There are no announcements yet.">
+                    {canPostAnnouncement
+                      ? 'You can post an announcement by clicking the text field above.'
+                      : 'Please wait for an announcement to be posted.'}
+                  </NoResultMessage>
+                </div>
+              )}
+
+              {announcements.map(announcement => (
+                <Announcement
+                  key={announcement.id}
+                  announcement={announcement}
+                />
+              ))}
+            </div>
+          )
+        }}
+      </Query>
       <div className="w-96"></div>
     </div>
   )

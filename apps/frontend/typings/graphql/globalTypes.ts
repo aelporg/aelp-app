@@ -7,6 +7,11 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum AssessmentType {
+  ASSIGNMENT = "ASSIGNMENT",
+  EXAM = "EXAM",
+}
+
 export enum ClassroomRole {
   INSTRUCTOR = "INSTRUCTOR",
   OWNER = "OWNER",
@@ -23,6 +28,17 @@ export enum EnvironmentPermissionLevel {
 export enum ProgrammingQuestionType {
   MULTIPLE_FILE = "MULTIPLE_FILE",
   SINGLE_FILE = "SINGLE_FILE",
+}
+
+export interface AssessmentCreateInput {
+  title: string;
+  description: string;
+  assessmentType: AssessmentType;
+  startTime?: any | null;
+  endTime?: any | null;
+  submitAfterEnd?: boolean | null;
+  totalPoints?: number | null;
+  classroomId?: string | null;
 }
 
 export interface ClassroomAnnoucementCreateInput {

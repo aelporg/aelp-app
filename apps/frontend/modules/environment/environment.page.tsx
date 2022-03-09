@@ -13,9 +13,10 @@ import {
   useEnvironmentContext,
 } from './environment.context'
 import Loader from '@components/primitives/loader'
-import ScreenCenter from '@components/primitives/screen-center'
 import Button from '@components/primitives/button'
 import Select from '@components/primitives/select/select.component'
+import Center from '@components/primitives/center'
+import NoResultMessage from '@components/templates/NoResultMessage'
 const splitterDefaultProps = {
   gutterClassName: 'bg-slate-100',
   draggerClassName: 'bg-slate-300',
@@ -50,14 +51,20 @@ function EnvironmentPageContent() {
 
   if (loading) {
     return (
-      <ScreenCenter>
+      <Center full>
         <Loader />
-      </ScreenCenter>
+      </Center>
     )
   }
 
   if (!environment) {
-    return <div>No environment found</div>
+    return (
+      <Center full>
+        <NoResultMessage title='404 NOT FOUND'>
+          The environment you are looking for does not exist.
+        </NoResultMessage>
+      </Center>
+    )
   }
 
   return (
