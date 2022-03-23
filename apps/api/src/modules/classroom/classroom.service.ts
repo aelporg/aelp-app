@@ -30,6 +30,12 @@ export default class ClassroomService {
     })
   }
 
+  getMemberInAction(classroomId: string, userId: string) {
+    return this.prismaService.classroomMember.findUnique({
+      where: { classroomId, userId },
+    })
+  }
+
   async getClassroomInviteCode(classroomId: string, user: User) {
     const memberRecord = await this.getClassroomById(classroomId).members({
       where: { userId: user.id },
@@ -119,12 +125,10 @@ export default class ClassroomService {
     classroomId: string,
     userId: string,
     memberId: string,
-    role: string) {
+    role: ClassroomRole) {
 
     //get user from the classroom
-    const memberInAction = await this.prismaService.classroomMember.findUnique({
-      where: { classroomId, userId },
-    })
+    const memberInAction = this.getMemberInAction(classroomId, userId)
 
     //check if user exists in the classroom
     if (!memberInAction) {
@@ -155,7 +159,7 @@ export default class ClassroomService {
     //update member role
     return this.prismaService.classroomMember.update({
       where: { classroomId, userId },
-      data: { classroomRole: role.toUpperCase() },
+      data: { classroomRole: role },
     })
   }
 
@@ -165,9 +169,7 @@ export default class ClassroomService {
     memberId: string) {
 
     //get member who tries to remove someone from the classroom
-    const memberInAction = await this.prismaService.classroomMember.findUnique({
-      where: { classroomId, userId },
-    })
+    const memberInAction = this.getMemberInAction(classroomId, userId)
 
     //check if member exists in the classroom
     if (!memberInAction) {
