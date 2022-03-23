@@ -2,10 +2,12 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/outline'
 import classNames from 'classnames'
 import React, { Fragment } from 'react'
+import { Path, useController, useFormContext } from 'react-hook-form'
 
 interface SelectProps<T> {
   children?: React.ReactNode
   className?: string
+  name?: string
   value: T
   options: Option[]
   onChange: (v: T) => void
@@ -21,8 +23,7 @@ function Select<T = any>({ options, className, ...props }: SelectProps<T>) {
     <Listbox {...props}>
       <div className={classNames('relative', className)}>
         <SelectButton>
-          {options.find(option => option.value === props.value)?.label ||
-            'Select'}
+          {options.find(option => option.value === props.value)?.label}
         </SelectButton>
         <SelectOptions>
           {options.map(option => (
@@ -34,6 +35,21 @@ function Select<T = any>({ options, className, ...props }: SelectProps<T>) {
       </div>
     </Listbox>
   )
+}
+
+export function HFSelect<T>({
+  name: prevName,
+  ...props
+}: Omit<SelectProps<T>, 'onChange' | 'value' | 'name'> & { name: Path<T> }) {
+  const { control } = useFormContext<T>()
+  const {
+    field: { name, onChange, value },
+  } = useController({
+    name: prevName as Path<T>,
+    control,
+  })
+
+  return <Select onChange={onChange} name={name} value={value} {...props} />
 }
 
 function SelectOptions({ children }: { children: React.ReactNode }) {
@@ -88,8 +104,10 @@ function SelectOption<T = any>(props: SelectOptionProps<T>) {
 
 function SelectButton({ children }: { children: React.ReactNode }) {
   return (
-    <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg border cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
-      <span className="block truncate font-medium text-slate-700">{children}</span>
+    <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg border-2 cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
+      <span className={classNames('block truncate font-medium text-slate-700', !children && "text-slate-400")}>
+        {children ? children : 'Select'}
+      </span>
       <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
         <SelectorIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
       </span>

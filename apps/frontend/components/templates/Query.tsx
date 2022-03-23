@@ -4,6 +4,7 @@ import {
   QueryResult,
   QueryHookOptions,
 } from '@apollo/client'
+import Loader from '@components/primitives/loader'
 import ContentLoader from '../primitives/content-loader'
 
 interface QueryProps<QueryType, Variables> {
@@ -38,7 +39,7 @@ export default function Query<QueryType = any, Variables = any>({
   })
 
   if (loading) {
-    return <ContentLoader />
+    return <Loader />
   }
 
   if (error) {

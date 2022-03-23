@@ -2,7 +2,6 @@ import { PrismaService } from '@aelp-app/models'
 import { Injectable } from '@nestjs/common'
 import { Prisma, Question, QuestionType } from '@aelp-app/models'
 import { UserInputError } from 'apollo-server-express'
-import { User } from '../user/types/user.model'
 import { QuestionCreateInput } from './types/question-create-input'
 @Injectable()
 export default class QuestionService {
@@ -14,12 +13,16 @@ export default class QuestionService {
     })
   }
 
-  async createQuestion(data: QuestionCreateInput, user: User) {
+  transformQuestionToCreateQuery(data: QuestionCreateInput): {
+    questionType: QuestionType
+    points: number
+    multipleChoiceQuestion?: Prisma.MultipleChoiceQuestionCreateWithoutBaseQuestionInput
+    programmingQuestion?: Prisma.ProgrammingQuestionCreateWithoutBaseQuestionInput
+  } {
     const {
       multipleChoiceQuestion,
       programmingQuestion,
       questionType,
-      assessmentId,
       points,
     } = data
 
@@ -34,63 +37,45 @@ export default class QuestionService {
       throw new UserInputError('Programming question is missing')
     }
 
-    const assessment = await this.prismaService.assessment.findUnique({
-      where: { id: assessmentId },
-    })
-
-    if (!assessment || assessment.userId !== user.id) {
-      throw new UserInputError('Assessment not found')
-    }
-
     const commonData = {
       questionType,
       points,
-      assessment: { connect: { id: assessment.id } },
     }
 
     if (questionType === QuestionType.MULTIPLE_CHOICE) {
-      return this.prismaService.question.create({
-        data: {
-          ...commonData,
-          multipleChoiceQuestion: {
-            create: {
-              description: multipleChoiceQuestion.description,
-              choices: {
-                createMany: {
-                  data: multipleChoiceQuestion.choices.map((choice, index) => ({
-                    choice: choice,
-                    correct:
-                      multipleChoiceQuestion.correctChoiceIndex === index,
-                  })),
-                },
-              },
+      return {
+        ...commonData,
+        multipleChoiceQuestion: {
+          description: multipleChoiceQuestion.description,
+          choices: {
+            createMany: {
+              data: multipleChoiceQuestion.choices.map((choice, index) => ({
+                choice: choice,
+                correct: multipleChoiceQuestion.correctChoiceIndex === index,
+              })),
             },
           },
         },
-      })
+      }
     } else if (questionType === QuestionType.PROGRAMMING) {
-      return this.prismaService.question.create({
-        data: {
-          ...commonData,
-          programmingQuestion: {
+      return {
+        ...commonData,
+        programmingQuestion: {
+          programmingQuestionType: programmingQuestion.programmingQuestionType,
+          statementMrkdwn: programmingQuestion.statementMrkdwn,
+          title: programmingQuestion.title,
+          singleFileProgrammingQuestion: {
             create: {
-              programmingQuestionType:
-                programmingQuestion.programmingQuestionType,
-              statementMrkdwn: programmingQuestion.statementMrkdwn,
-              title: programmingQuestion.title,
-              singleFileProgrammingQuestion: {
-                create: {
-                  defaultCodes: {
-                    createMany: { data: [] }, // TODO: Fix this
-                  },
+              defaultCodes: {
+                createMany: {
+                  data: programmingQuestion.singleFileProgrammingQuestion
+                    .defaultCodes,
                 },
               },
             },
           },
         },
-      })
+      }
     }
-
-    // const question = {} as (typeof multipleChoiceQuestion & typeof programmingQuestion)
   }
 }

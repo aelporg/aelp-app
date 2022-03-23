@@ -14,7 +14,8 @@ import { QuestionAnswer } from './types/question-answer.model'
     QuestionResolver,
     ProgrammingQuestionAnswerResolver,
     QuestionAnswerResolver,
-    QuestionAnswerService
+    QuestionAnswerService,
   ],
+  exports: [QuestionService],
 })
 export default class QuestionsModule {}

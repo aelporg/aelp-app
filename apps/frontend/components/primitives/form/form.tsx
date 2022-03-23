@@ -1,17 +1,20 @@
-import React, { ReactElement } from 'react';
+import React from 'react'
 import {
   FormProvider,
   UnpackNestedValue,
   useForm,
   UseFormProps,
-} from 'react-hook-form';
-import './form.module.scss';
+  UseFormReturn,
+} from 'react-hook-form'
+import './form.module.scss'
 
 export interface FormProps<DataType>
   extends Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> {
-  children?: React.ReactNode;
-  hfOptions?: UseFormProps;
-  onSubmit?: (data: UnpackNestedValue<DataType>) => void;
+  children?:
+    | React.ReactNode
+    | ((methods: UseFormReturn<DataType>) => React.ReactNode)
+  hfOptions?: UseFormProps<DataType>
+  onSubmit?: (data: UnpackNestedValue<DataType>) => void
 }
 
 export function HForm<DataType>({
@@ -20,15 +23,15 @@ export function HForm<DataType>({
   children,
   ...rest
 }: FormProps<DataType>) {
-  const methods = useForm(hfOptions);
+  const methods = useForm<DataType>(hfOptions)
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} {...rest}>
-        {children}
+        {typeof children === 'function' ? children(methods) : children}
       </form>
     </FormProvider>
-  );
+  )
 }
 
-export default HForm;
+export default HForm

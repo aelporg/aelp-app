@@ -6,6 +6,7 @@ import type { MDEditorProps } from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeKatex from 'rehype-katex'
 import Loader from '@components/primitives/loader'
+import { Path, useController, useFormContext } from 'react-hook-form'
 
 const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then(mod => mod.default),
@@ -20,6 +21,7 @@ const MDEditor = dynamic(
 ) as React.ComponentType<MDEditorProps>
 
 export interface TextEditorProps {
+  name?: string
   expanded?: boolean
   value: string
   onChange: (newValue: string) => void
@@ -77,5 +79,26 @@ export default function AdvancedTextEditor({
         </div>
       )}
     </div>
+  )
+}
+
+export function HFAdvancedTextEditor<T = any>({
+  name,
+  ...props
+}: Omit<TextEditorProps, 'name' | 'onChange' | 'value'> & { name: Path<T> }) {
+  const { control } = useFormContext<T>()
+  const {
+    field: { name: newName, onBlur, onChange, value },
+  } = useController({ control, name })
+
+  return (
+    <AdvancedTextEditor
+      value={value as string}
+      onChange={onChange}
+      expanded
+      name={newName}
+      onBlur={onBlur}
+      {...props}
+    />
   )
 }

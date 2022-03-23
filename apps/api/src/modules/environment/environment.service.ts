@@ -163,8 +163,10 @@ export class EnvironmentService {
           }
 
     const defaultLanguageId =
-      programmingQuestion.singleFileProgrammingQuestion?.defaultCodes[0]?.id ||
+      programmingQuestion.singleFileProgrammingQuestion?.defaultCodes[0]?.languageId ||
       programmingQuestion.multipleFilesProgrammingQuestion.languageId
+
+    if (!defaultLanguageId) throw new Error('No default language')
 
     const answer = this.prismaService.questionAnswer.create({
       data: {

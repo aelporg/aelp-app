@@ -1,16 +1,29 @@
 import { Transition, Dialog } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
+import classNames from 'classnames';
 import { Fragment } from 'react';
+import { Size } from 'typings/utils-types';
 import Button from '../button';
 
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  size?: Size
   title?: string;
   children?: React.ReactNode;
 }
 
+const SIZE_MAP: Record<Size, string> = {
+  xs: 'w-48',
+  sm: 'w-96',
+  md: 'w-[30rem]',
+  lg: 'w-[48rem]',
+  xl: 'w-[64rem]',
+}
+
 export function Modal(props: ModalProps) {
+  const size = props.size || 'md';
+
   return (
     <Transition appear show={props.isOpen} as={Fragment}>
       <Dialog
@@ -47,8 +60,8 @@ export function Modal(props: ModalProps) {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
-              <div className="flex justify-between">
+            <div className={classNames("inline-block max-w-5xl p-6 my-8 text-left align-middle transition-all transform bg-white shadow-xl rounded-lg", SIZE_MAP[size])}>
+              <div className="flex justify-between sticky">
                 <Dialog.Title as="h3" className="text-xl font-bold leading-6">
                   {props.title}
                 </Dialog.Title>

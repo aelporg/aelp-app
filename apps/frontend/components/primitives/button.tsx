@@ -81,7 +81,7 @@ export default function Button({
       )}
       {...rest}
     >
-      {icon || rightIcon ? (
+      {(icon || rightIcon) ? (
         <div className={classNames('flex justify-center items-center')}>
           {icon && <div className={getIconClassNamesForSize(size)}>{icon}</div>}
           {modifiedChildren && (
@@ -90,7 +90,7 @@ export default function Button({
             </span>
           )}
           {rightIcon && (
-            <div className={getIconClassNamesForSize(size)}>{icon}</div>
+            <div className={getIconClassNamesForSize(size)}>{rightIcon}</div>
           )}
         </div>
       ) : (
