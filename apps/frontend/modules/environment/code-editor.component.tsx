@@ -1,5 +1,5 @@
 import Editor, { useMonaco } from '@monaco-editor/react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useEnvironmentContext } from './environment.context'
 import { useDebounce } from 'react-use'
 
@@ -35,7 +35,7 @@ export default function CodeEditor() {
 
   useEffect(() => {
     if (monaco) {
-      monaco.editor.defineTheme('myTheme', theme)
+      monaco.editor.defineTheme('myTheme', theme as any)
       monaco.editor.setTheme('myTheme')
     }
   }, [monaco])

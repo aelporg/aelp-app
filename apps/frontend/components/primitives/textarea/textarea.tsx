@@ -1,19 +1,19 @@
-import classNames from 'classnames'
-import React, { LegacyRef, useEffect } from 'react'
-import { Path, useFormContext } from 'react-hook-form'
+import classNames from "classnames"
+import React from "react"
+import { LegacyRef } from "react"
+import { Path, useFormContext } from "react-hook-form"
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface TextAreaProps extends React.InputHTMLAttributes<HTMLTextAreaElement> {
   name?: string
   prefixIcon?: React.ReactNode
   invalid?: boolean
   invalidText?: string
 }
 
-const Input = React.forwardRef(
+const TextArea = React.forwardRef(
   (
-    { className, prefixIcon, invalid, invalidText, ...rest }: InputProps,
-    ref: LegacyRef<HTMLInputElement>
+    { className, prefixIcon, invalid, invalidText, ...rest }: TextAreaProps,
+    ref: LegacyRef<HTMLTextAreaElement>
   ) => {
     return (
       <div className="w-full self-start">
@@ -23,7 +23,7 @@ const Input = React.forwardRef(
               {prefixIcon}
             </div>
           )}
-          <input
+          <textarea
             className={classNames(
               'rounded-md leading-relaxed w-full pr-2 border-2 py-1.5 font-medium text-sm transition-shadow focus:ring-4 focus:outline-none  ring-accent ring-opacity-25',
               prefixIcon ? 'pl-9' : 'pl-2',
@@ -45,22 +45,21 @@ const Input = React.forwardRef(
   }
 )
 
-Input.displayName = 'Input'
+TextArea.displayName = 'Input'
 
-export interface HFInputProps<T> extends Omit<InputProps, 'name'> {
+export interface HFTextArea<T> extends Omit<TextAreaProps, 'name'> {
   name: Path<T>
 }
 
-export function HFInput<T = any>({ name, type, ...rest }: HFInputProps<T>) {
+export function HFTextArea<T = any>({ name, ...rest }: HFTextArea<T>) {
   const {
     register,
     formState: { errors },
   } = useFormContext<T>()
 
   return (
-    <Input
-      {...register(name, { valueAsNumber: type === 'number', valueAsDate: type === 'datetime-local' })}
-      type={type}
+    <TextArea
+      {...register(name)}
       invalidText={errors[name as string]?.message}
       invalid={errors[name as string]}
       {...rest}
@@ -68,4 +67,4 @@ export function HFInput<T = any>({ name, type, ...rest }: HFInputProps<T>) {
   )
 }
 
-export default Input
+export default TextArea

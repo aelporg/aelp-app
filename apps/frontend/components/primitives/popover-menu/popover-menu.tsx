@@ -5,7 +5,7 @@ import { DOMAttributes, Fragment } from 'react'
 
 function PopoverMenu({ children }: { children: React.ReactNode }) {
   return (
-    <Popover className={'relative'}>
+    <Popover className={'relative z-20 '}>
       <Popover.Button as={Fragment}>
         <IconButton icon={<DotsVerticalIcon />} />
       </Popover.Button>

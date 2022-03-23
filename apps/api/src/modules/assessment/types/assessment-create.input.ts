@@ -2,6 +2,7 @@ import { Field } from '@nestjs/graphql'
 import { InputType } from '@nestjs/graphql'
 import { Int } from '@nestjs/graphql'
 import { AssessmentType } from '../../../global-types'
+import { QuestionCreateInput } from '../../question/types/question-create-input'
 
 @InputType()
 export class AssessmentCreateInput {
@@ -12,7 +13,10 @@ export class AssessmentCreateInput {
   description!: string
 
   @Field(() => AssessmentType, { nullable: false })
-  assessmentType!: keyof typeof AssessmentType
+  assessmentType!: AssessmentType
+
+  @Field(() => [QuestionCreateInput], { nullable: false })
+  questions!: QuestionCreateInput[]
 
   @Field(() => Date, { nullable: true })
   startTime?: Date | string

@@ -292,8 +292,8 @@ enum EvaluationCriteriaType {
 
 model InputOutputEvaluationCriteria {
   id           String               @id @default(uuid())
-  inputs       String[]
-  outputs      String[]
+  inputs       String
+  outputs      String
   baseCriteria EvaluationCriteria[] @relation("evaluationCriteria_inputOutputEvaluationCriteria")
   updatedAt    DateTime             @updatedAt
   createdAt    DateTime             @default(now())

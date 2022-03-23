@@ -1,5 +1,6 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
 import { ProgrammingQuestionType, QuestionType } from '../../../global-types'
+import { EvaluationCriteriaCreateInput } from '../../evaluation-criteria/types/evaluation-criteria-create-input'
 
 @InputType()
 export class MultipleChoiceQuestionInput {
@@ -15,15 +16,24 @@ export class MultipleChoiceQuestionInput {
 
 @InputType()
 export class SingleFileProgrammingQuestionInput {
+  @Field(() => [DefaultCodeInput], { nullable: false })
+  defaultCodes?: DefaultCodeInput[]
+}
+
+@InputType()
+export class DefaultCodeInput {
   @Field(() => String, { nullable: false })
-  defaultCode?: string
+  defaultCode!: string
+
+  @Field(() => String, { nullable: false })
+  languageId!: string
 }
 
 // @InputType()
 // export class MultipleFileProgrammingQuestionInput {}
 @InputType()
 export class ProgrammingQuestionInput {
-  @Field(() => ProgrammingQuestionType, { nullable: true })
+  @Field(() => ProgrammingQuestionType, { nullable: false })
   programmingQuestionType!: ProgrammingQuestionType
 
   @Field(() => SingleFileProgrammingQuestionInput, { nullable: true })
@@ -31,6 +41,9 @@ export class ProgrammingQuestionInput {
 
   // @Field(() => MultipleFileProgrammingQuestionInput, { nullable: true })
   // multipleFileProgrammingQuestion?: MultipleFileProgrammingQuestionInput
+
+  @Field(() => [EvaluationCriteriaCreateInput], { nullable: false })
+  evaluationCriteria?: EvaluationCriteriaCreateInput[]
 
   @Field(() => String, { nullable: false })
   title!: string
@@ -54,7 +67,4 @@ export class QuestionCreateInput {
 
   @Field(() => ProgrammingQuestionInput, { nullable: true })
   programmingQuestion?: ProgrammingQuestionInput
-
-  @Field(() => String, { nullable: true })
-  assessmentId?: string
 }
