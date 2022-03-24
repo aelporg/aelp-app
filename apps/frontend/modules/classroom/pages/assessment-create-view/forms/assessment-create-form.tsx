@@ -4,9 +4,9 @@ import FormGroup from '@components/primitives/form-group/form-group'
 import { HFSelect } from '@components/primitives/select/select.component'
 import { HFTextArea } from '@components/primitives/textarea/textarea'
 import { useClassroomContext } from '@modules/classroom/store/ClassroomContext'
-import { AssessmentType } from '@prisma/client'
 import { useFormContext } from 'react-hook-form'
 import { CreateAssessmentMutationVariables } from 'typings/graphql/CreateAssessmentMutation'
+import { AssessmentType } from 'typings/graphql/globalTypes'
 
 type F = CreateAssessmentMutationVariables
 
