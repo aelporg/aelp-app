@@ -1,11 +1,10 @@
 import { InputType, Field } from '@nestjs/graphql'
-import { Assessment } from '../../assessment/types/assessment.model'
 
 @InputType()
 export class CreateCompetitionInput {
-  @Field()
-  isPrivate!: string
+  @Field(() => Boolean)
+  isPrivate!: boolean
 
-  @Field({ nullable: true })
-  assessment?: Assessment
+  @Field(() => String, { nullable: true })
+  assessmentId?: string
 }

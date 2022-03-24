@@ -6,19 +6,23 @@ import { User } from '../user/types/user.model'
 
 @Injectable()
 export default class CompetitionService {
-  constructor(private prismaService: PrismaService) { }
+  constructor(private prismaService: PrismaService) {}
 
   async createCompetition(data: CreateCompetitionInput, user: User) {
-
     return this.prismaService.competition.create({
       data: {
-        ...data,
+        isPrivate: data.isPrivate,
+        assessment: { connect: { id: data.assessmentId } },
         creatorUser: { connect: { id: user.id } },
       },
     })
   }
 
-  async updateCompetition(id: string, data: CreateCompetitionInput, user: User) {
+  async updateCompetition(
+    id: string,
+    data: CreateCompetitionInput,
+    user: User
+  ) {
     const competition = await this.prismaService.competition.findUnique({
       where: { id },
     })
@@ -29,7 +33,7 @@ export default class CompetitionService {
 
     return this.prismaService.competition.update({
       where: { id },
-      data: { data },
+      data,
     })
   }
 
@@ -75,8 +79,10 @@ export default class CompetitionService {
 
     return this.prismaService.competitionParticipant.delete({
       where: {
-        competitionId: competition.id,
-        userId: user.id,
+        competitionId_userId: {
+          userId: user.id,
+          competitionId: competition.id,
+        },
       },
     })
   }
@@ -94,5 +100,4 @@ export default class CompetitionService {
       },
     })
   }
-
 }

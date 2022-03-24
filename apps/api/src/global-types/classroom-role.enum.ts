@@ -4,7 +4,6 @@ export enum ClassroomRole {
   OWNER = 'OWNER',
   STUDENT = 'STUDENT',
   INSTRUCTOR = 'INSTRUCTOR',
-  TA = 'TA',
 }
 
 registerEnumType(ClassroomRole, {

@@ -16,7 +16,7 @@ export class ClassroomInviteCodeGenError extends Error {
 
 @Injectable()
 export default class ClassroomService {
-  constructor(private prismaService: PrismaService) { }
+  constructor(private prismaService: PrismaService) {}
 
   async getUserClassrooms(user: User) {
     return this.prismaService.classroom.findMany({
@@ -32,7 +32,7 @@ export default class ClassroomService {
 
   getMemberInAction(classroomId: string, userId: string) {
     return this.prismaService.classroomMember.findUnique({
-      where: { classroomId, userId },
+      where: { classroomId_userId: { classroomId, userId } },
     })
   }
 
@@ -125,63 +125,51 @@ export default class ClassroomService {
     classroomId: string,
     userId: string,
     memberId: string,
-    role: ClassroomRole) {
-
+    role: ClassroomRole
+  ) {
     //get user from the classroom
-    const memberInAction = this.getMemberInAction(classroomId, userId)
+    const memberInAction = await this.getMemberInAction(classroomId, userId)
 
     //check if user exists in the classroom
     if (!memberInAction) {
-      throw new UserInputError(
-        'You are not a member of this classroom'
-      )
+      throw new UserInputError('You are not a member of this classroom')
     }
 
     //check if user is owner of the classroom
     if (memberInAction.classroomRole !== ClassroomRole.OWNER) {
-      throw new UserInputError(
-        'You are not the owner of this classroom'
-      )
+      throw new UserInputError('You are not the owner of this classroom')
     }
 
     //get member from the classroom
     const ifMemberExist = await this.prismaService.classroomMember.findUnique({
-      where: { classroomId, userId: memberId },
+      where: { classroomId_userId: { classroomId, userId: memberId } },
     })
 
     //check if member exists in the classroom
     if (!ifMemberExist) {
-      throw new UserInputError(
-        'This user is not a member of this classroom'
-      )
+      throw new UserInputError('This user is not a member of this classroom')
     }
 
     //update member role
     return this.prismaService.classroomMember.update({
-      where: { classroomId, userId },
-      data: { classroomRole: role },
+      where: { classroomId_userId: { classroomId, userId } },
+      data: { classroomRole: { set: role } },
     })
   }
 
-  async removeMember(
-    classroomId: string,
-    userId: string,
-    memberId: string) {
-
+  async removeMember(classroomId: string, userId: string, memberId: string) {
     //get member who tries to remove someone from the classroom
-    const memberInAction = this.getMemberInAction(classroomId, userId)
+    const memberInAction = await this.getMemberInAction(classroomId, userId)
 
     //check if member exists in the classroom
     if (!memberInAction) {
-      throw new UserInputError(
-        'You are not a member of this classroom'
-      )
+      throw new UserInputError('You are not a member of this classroom')
     }
 
     //check if any member tries to remove himself
     if (memberInAction.userId === memberId) {
       return this.prismaService.classroomMember.delete({
-        where: { classroomId, userId: memberId },
+        where: { classroomId_userId: { classroomId, userId: memberId } },
       })
     }
 
@@ -195,20 +183,20 @@ export default class ClassroomService {
 
     //get member who is being removed from the classroom
     const memberToRemove = await this.prismaService.classroomMember.findUnique({
-      where: { classroomId, userId: memberId },
+      where: { classroomId_userId: { classroomId, userId: memberId } },
     })
 
     //check if memberToRemove exists in the classroom
     if (!memberToRemove) {
-      throw new UserInputError(
-        'This user is not a member of this classroom'
-      )
+      throw new UserInputError('This user is not a member of this classroom')
     }
 
     //check if instructor tries to remove owner
     //instructor is not allowed to remove owner
-    if (memberToRemove.classroomRole === ClassroomRole.OWNER
-      && memberInAction.classroomRole === ClassroomRole.INSTRUCTOR) {
+    if (
+      memberToRemove.classroomRole === ClassroomRole.OWNER &&
+      memberInAction.classroomRole === ClassroomRole.INSTRUCTOR
+    ) {
       throw new UserInputError(
         'You are not allowed to remove the owner of the classroom'
       )
@@ -216,8 +204,10 @@ export default class ClassroomService {
 
     //check if instructor tries to remove another instructor
     //instructor is not allowed to remove another instructor
-    if (memberToRemove.classroomRole === ClassroomRole.INSTRUCTOR
-      && memberInAction.classroomRole === ClassroomRole.INSTRUCTOR) {
+    if (
+      memberToRemove.classroomRole === ClassroomRole.INSTRUCTOR &&
+      memberInAction.classroomRole === ClassroomRole.INSTRUCTOR
+    ) {
       throw new UserInputError(
         'You are not allowed to remove any instructor of the classroom'
       )
@@ -225,7 +215,7 @@ export default class ClassroomService {
 
     //remove member from the classroom
     return this.prismaService.classroomMember.delete({
-      where: { classroomId, userId: memberId },
+      where: { classroomId_userId: { classroomId, userId: memberId } },
     })
   }
 
