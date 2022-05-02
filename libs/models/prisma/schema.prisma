@@ -28,6 +28,7 @@ model User {
   lastName               String?
   userName               String                   @unique
   email                  String                   @unique
+  rankScore              Int                      @default(0)
   /// @HideField()
   password               String?
   country                Country                  @relation(fields: [countryId], references: [id], name: "user_country")
@@ -47,6 +48,8 @@ model User {
   DiscussionVote         DiscussionVote[]
   Discussion             Discussion[]
   DiscussionResponce     DiscussionResponce[]
+  PrivateChat            PrivateChat[]
+  ChatMessage            ChatMessage[]
 }
 
 enum Role {
@@ -529,4 +532,28 @@ model DiscussionTag {
   updatedAt   DateTime     @updatedAt
   createdAt   DateTime     @default(now())
   discussions Discussion[]
+}
+
+// --------------------------
+// ------ CHAT RELATED ------
+// --------------------------
+
+model PrivateChat {
+  id          String        @id @default(uuid())
+  users       User[]
+  ChatMessage ChatMessage[]
+}
+
+model ChatMessage {
+  id        String      @id @default(uuid())
+  user      User        @relation(fields: [userId], references: [id])
+  chat      PrivateChat @relation(fields: [privateChatId], references: [id])
+  chatId    String
+  message   String
+  updatedAt DateTime    @updatedAt
+  createdAt DateTime    @default(now())
+  userId    String
+
+  privateChatId String
+  @@unique([chatId, userId])
 }
