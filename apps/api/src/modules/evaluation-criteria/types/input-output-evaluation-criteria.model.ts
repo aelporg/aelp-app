@@ -7,24 +7,24 @@ import { InputOutputEvaluationCriteriaCount } from './input-output-evaluation-cr
 @ObjectType()
 export class InputOutputEvaluationCriteria {
 
-    @Field(() => ID, {nullable:false})
-    id!: string;
+  @Field(() => ID, { nullable: false })
+  id!: string;
 
-    @Field(() => [String], {nullable:true})
-    inputs!: Array<string>;
+  @Field(() => String, { nullable: true })
+  inputs!: string;
 
-    @Field(() => [String], {nullable:true})
-    outputs!: Array<string>;
+  @Field(() => String, { nullable: true })
+  outputs!: string;
 
-    @Field(() => [EvaluationCriteria], {nullable:true})
-    baseCriteria?: Array<EvaluationCriteria>;
+  @Field(() => [EvaluationCriteria], { nullable: true })
+  baseCriteria?: Array<EvaluationCriteria>;
 
-    @Field(() => Date, {nullable:false})
-    updatedAt!: Date;
+  @Field(() => Date, { nullable: false })
+  updatedAt!: Date;
 
-    @Field(() => Date, {nullable:false})
-    createdAt!: Date;
+  @Field(() => Date, { nullable: false })
+  createdAt!: Date;
 
-    @Field(() => InputOutputEvaluationCriteriaCount, {nullable:false})
-    _count?: InputOutputEvaluationCriteriaCount;
+  @Field(() => InputOutputEvaluationCriteriaCount, { nullable: false })
+  _count?: InputOutputEvaluationCriteriaCount;
 }

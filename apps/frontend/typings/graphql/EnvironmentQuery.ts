@@ -24,36 +24,37 @@ export interface EnvironmentQuery_envirnoment_files {
   language: EnvironmentQuery_envirnoment_files_language | null;
 }
 
-export interface EnvironmentQuery_envirnoment_answers_baseAnswer_question_programmingQuestion_evaluationCriterias {
+export interface EnvironmentQuery_envirnoment_answer_baseAnswer_question_programmingQuestion_evaluationCriterias {
   __typename: "EvaluationCriteria";
   name: string;
 }
 
-export interface EnvironmentQuery_envirnoment_answers_baseAnswer_question_programmingQuestion {
+export interface EnvironmentQuery_envirnoment_answer_baseAnswer_question_programmingQuestion {
   __typename: "ProgrammingQuestion";
   id: string;
   statementMrkdwn: string;
   programmingQuestionType: ProgrammingQuestionType;
   title: string;
-  evaluationCriterias: EnvironmentQuery_envirnoment_answers_baseAnswer_question_programmingQuestion_evaluationCriterias[] | null;
+  evaluationCriterias: EnvironmentQuery_envirnoment_answer_baseAnswer_question_programmingQuestion_evaluationCriterias[] | null;
 }
 
-export interface EnvironmentQuery_envirnoment_answers_baseAnswer_question {
+export interface EnvironmentQuery_envirnoment_answer_baseAnswer_question {
   __typename: "Question";
   id: string;
-  programmingQuestion: EnvironmentQuery_envirnoment_answers_baseAnswer_question_programmingQuestion | null;
+  assessmentId: string | null;
+  programmingQuestion: EnvironmentQuery_envirnoment_answer_baseAnswer_question_programmingQuestion | null;
 }
 
-export interface EnvironmentQuery_envirnoment_answers_baseAnswer {
+export interface EnvironmentQuery_envirnoment_answer_baseAnswer {
   __typename: "QuestionAnswer";
   id: string;
-  question: EnvironmentQuery_envirnoment_answers_baseAnswer_question;
+  question: EnvironmentQuery_envirnoment_answer_baseAnswer_question;
 }
 
-export interface EnvironmentQuery_envirnoment_answers {
+export interface EnvironmentQuery_envirnoment_answer {
   __typename: "ProgrammingQuestionAnswer";
   id: string;
-  baseAnswer: EnvironmentQuery_envirnoment_answers_baseAnswer;
+  baseAnswer: EnvironmentQuery_envirnoment_answer_baseAnswer;
 }
 
 export interface EnvironmentQuery_envirnoment_permissions_user {
@@ -79,7 +80,7 @@ export interface EnvironmentQuery_envirnoment {
   __typename: "Environment";
   id: string;
   files: EnvironmentQuery_envirnoment_files[] | null;
-  answers: EnvironmentQuery_envirnoment_answers[] | null;
+  answer: EnvironmentQuery_envirnoment_answer | null;
   scratchPadData: string;
   createdAt: any;
   updatedAt: any;

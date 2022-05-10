@@ -10,6 +10,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.4.17",
+    "@codingame/monaco-editor-react": "^1.7.1",
     "@devbookhq/splitter": "^1.3.2",
     "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.5",
@@ -88,7 +89,8 @@
     "sharp": "^0.30.1",
     "tslib": "^2.0.0",
     "unique-username-generator": "^1.0.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "zustand": "^4.0.0-rc.0"
   },
   "devDependencies": {
     "@nrwl/cli": "^13.2.3",

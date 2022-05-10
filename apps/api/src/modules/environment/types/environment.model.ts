@@ -25,8 +25,8 @@ export class Environment {
   @Field(() => Date, { nullable: false })
   updatedAt!: Date
 
-  @Field(() => [ProgrammingQuestionAnswer], { nullable: true })
-  answers?: Array<ProgrammingQuestionAnswer>
+  @Field(() => ProgrammingQuestionAnswer, { nullable: true })
+  answer?: ProgrammingQuestionAnswer
 
   @Field(() => [EnvironmentPermission], { nullable: true })
   permissions?: Array<EnvironmentPermission>

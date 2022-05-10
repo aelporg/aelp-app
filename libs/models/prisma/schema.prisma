@@ -218,8 +218,6 @@ model MultipleChoiceQuestionChoice {
   updatedAt  DateTime                       @updatedAt
   createdAt  DateTime                       @default(now())
   answers    MultipleChoiceQuestionAnswer[]
-
-  @@unique([correct, questionId])
 }
 
 model ProgrammingQuestion {
@@ -356,19 +354,12 @@ model EvaluationResult {
   evaluationCriteria            EvaluationCriteria           @relation(fields: [evaluationCriteriaId], references: [id], name: "evaluationCriteria_evaluationResult")
   evaluationCriteriaId          String
   evaulationPoints              Float
-  inputOutputEvaulationResult   InputOutputEvaluationResult? @relation(fields: [inputOutputEvaluationResultId], references: [id])
-  inputOutputEvaluationResultId String?                      @unique
   updatedAt                     DateTime                     @updatedAt
   createdAt                     DateTime                     @default(now())
   programmingQuestionAnswer     ProgrammingQuestionAnswer    @relation(fields: [programmingQuestionAnswerId], references: [id])
   programmingQuestionAnswerId   String
 }
 
-model InputOutputEvaluationResult {
-  id                   String            @id @default(uuid())
-  resultOutputs        String[]
-  baseEvaluationResult EvaluationResult?
-}
 
 // ------------------------
 // --- PRACTICE RELATED ---
@@ -427,15 +418,15 @@ model File {
 }
 
 model Environment {
-  id             String                      @id @default(uuid())
-  files          File[]                      @relation("environment_files")
+  id             String                     @id @default(uuid())
+  files          File[]                     @relation("environment_files")
   scratchPadData String
-  language       Language                    @relation(fields: [languageId], references: [id])
+  language       Language                   @relation(fields: [languageId], references: [id])
   languageId     String
-  submitted      Boolean                     @default(false)
-  createdAt      DateTime                    @default(now())
-  updatedAt      DateTime                    @updatedAt
-  answers        ProgrammingQuestionAnswer[] @relation("envirnment_programmingQuestionAnswer")
+  submitted      Boolean                    @default(false)
+  createdAt      DateTime                   @default(now())
+  updatedAt      DateTime                   @updatedAt
+  answer         ProgrammingQuestionAnswer? @relation("envirnment_programmingQuestionAnswer")
   permissions    EnvironmentPermission[]
 }
 

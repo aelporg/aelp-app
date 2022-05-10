@@ -6,6 +6,7 @@ import { EvaluationCriteriaType } from '../../../global-types/evaluation-criteri
 import { ProgrammingQuestion } from '../../question/types/programming-question.model'
 import { EvaluationCriteriaCount } from './evaluation-criteria-count.output'
 import { EvaluationResult } from './evaluation-result.model'
+import { InputOutputEvaluationCriteria } from './input-output-evaluation-criteria.model'
 
 @ObjectType()
 export class EvaluationCriteria {
@@ -21,8 +22,8 @@ export class EvaluationCriteria {
   @Field(() => Int, { nullable: false })
   totalPoints!: number
 
-  // @Field(() => InputOutputEvaluationCriteria, {nullable:true})
-  // inputOutputEvalCrit?: InputOutputEvaluationCriteria | null;
+  @Field(() => InputOutputEvaluationCriteria, { nullable: true })
+  inputOutputEvalCrit?: InputOutputEvaluationCriteria | null;
 
   @Field(() => String, { nullable: true })
   inputOutputEvalCritId!: string | null

@@ -14,12 +14,13 @@ export const ENVIRNOMENT_QUERY = gql`
           editorConfigName
         }
       }
-      answers {
+      answer {
         id
         baseAnswer {
           id
           question {
             id
+            assessmentId
             programmingQuestion {
               id
               statementMrkdwn

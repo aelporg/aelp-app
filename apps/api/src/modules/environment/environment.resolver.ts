@@ -17,6 +17,7 @@ import { EnvironmentService } from './environment.service'
 import { EnvironmentPermission } from './types/environment-permission.model'
 import { Environment } from './types/environment.model'
 import { File } from './types/file.model'
+import { RunCodeOutput, RunTestCasesOutput } from './types/run-code.output'
 
 const pubSub = new PubSub()
 
@@ -24,7 +25,7 @@ const pubSub = new PubSub()
 export default class EnvironmentResolver {
   constructor(
     private environmentService: EnvironmentService,
-  ) {}
+  ) { }
 
   @Query(() => [Environment])
   async envirnoments(@LoggedInUser() user: User) {
@@ -61,9 +62,20 @@ export default class EnvironmentResolver {
     return null
   }
 
-  @Mutation(() => String)
-  async runCode(@Args('id', { type: () => ID }) id: string) {
-    return this.environmentService.runCode(id)
+  @Mutation(() => RunCodeOutput)
+  async runCode(@Args('id', { type: () => ID }) id: string, @Args('input', { nullable: true }) input: string) {
+    return this.environmentService.runCode(id, input)
+  }
+
+  @Mutation(() => Boolean)
+  async submitEnv(@Args('id', { type: () => ID }) id: string) {
+    return this.environmentService.submit(id)
+  }
+
+
+  @Mutation(() => [RunTestCasesOutput])
+  async runTestCases(@Args('id', { type: () => ID }) id: string) {
+    return this.environmentService.runTestCases(id)
   }
 
   @ResolveField(() => [File])
@@ -77,8 +89,8 @@ export default class EnvironmentResolver {
   }
 
   @ResolveField(() => [QuestionAnswer])
-  async answers(@Root() envirnment: Environment) {
-    return this.environmentService.getById(envirnment.id).answers()
+  async answer(@Root() envirnment: Environment) {
+    return this.environmentService.getById(envirnment.id).answer()
   }
 
   @ResolveField(() => Language)

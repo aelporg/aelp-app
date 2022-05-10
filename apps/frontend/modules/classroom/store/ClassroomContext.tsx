@@ -1,4 +1,6 @@
 import { QueryResult, useQuery } from '@apollo/client'
+import Center from '@components/primitives/center'
+import Loader from '@components/primitives/loader'
 import { useMeStore } from '@modules/auth/store/me-store'
 import React, { useMemo } from 'react'
 import {
@@ -36,7 +38,7 @@ export function ClassroomContextProvider(props: {
     {
       variables: { id: props.classroomId },
       fetchPolicy: props.classroomId ? 'cache-and-network' : 'standby',
-    },
+    }
   )
 
   const { me } = useMeStore()
@@ -48,12 +50,19 @@ export function ClassroomContextProvider(props: {
     [me, queryResult]
   )
 
+  if (!queryResult.data) {
+    return (
+      <Center>
+        <Loader />
+      </Center>
+    )
+  }
+
   return (
     <ClassroomContext.Provider value={{ ...queryResult, userClassroomRole }}>
       {props.children}
     </ClassroomContext.Provider>
   )
 }
-
 
 export const ClassroomContextConsumer = ClassroomContext.Consumer

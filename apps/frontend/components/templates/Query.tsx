@@ -4,6 +4,7 @@ import {
   QueryResult,
   QueryHookOptions,
 } from '@apollo/client'
+import Center from '@components/primitives/center'
 import Loader from '@components/primitives/loader'
 import ContentLoader from '../primitives/content-loader'
 
@@ -39,7 +40,11 @@ export default function Query<QueryType = any, Variables = any>({
   })
 
   if (loading) {
-    return <Loader />
+    return (
+      <Center>
+        <Loader />
+      </Center>
+    )
   }
 
   if (error) {

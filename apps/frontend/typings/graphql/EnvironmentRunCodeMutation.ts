@@ -7,10 +7,33 @@
 // GraphQL mutation operation: EnvironmentRunCodeMutation
 // ====================================================
 
+export interface EnvironmentRunCodeMutation_runCode_run {
+  __typename: "RunResultOutput";
+  stderr: string;
+  stdout: string;
+  code: number;
+  output: string;
+}
+
+export interface EnvironmentRunCodeMutation_runCode_compile {
+  __typename: "RunResultOutput";
+  stderr: string;
+  stdout: string;
+  code: number;
+  output: string;
+}
+
+export interface EnvironmentRunCodeMutation_runCode {
+  __typename: "RunCodeOutput";
+  run: EnvironmentRunCodeMutation_runCode_run;
+  compile: EnvironmentRunCodeMutation_runCode_compile;
+}
+
 export interface EnvironmentRunCodeMutation {
-  runCode: string;
+  runCode: EnvironmentRunCodeMutation_runCode;
 }
 
 export interface EnvironmentRunCodeMutationVariables {
   id: string;
+  input?: string | null;
 }

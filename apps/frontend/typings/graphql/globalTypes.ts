@@ -16,7 +16,6 @@ export enum ClassroomRole {
   INSTRUCTOR = "INSTRUCTOR",
   OWNER = "OWNER",
   STUDENT = "STUDENT",
-  TA = "TA",
 }
 
 export enum EnvironmentPermissionLevel {
@@ -81,8 +80,8 @@ export interface EvaluationCriteriaCreateInput {
 }
 
 export interface InputOutputEvaluationCriteriaCreateInput {
-  inputs?: string[] | null;
-  outputs?: string[] | null;
+  inputs?: string | null;
+  outputs?: string | null;
 }
 
 export interface JoinClassroomInput {
@@ -96,7 +95,7 @@ export interface MultipleChoiceQuestionInput {
 }
 
 export interface ProgrammingQuestionInput {
-  programmingQuestionType?: ProgrammingQuestionType | null;
+  programmingQuestionType: ProgrammingQuestionType;
   singleFileProgrammingQuestion?: SingleFileProgrammingQuestionInput | null;
   evaluationCriteria: EvaluationCriteriaCreateInput[];
   title: string;

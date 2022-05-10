@@ -15,7 +15,8 @@ services:
     volumes:
       - piston-data:/piston
     tmpfs:
-      - /piston/jobs
+      - /piston/jobs:exec
+      - /tmp:exec
     environment:
       - PISTON_LOG_LEVEL=DEBUG
     restart: always

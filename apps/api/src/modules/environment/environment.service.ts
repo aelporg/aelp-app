@@ -10,13 +10,14 @@ import {
 import { User } from '../user/types/user.model'
 import PistonService from './piston.service'
 import { PistonRuntimeNotFoundError } from '@aelp-app/piston'
+import { RunTestCasesOutput } from './types/run-code.output'
 
 @Injectable()
 export class EnvironmentService {
   constructor(
     private prismaService: PrismaService,
     private piston: PistonService
-  ) {}
+  ) { }
 
   static permissionLevelMap = {
     [EnvironmentPermissionLevel.OWNER]: [
@@ -53,7 +54,44 @@ export class EnvironmentService {
     })
   }
 
-  async runCode(id: string) {
+  async submit(id: string) {
+    const testCaseResult = await this.runTestCases(id);
+    const answer = await this.getById(id).answer()
+
+    await this.prismaService.evaluationResult.createMany({
+      data: testCaseResult.map(each => ({
+        evaluationCriteriaId: each.criteria.id,
+        evaulationPoints: each.status === "PASSED" ? each.criteria.totalPoints : 0,
+        programmingQuestionAnswerId: answer.id,
+      }))
+    })
+
+    return true
+  }
+
+  async runTestCases(id: string) {
+    const testCases = await this.getById(id).answer().baseAnswer().question().programmingQuestion().evaluationCriterias({
+      include: { inputOutputEvalCrit: true }
+    })
+
+    const result: RunTestCasesOutput[] = []
+
+    for (const testCase of testCases) {
+      if (testCase.type === "INPUT_OUTPUT") {
+        const output = await this.runCode(id, testCase.inputOutputEvalCrit.inputs);
+
+        result.push({
+          criteria: testCase,
+          output,
+          status: output.run.code === 0 ? output.run.stdout !== testCase.inputOutputEvalCrit.outputs ? 'FAILED' : 'PASSED' : 'ERROR'
+        })
+      }
+    }
+
+    return result
+  }
+
+  async runCode(id: string, input = '') {
     const env = await this.getById(id)
     const files = await this.getById(id).files({
       include: { language: true },
@@ -66,9 +104,9 @@ export class EnvironmentService {
       const language = file.language
 
       try {
-        return (
-          await this.piston.client.execute(language.name.toLowerCase(), code)
-        ).run.output
+        const result = await this.piston.client.execute(language.name.toLowerCase(), code, input)
+
+        return result
       } catch (e) {
         if (e instanceof PistonRuntimeNotFoundError) {
           this.piston.client
@@ -130,37 +168,37 @@ export class EnvironmentService {
 
     if (
       programmingQuestion.singleFileProgrammingQuestion.defaultCodes.length <
-        1 &&
+      1 &&
       programmingQuestion.programmingQuestionType ===
-        ProgrammingQuestionType.SINGLE_FILE
+      ProgrammingQuestionType.SINGLE_FILE
     )
       throw new Error('Aw :(')
 
     const files =
       programmingQuestion.programmingQuestionType ===
-      ProgrammingQuestionType.MULTIPLE_FILE
+        ProgrammingQuestionType.MULTIPLE_FILE
         ? {
-            createMany: {
-              data: programmingQuestion.multipleFilesProgrammingQuestion.defaultFiles.map(
-                file => ({
-                  name: file.name,
-                  data: file.data,
-                  languageId: file.languageId,
-                })
-              ),
-            },
-          }
+          createMany: {
+            data: programmingQuestion.multipleFilesProgrammingQuestion.defaultFiles.map(
+              file => ({
+                name: file.name,
+                data: file.data,
+                languageId: file.languageId,
+              })
+            ),
+          },
+        }
         : {
-            createMany: {
-              data: programmingQuestion.singleFileProgrammingQuestion.defaultCodes.map(
-                code => ({
-                  name: code.language.defaultFileName,
-                  data: code.defaultCode || code.language.defaultCode,
-                  languageId: code.languageId,
-                })
-              ),
-            },
-          }
+          createMany: {
+            data: programmingQuestion.singleFileProgrammingQuestion.defaultCodes.map(
+              code => ({
+                name: code.language.defaultFileName,
+                data: code.defaultCode || code.language.defaultCode,
+                languageId: code.languageId,
+              })
+            ),
+          },
+        }
 
     const defaultLanguageId =
       programmingQuestion.singleFileProgrammingQuestion?.defaultCodes[0]?.languageId ||
@@ -232,7 +270,7 @@ export class EnvironmentService {
     const environment = await this.prismaService.environment.findUnique({
       where: { id: environmentId },
       include: {
-        answers: {
+        answer: {
           select: {
             baseAnswer: {
               select: {
@@ -260,16 +298,16 @@ export class EnvironmentService {
       },
     })
 
-    if (environment.answers.length < 1) return []
+    if (!environment.answer) return []
 
-    const { programmingQuestion } = environment.answers[0].baseAnswer.question
+    const { programmingQuestion } = environment.answer.baseAnswer.question
 
     return programmingQuestion.programmingQuestionType ===
       ProgrammingQuestionType.MULTIPLE_FILE
       ? [programmingQuestion.multipleFilesProgrammingQuestion.language]
       : programmingQuestion.singleFileProgrammingQuestion.defaultCodes.map(
-          code => code.language
-        )
+        code => code.language
+      )
   }
 
   async getUserEnvPermission(environmentId: string, user: User) {

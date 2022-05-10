@@ -1,4 +1,3 @@
-import { UseGuards } from '@nestjs/common'
 import {
   Args,
   ID,
@@ -9,7 +8,6 @@ import {
   Resolver,
 } from '@nestjs/graphql'
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
-import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard'
 import ClassroomService from './classroom.service'
 import { CreateClassroomInput } from './types/create-classroom-input-type'
 import { JoinClassroomInput } from './types/join-classroom-input-type'

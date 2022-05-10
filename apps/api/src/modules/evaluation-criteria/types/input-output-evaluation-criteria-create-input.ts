@@ -2,13 +2,13 @@ import { Field } from '@nestjs/graphql'
 import { InputType } from '@nestjs/graphql'
 @InputType()
 export class InputOutputEvaluationCriteriaCreateInput {
-  @Field(() => [String], {
+  @Field(() => String, {
     nullable: true,
   })
-  inputs?: string[]
+  inputs?: string
 
-  @Field(() => [String], {
+  @Field(() => String, {
     nullable: true,
   })
-  outputs?: string[]
+  outputs?: string
 }

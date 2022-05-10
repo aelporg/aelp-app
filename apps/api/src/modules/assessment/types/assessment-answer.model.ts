@@ -35,8 +35,8 @@ export class AssessmentAnswer {
   @Field(() => Date, { nullable: false })
   createdAt!: Date
 
-  @Field(() => Int, { nullable: false })
-  recPoints!: number
+  @Field(() => Int, { nullable: true })
+  recPoints?: number
 
   @Field(() => AssessmentAnswerCount, { nullable: false })
   _count?: AssessmentAnswerCount

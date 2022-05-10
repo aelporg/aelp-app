@@ -24,7 +24,7 @@ function getButtonClassNamesForVariant(variant: ButtonVariant) {
     case 'ghost':
       return 'bg-transparent hover:bg-black hover:bg-opacity-20 ring-black ring-opacity-75 text-gray-600'
     case 'danger':
-      return 'text-white bg-error'
+      return 'text-white bg-error hover:bg-rose-700 active:bg-rose-900'
   }
 }
 

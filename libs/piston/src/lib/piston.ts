@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
-import ExecutionResult from '../@types/ExecutionResult'
-import { Runtime } from '../@types/Runtime'
+import ExecutionResult from '../types/ExecutionResult'
+import { Runtime } from '../types/Runtime'
 
 const versionMap = {
   python: '3.10.0',
@@ -41,7 +41,7 @@ export default class Piston {
     return data
   }
 
-  public async execute(language: string, code: string) {
+  public async execute(language: string, code: string, input = '') {
     if (!this._runtimes) {
       this._runtimes = await this.runtimes()
     }
@@ -60,7 +60,7 @@ export default class Piston {
           content: code,
         },
       ],
-      stdin: '',
+      stdin: input,
       args: [],
       compile_timeout: 10000,
       run_timeout: 3000,
