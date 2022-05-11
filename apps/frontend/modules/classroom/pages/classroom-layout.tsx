@@ -60,11 +60,7 @@ export default function ClassroomLayout({
             <Layout
               {...props}
               sidebarBaseLink={`/app/classroom/${id}`}
-              sidebarLinks={ClassroomLinks.filter(
-                link =>
-                  !link.allowedOnly ||
-                  link.allowedOnly?.includes(value?.userClassroomRole)
-              )}
+              sidebarLinks={ClassroomLinks}
               sideBarBetweenElement={<SidebarClassroomHeader />}
             >
               {children}
