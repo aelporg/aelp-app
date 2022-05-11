@@ -90,6 +90,7 @@
     "tslib": "^2.0.0",
     "unique-username-generator": "^1.0.1",
     "uuid": "^8.3.2",
+    "@nrwl/next": "^13.10.4",
     "zustand": "^4.0.0-rc.0"
   },
   "devDependencies": {
@@ -98,7 +99,6 @@
     "@nrwl/eslint-plugin-nx": "^13.8.3",
     "@nrwl/jest": "12.10.0",
     "@nrwl/linter": "^13.8.3",
-    "@nrwl/next": "^13.10.4",
     "@nrwl/nest": "^13.1.2",
     "@nrwl/node": "^13.2.3",
     "@nrwl/nx-cloud": "^13.0.2",
