@@ -14,6 +14,7 @@ import { Discussion } from './types/discussion.model'
 import { User } from '../user/types/user.model'
 import SkipAuth from '../auth/helpers/SkipAuth'
 import { DiscussionTag } from './types/discussion-tag.model'
+import { DiscussionVote } from './types/discussion-vote.model'
 
 @Resolver(() => Discussion)
 export default class DiscussionResolver {
@@ -67,9 +68,43 @@ export default class DiscussionResolver {
     return this.discussionService.deleteDiscussion(discussionId, user)
   }
 
+  @Mutation(() => DiscussionVote)
+  async vote(
+    @Args('id') id: string,
+    @Args('isUpvote') isUpvote: boolean,
+    @LoggedInUser() user: User,
+  ) {
+    return this.discussionService.vote(id, user, isUpvote)
+  }
+
   @ResolveField(() => [DiscussionTag])
   async tags(@Root() discussion: Discussion) {
     return this.discussionService.getById(discussion.id).tags()
   }
 
+  @ResolveField(() => Int)
+  async votesCount(@Root() discussion: Discussion) {
+    const votes = await this.discussionService.getById(discussion.id).votes({})
+
+    return votes.reduce((acc, vote) => {
+      if (vote.isUpvote) {
+        return acc + 1
+      }
+      else {
+        return acc - 1
+      }
+    }, 0)
+  }
+
+  @ResolveField(() => User)
+  async user(@Root() discussion: Discussion) {
+    return this.discussionService.getById(discussion.id).user()
+  }
+
+  @ResolveField(() => [DiscussionVote])
+  async votes(@Root() discussion: Discussion, @LoggedInUser() user: User) {
+    return this.discussionService.getById(discussion.id).votes({
+
+    })
+  }
 }

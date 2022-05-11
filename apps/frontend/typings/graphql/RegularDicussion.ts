@@ -13,6 +13,18 @@ export interface RegularDicussion_tags {
   name: string;
 }
 
+export interface RegularDicussion_user {
+  __typename: "User";
+  id: string;
+  userName: string;
+}
+
+export interface RegularDicussion_votes {
+  __typename: "DiscussionVote";
+  id: string;
+  isUpvote: boolean;
+}
+
 export interface RegularDicussion {
   __typename: "Discussion";
   id: string;
@@ -21,4 +33,7 @@ export interface RegularDicussion {
   createdAt: any;
   updatedAt: any;
   tags: RegularDicussion_tags[] | null;
+  user: RegularDicussion_user;
+  votesCount: number;
+  votes: RegularDicussion_votes[];
 }

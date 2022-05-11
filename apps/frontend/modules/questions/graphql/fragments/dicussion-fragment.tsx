@@ -11,5 +11,14 @@ export const REGULAR_DISCUSSION_FRAGMENT = gql`
       id
       name
     }
+    user {
+      id
+      userName
+    }
+    votesCount
+    votes {
+      id
+      isUpvote
+    }
   }
 `

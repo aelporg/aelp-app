@@ -2,8 +2,6 @@ FROM node:lts-alpine3.13
 
 WORKDIR /app
 
-ENV NODE_ENV production
-
 COPY ./dist/apps/api/package.json ./
 
 RUN npm i -g pnpm@latest

@@ -94,12 +94,6 @@ export default class DiscussionService {
     })
   }
 
-  async getVotes(discussionId: string) {
-    return this.prismaService.discussionVote.findMany({
-      where: { discussionId },
-    })
-  }
-
   async createResponce(discussionId: string, user: User, responce: string) {
     return this.prismaService.discussionResponce.create({
       data: {

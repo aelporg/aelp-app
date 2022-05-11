@@ -1,5 +1,5 @@
 import React from 'react'
-import QuestionCard from '@components/organisms/question-card/question-card'
+import DiscussionCard from '@components/organisms/question-card/question-card'
 import Button from '@components/primitives/button'
 import Input from '@components/primitives/input/input'
 import Tag from '@components/primitives/tag/tag'
@@ -47,11 +47,9 @@ export default function QuestionPage() {
         </div>
         <div className="flex gap-10">
           <div className="flex-grow flex flex-col gap-4">
-            <QuestionCard />
-            <QuestionCard />
-            <QuestionCard />
-            <QuestionCard />
-            <QuestionCard />
+            {data?.discussions?.map(discussion => (
+              <DiscussionCard key={discussion.id} dicussion={discussion} />
+            ))}
           </div>
           <div className="w-80 flex flex-col gap-4">
             <div>
