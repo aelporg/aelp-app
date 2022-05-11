@@ -87,7 +87,7 @@
     "rehype-katex": "^6.0.2",
     "rehype-mermaid": "^0.1.5",
     "rehype-sanitize": "^5.0.1",
-    "rxjs": "~6.6.7",
+    "rxjs": "^7.1.0",
     "sharp": "^0.30.1",
     "tslib": "^2.0.0",
     "unique-username-generator": "^1.0.1",

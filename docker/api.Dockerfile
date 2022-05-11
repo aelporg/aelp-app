@@ -5,13 +5,12 @@ WORKDIR /app
 COPY ./dist/apps/api/package.json ./
 
 RUN apk add --no-cache python3
-RUN npm i -g pnpm@latest
-RUN pnpm install
-RUN pnpm i tslib
+RUN npm install
+RUN npm i tslib
 
 COPY libs/models/prisma ./prisma
 RUN node ./prisma/remove-nestjsgraphql.js
-RUN pnpm exec prisma generate
+RUN npx prisma generate
 COPY dist/apps/api ./
 
 CMD ["node", "main.js"]

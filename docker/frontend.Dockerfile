@@ -2,10 +2,10 @@ FROM node:lts-alpine3.13
 
 WORKDIR /app
 
-RUN npm install -g pnpm next
+RUN npm install -g next
 
 COPY ./dist/apps/frontend/package.json ./
-RUN pnpm install
+RUN npm install
 COPY ./dist/apps/frontend ./
 
 CMD ["npx", "next", "start"]
