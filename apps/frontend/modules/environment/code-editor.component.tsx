@@ -5,6 +5,7 @@ import Editor, { useMonaco } from '@monaco-editor/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useDebounce } from 'react-use'
 import { useEnviromentStore } from './useEnvirnoment'
+import { usePreviousDistinct } from "react-use"
 
 const theme = {
   base: 'vs',
@@ -28,14 +29,9 @@ export default function CodeEditor() {
   const changeLanguage = useEnviromentStore(e => e.changeLanguage)
   const runCode = useEnviromentStore(e => e.runCode)
   const loadingState = useEnviromentStore(e => e.loadingState)
-
-  const extractFile = useCallback(() => {
-    return environment.files.find(
-      file => file.language.id === environment.language.id
-    )
-  }, [environment.files, environment.language])
-
-  const [value, setValue] = useState(extractFile().data)
+  const getCurrentFile = useEnviromentStore(e => e.getCurrentFile)
+  const languageId = usePreviousDistinct(environment.language.id)
+  const [value, setValue] = useState(getCurrentFile().data);
 
   useEffect(() => {
     if (monaco) {
@@ -45,17 +41,22 @@ export default function CodeEditor() {
   }, [monaco])
 
   useEffect(() => {
-    setValue(extractFile().data)
-  }, [extractFile])
+    setValue(getCurrentFile().data)
+  }, [languageId, getCurrentFile])
 
   useDebounce(
     () => {
-      !isChangingLanguage &&
-        extractFile().data !== value &&
-        updateFile(extractFile().id, value)
+      const file = getCurrentFile()
+
+      if (isChangingLanguage)
+        return
+
+      if (file.data !== value) {
+        updateFile(file.id, value)
+      }
     },
     250,
-    [value, extractFile]
+    [value, getCurrentFile]
   )
   return (
     <div className="flex-1 h-full w-full">

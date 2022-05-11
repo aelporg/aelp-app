@@ -128,6 +128,7 @@ interface EnvironmentStore {
   runTestCases: () => Promise<void>
   updateUiState: (state: Partial<UIState>) => void
   setCustomInput: (str: string) => void
+  getCurrentFile: () => EnvironmentQuery['envirnoment']['files'][0]
 }
 
 const { Provider, useStore: useEnviromentStore } =
@@ -136,6 +137,7 @@ const { Provider, useStore: useEnviromentStore } =
 const createEnvironmentStore = (context: EnvironmentStoreCreateArgs) => {
   return create<EnvironmentStore>((set, get) => ({
     api: createEnvApi(context.gql),
+    editorCode: '',
     uiState: {
       consoleTab: 'console',
       statementTab: 'statment',
@@ -159,14 +161,22 @@ const createEnvironmentStore = (context: EnvironmentStoreCreateArgs) => {
         loadingState: { ...state.loadingState, [key]: newState },
       }))
     },
+    getCurrentFile: () => {
+      const { environment } = get()
+
+      return environment.files.find(
+        file => file.language.id === environment.language.id
+      )
+    },
     fetchEnvironment: async () => {
       get().setLoading('loadingEnv', true)
 
       try {
         const env = await get().api.getEnv(context.envId)
+        const { envirnoment } = env.data
 
         set({
-          environment: env.data.envirnoment,
+          environment: envirnoment,
         })
       } catch (e) {
         console.error(e)
