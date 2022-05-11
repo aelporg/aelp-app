@@ -20,5 +20,5 @@ export interface Vote {
 
 export interface VoteVariables {
   discussionId: string;
-  isUpvote: boolean;
+  isUpvote?: boolean | null;
 }

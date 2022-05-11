@@ -71,7 +71,7 @@ export default class DiscussionResolver {
   @Mutation(() => DiscussionVote)
   async vote(
     @Args('id') id: string,
-    @Args('isUpvote') isUpvote: boolean,
+    @Args('isUpvote', {nullable: true}) isUpvote: boolean | null,
     @LoggedInUser() user: User,
   ) {
     return this.discussionService.vote(id, user, isUpvote)

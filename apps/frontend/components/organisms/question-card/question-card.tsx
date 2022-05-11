@@ -21,10 +21,10 @@ export function DiscussionCard(props: DiscussionCardProps) {
     'h-8 w-8 p-2 hover:bg-gray-200 cursor-pointer rounded-full active:bg-gray-300'
 
   const [vote] = useMutation<Vote, VoteVariables>(VOTE_ON_DISCUSSION_MUTATION, {
-    refetchQueries: [DISCUSSIONS_QUERY]
+    refetchQueries: [DISCUSSIONS_QUERY],
   })
 
-  const createVote = (isUpvote: boolean) => async () => {
+  const createVote = (isUpvote: boolean | null) => async () => {
     try {
       await vote({
         variables: {
@@ -32,10 +32,17 @@ export function DiscussionCard(props: DiscussionCardProps) {
           isUpvote,
         },
       })
-    } catch(e) {
+    } catch (e) {
       toast(e.message)
     }
   }
+
+  const userUpvote =
+    props.dicussion?.votes?.[0]?.isUpvote === undefined
+      ? 'NONE'
+      : props.dicussion?.votes?.[0].isUpvote
+      ? 'UPVOTED'
+      : 'DOWNVOTED'
 
   return (
     <div className="border-2   p-5 rounded-lg">
@@ -43,11 +50,31 @@ export function DiscussionCard(props: DiscussionCardProps) {
         <div className="flex items-center flex-col">
           <Avatar name={props.dicussion.user.userName} />
           <div className="mt-4 text-center">
-            <div className={classNames(iconSizeClass, props.dicussion?.votes?.[0].isUpvote && "bg-gray-400")} onClick={createVote(true)}>
+            <div
+              className={classNames(
+                iconSizeClass,
+                userUpvote === 'UPVOTED' && 'bg-gray-300'
+              )}
+              onClick={
+                userUpvote === 'UPVOTED' ? createVote(null) : createVote(true)
+              }
+            >
               <ArrowUpIcon />
             </div>
-            <span className="text-lg font-bold text-gray-600">{props.dicussion?.votesCount}</span>
-            <div className={classNames(iconSizeClass, !props.dicussion?.votes?.[0].isUpvote && "bg-gray-400")} onClick={createVote(false)}>
+            <span className="text-lg font-bold text-gray-600">
+              {props.dicussion?.votesCount}
+            </span>
+            <div
+              className={classNames(
+                iconSizeClass,
+                userUpvote === 'DOWNVOTED' && 'bg-gray-300'
+              )}
+              onClick={
+                userUpvote === 'DOWNVOTED'
+                  ? createVote(null)
+                  : createVote(false)
+              }
+            >
               <ArrowDownIcon />
             </div>
           </div>

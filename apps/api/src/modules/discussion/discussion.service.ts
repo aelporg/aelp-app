@@ -73,12 +73,17 @@ export default class DiscussionService {
     })
   }
 
-  async vote(discussionId: string, user: User, vote: boolean) {
+  async vote(discussionId: string, user: User, vote: boolean | null) {
     const prevVote = await this.prismaService.discussionVote.findUnique({
       where: { discussionId_userId: { discussionId, userId: user.id } },
     })
 
     if (prevVote) {
+      if (vote == null)
+        return this.prismaService.discussionVote.delete({
+          where: { id: prevVote.id },
+        })
+
       return this.prismaService.discussionVote.update({
         where: { id: prevVote.id },
         data: { isUpvote: vote },
