@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, useApolloClient } from '@apollo/client'
+import { ApolloClient, useApolloClient } from '@apollo/client'
 import {
   EnvironmentQuery,
   EnvironmentQueryVariables,
@@ -8,7 +8,6 @@ import createContext from 'zustand/context'
 import { StoreApi } from 'zustand'
 
 import { ENVIRNOMENT_QUERY } from './graphql/envirnoment-query'
-import { fieldNameFromStoreName } from '@apollo/client/cache'
 import { UPDATE_FILE_MUTATION } from './graphql/envirnoment-update-code-mutation'
 import {
   UpdateFileMutation,

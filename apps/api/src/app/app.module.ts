@@ -14,6 +14,7 @@ import { EnvironmentModule } from '../modules/environment/environment.module'
 import AssessmentModule from '../modules/assessment/assessment.module'
 import QuestionsModule from '../modules/question/question.module'
 import LanguageModule from '../modules/language/language.module'
+import DiscussionModule from '../modules/discussion/discussion.module'
 
 function onWebsocketConnection(connectionParams: any) {
   return {
@@ -38,6 +39,7 @@ function onWebsocketConnection(connectionParams: any) {
     AssessmentModule,
     QuestionsModule,
     LanguageModule,
+    DiscussionModule,
 
     // Main GraphQL module
     GraphQLModule.forRoot<ApolloDriverConfig>({

@@ -7,7 +7,13 @@ import { Discussion } from '@aelp-app/models'
 
 @Injectable()
 export default class DiscussionService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private prismaService: PrismaService) { }
+
+  getAll(args?: Prisma.DiscussionFindManyArgs) {
+    return this.prismaService.discussion.findMany(
+      args
+    )
+  }
 
   getById(id: string): Prisma.Prisma__DiscussionClient<Discussion> {
     return this.prismaService.discussion.findUnique({
@@ -19,6 +25,9 @@ export default class DiscussionService {
     return this.prismaService.discussion.create({
       data: {
         ...data,
+        tags: {
+          connect: data.tags?.map(tag => ({ id: tag })),
+        },
         user: { connect: { id: user.id } },
       },
     })
@@ -40,7 +49,10 @@ export default class DiscussionService {
 
     return this.prismaService.discussion.update({
       where: { id: discussionId },
-      data: input,
+      data: {
+        title: input.title,
+        description: input.description,
+      },
     })
   }
 

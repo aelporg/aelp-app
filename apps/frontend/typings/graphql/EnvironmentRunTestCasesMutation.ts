@@ -36,7 +36,7 @@ export interface EnvironmentRunTestCasesMutation_runTestCases_output_run {
 
 export interface EnvironmentRunTestCasesMutation_runTestCases_output {
   __typename: "RunCodeOutput";
-  compile: EnvironmentRunTestCasesMutation_runTestCases_output_compile;
+  compile: EnvironmentRunTestCasesMutation_runTestCases_output_compile | null;
   run: EnvironmentRunTestCasesMutation_runTestCases_output_run;
 }
 

@@ -1,21 +1,35 @@
 import {
   Args,
+  Int,
   Mutation,
   Query,
   ResolveField,
   Resolver,
+  Root,
 } from '@nestjs/graphql'
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
 import DiscussionService from './discussion.service'
 import { CreateDiscussionInput } from './types/create-discussion-input-type'
 import { Discussion } from './types/discussion.model'
 import { User } from '../user/types/user.model'
+import SkipAuth from '../auth/helpers/SkipAuth'
+import { DiscussionTag } from './types/discussion-tag.model'
 
 @Resolver(() => Discussion)
 export default class DiscussionResolver {
   constructor(
     private discussionService: DiscussionService
-  ) {}
+  ) { }
+
+  @SkipAuth()
+  @Query(() => [Discussion])
+  async discussions(
+    @Args('take', { type: () => Int, nullable: true, }) take?: number,
+  ) {
+    return this.discussionService.getAll({
+      take,
+    })
+  }
 
   @Query(() => Discussion, { nullable: true })
   async discussion(@Args('id') id: string) {
@@ -53,9 +67,9 @@ export default class DiscussionResolver {
     return this.discussionService.deleteDiscussion(discussionId, user)
   }
 
-  // @ResolveField(() => [Discussion])
-  // async discussions() {
-  //   return this.discussionService.getDiscussions()
-  // }
+  @ResolveField(() => [DiscussionTag])
+  async tags(@Root() discussion: Discussion) {
+    return this.discussionService.getById(discussion.id).tags()
+  }
 
 }

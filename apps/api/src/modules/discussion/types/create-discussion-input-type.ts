@@ -8,6 +8,6 @@ export class CreateDiscussionInput {
   @Field()
   description!: string
 
-  // @Field({ nullable: true })
-  // tags?: DiscussionTag[]
+  @Field(() => [String], { nullable: true })
+  tags?: string[]
 }

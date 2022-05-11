@@ -22,7 +22,7 @@ const RadioGroup = React.forwardRef((props: RadioGroupProps) => {
 
 RadioGroup.displayName = 'RadioGroup'
 
-function HFRadioGroup<T>(props: HFRadioGroupProps<T>) {
+function HFRadioGroup<T = any>(props: HFRadioGroupProps<T>) {
   const { control } = useFormContext()
 
   const {

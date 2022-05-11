@@ -26,7 +26,7 @@ export interface EnvironmentRunCodeMutation_runCode_compile {
 export interface EnvironmentRunCodeMutation_runCode {
   __typename: "RunCodeOutput";
   run: EnvironmentRunCodeMutation_runCode_run;
-  compile: EnvironmentRunCodeMutation_runCode_compile;
+  compile: EnvironmentRunCodeMutation_runCode_compile | null;
 }
 
 export interface EnvironmentRunCodeMutation {
