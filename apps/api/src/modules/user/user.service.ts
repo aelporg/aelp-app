@@ -124,14 +124,7 @@ export class UserService {
 
     if (!user) return null
 
-    return {
-      ...user,
-      name:
-        user.firstName && user.lastName
-          ? `${user.firstName} ${user.lastName}`
-          : user.userName,
-      shortName: user.firstName || user.userName,
-    }
+    return user
   }
 
   async getUserJoinedClassrooms(user: User) {

@@ -12,7 +12,7 @@ import { ClassroomAnnoucementCreateInput } from "./globalTypes";
 export interface CreateAnnouncementMutation_createAnnouncement_user {
   __typename: "User";
   id: string;
-  name: string | null;
+  name: string;
 }
 
 export interface CreateAnnouncementMutation_createAnnouncement_attachments {

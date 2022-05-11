@@ -23,7 +23,7 @@ export default class UserResolver {
     private userService: UserService,
     private authService: AuthService,
     private ipAddressService: IPAddressLookUpService
-  ) {}
+  ) { }
 
   @SkipAuth()
   @Mutation(() => UserAuthInfo)
@@ -40,6 +40,19 @@ export default class UserResolver {
   me(@LoggedInUser() user: User) {
     return user
   }
+
+  @ResolveField(() => String)
+  async name(@Parent() user: User) {
+    return user.firstName && user.lastName
+      ? `${user.firstName} ${user.lastName}`
+      : user.userName
+  }
+
+  @ResolveField(() => String)
+  async shortName(@Parent() user: User) {
+    return user.firstName || user.userName
+  }
+
 
   @ResolveField(() => ClassroomMember)
   async joinedClassrooms(@Parent() user: User) {

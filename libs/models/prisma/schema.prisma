@@ -499,8 +499,6 @@ model DiscussionResponce {
   createdAt    DateTime   @default(now())
   discussion   Discussion @relation(fields: [discussionId], references: [id])
   userId       String
-
-  @@unique([discussionId, userId])
 }
 
 model DiscussionVote {

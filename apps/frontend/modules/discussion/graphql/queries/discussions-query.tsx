@@ -5,7 +5,7 @@ export const DISCUSSIONS_QUERY = gql`
   ${REGULAR_DISCUSSION_FRAGMENT}
   query Discussions($take: Int) {
     discussions(take: $take) {
-      ...RegularDicussion
+      ...RegularDiscussion
     }
   }
 `

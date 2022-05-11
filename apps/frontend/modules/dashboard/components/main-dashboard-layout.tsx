@@ -20,9 +20,9 @@ const DashboardLinks = [
     href: '/app/classrooms',
   },
   {
-    name: 'Questions',
+    name: 'Discussions',
     icon: QuestionMarkCircleIcon,
-    href: '/app/questions',
+    href: '/app/discussions',
   },
   {
     name: 'Leaderboard',

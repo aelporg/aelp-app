@@ -23,31 +23,21 @@ const ClassroomLinks = [
     href: '/announcements',
   },
   {
-    name: 'Questions',
-    icon: QuestionMarkCircleIcon,
-    href: '/questions',
-  },
-  {
     name: 'Assessments',
     icon: ClipboardListIcon,
     href: '/assessments',
-  },
-  {
-    name: 'Practice',
-    icon: CollectionIcon,
-    href: '/practice',
   },
   {
     name: 'Members',
     icon: UsersIcon,
     href: '/members',
   },
-  {
-    name: 'Settings',
-    icon: CogIcon,
-    allowedOnly: [ClassroomRole.OWNER],
-    href: '/settings',
-  },
+  // {
+  //   name: 'Settings',
+  //   icon: CogIcon,
+  //   allowedOnly: [ClassroomRole.OWNER],
+  //   href: '/settings',
+  // },
 ]
 
 type ClassroomLayoutProps = Omit<LayoutProps, 'links'>

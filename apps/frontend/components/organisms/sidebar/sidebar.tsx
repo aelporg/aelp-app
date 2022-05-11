@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Logo } from '@components/primitives'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
-import { link } from 'joi'
 
 export interface SidebarLink {
   name: string

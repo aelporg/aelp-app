@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const REGULAR_DISCUSSION_FRAGMENT = gql`
-  fragment RegularDicussion on Discussion {
+  fragment RegularDiscussion on Discussion {
     id
     title
     description
@@ -19,6 +19,7 @@ export const REGULAR_DISCUSSION_FRAGMENT = gql`
     votes {
       id
       isUpvote
+      userId
     }
   }
 `

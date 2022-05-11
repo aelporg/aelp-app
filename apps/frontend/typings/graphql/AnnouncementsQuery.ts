@@ -10,7 +10,7 @@
 export interface AnnouncementsQuery_classroom_announcements_user {
   __typename: "User";
   id: string;
-  name: string | null;
+  name: string;
 }
 
 export interface AnnouncementsQuery_classroom_announcements {

@@ -4,37 +4,37 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: RegularDicussion
+// GraphQL fragment: RegularDiscussion
 // ====================================================
 
-export interface RegularDicussion_tags {
+export interface RegularDiscussion_tags {
   __typename: "DiscussionTag";
   id: string;
   name: string;
 }
 
-export interface RegularDicussion_user {
+export interface RegularDiscussion_user {
   __typename: "User";
   id: string;
   userName: string;
 }
 
-export interface RegularDicussion_votes {
+export interface RegularDiscussion_votes {
   __typename: "DiscussionVote";
   id: string;
   isUpvote: boolean;
   userId: string;
 }
 
-export interface RegularDicussion {
+export interface RegularDiscussion {
   __typename: "Discussion";
   id: string;
   title: string;
   description: string | null;
   createdAt: any;
   updatedAt: any;
-  tags: RegularDicussion_tags[] | null;
-  user: RegularDicussion_user;
+  tags: RegularDiscussion_tags[] | null;
+  user: RegularDiscussion_user;
   votesCount: number;
-  votes: RegularDicussion_votes[];
+  votes: RegularDiscussion_votes[];
 }

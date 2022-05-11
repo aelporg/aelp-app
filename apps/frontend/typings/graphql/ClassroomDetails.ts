@@ -12,7 +12,7 @@ import { ClassroomRole } from "./globalTypes";
 export interface ClassroomDetails_members_user {
   __typename: "User";
   id: string;
-  name: string | null;
+  name: string;
 }
 
 export interface ClassroomDetails_members {

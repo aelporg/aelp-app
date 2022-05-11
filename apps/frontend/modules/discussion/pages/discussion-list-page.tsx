@@ -1,20 +1,16 @@
 import React from 'react'
-import DiscussionCard from '@components/organisms/question-card/question-card'
 import Button from '@components/primitives/button'
 import Input from '@components/primitives/input/input'
 import Tag from '@components/primitives/tag/tag'
 import ToggleGroup from '@components/primitives/toggle-group/toggle-group'
 import { AnnotationIcon, SearchIcon } from '@heroicons/react/outline'
 import MainDashboardLayout from '@modules/dashboard/components/main-dashboard-layout'
-import { useQuery } from '@apollo/client'
 import { DISCUSSIONS_QUERY } from '../graphql/queries/discussions-query'
 import { Discussions, DiscussionsVariables } from 'typings/graphql/Discussions'
+import Query from '@components/templates/Query'
+import DiscussionCard from '../components/discussion-card'
 
-export default function QuestionPage() {
-  const { data } = useQuery<Discussions, DiscussionsVariables>(
-    DISCUSSIONS_QUERY
-  )
-
+export default function DiscussionListPage() {
   return (
     <MainDashboardLayout
       topNavActions={
@@ -46,21 +42,21 @@ export default function QuestionPage() {
           />
         </div>
         <div className="flex gap-10">
-          <div className="flex-grow flex flex-col gap-4">
-            {data?.discussions?.map(discussion => (
-              <DiscussionCard key={discussion.id} dicussion={discussion} />
-            ))}
-          </div>
+          <Query<Discussions, DiscussionsVariables> query={DISCUSSIONS_QUERY}>
+            {({ discussions }) => {
+              return (
+                <div className="flex-grow flex flex-col gap-4">
+                  {discussions?.map(discussion => (
+                    <DiscussionCard
+                      key={discussion.id}
+                      discussion={discussion}
+                    />
+                  ))}
+                </div>
+              )
+            }}
+          </Query>
           <div className="w-80 flex flex-col gap-4">
-            <div>
-              <h3 className="text-xl font-bold mb-3">My Tags</h3>
-              <div className="flex flex-wrap gap-2">
-                <Tag>#react</Tag>
-                <Tag>#learning</Tag>
-                <Tag>#beginner</Tag>
-                <Tag>#aelp</Tag>
-              </div>
-            </div>
             <div>
               <h3 className="text-xl font-bold mb-3">My Tags</h3>
               <div className="flex flex-wrap gap-2">

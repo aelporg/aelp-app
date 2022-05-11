@@ -11,8 +11,8 @@ export interface MeQuery_me {
   __typename: "User";
   id: string;
   userName: string;
-  shortName: string | null;
-  name: string | null;
+  shortName: string;
+  name: string;
   email: string;
 }
 

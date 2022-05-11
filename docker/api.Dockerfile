@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY ./dist/apps/api/package.json ./
 
+RUN apk add --no-cache python3
 RUN npm i -g pnpm@latest
 RUN pnpm install
 RUN pnpm i tslib

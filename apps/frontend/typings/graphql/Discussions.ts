@@ -23,6 +23,7 @@ export interface Discussions_discussions_votes {
   __typename: "DiscussionVote";
   id: string;
   isUpvote: boolean;
+  userId: string;
 }
 
 export interface Discussions_discussions {

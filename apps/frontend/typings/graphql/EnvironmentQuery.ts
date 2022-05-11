@@ -60,7 +60,7 @@ export interface EnvironmentQuery_envirnoment_answer {
 export interface EnvironmentQuery_envirnoment_permissions_user {
   __typename: "User";
   id: string;
-  name: string | null;
+  name: string;
 }
 
 export interface EnvironmentQuery_envirnoment_permissions {
