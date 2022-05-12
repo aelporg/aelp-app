@@ -6,6 +6,8 @@ import moment from 'moment'
 import { ExclamationIcon } from '@heroicons/react/outline'
 import { ClassroomAssessments_assessments } from 'typings/graphql/ClassroomAssessments'
 import Link from 'next/link'
+import { useClassroomContext } from '../store/ClassroomContext'
+import { ClassroomRole } from 'typings/graphql/globalTypes'
 
 export function DueDate({ dueDate }: { dueDate: Date }) {
   const dueDateMoment = moment(dueDate)
@@ -29,10 +31,13 @@ export default function AssessmentCard({
 }: {
   assessment: ClassroomAssessments_assessments
 }) {
+  const { userClassroomRole } = useClassroomContext()
+
   const shortDescription =
     assessment.description.length > 100
       ? assessment.description.slice(0, 100) + '...'
       : assessment.description
+  console.log(userClassroomRole)
 
   return (
     <div className="bg-white flex flex-col border rounded-lg p-4 w-full max-w-sm">
@@ -42,7 +47,16 @@ export default function AssessmentCard({
         <DueDate dueDate={assessment.endTime} />
       </div>
       <p className="my-3">{shortDescription}</p>
-      <Link passHref href={`/app/assessment/${assessment.id}`}>
+      <Link
+        passHref
+        href={
+          [ClassroomRole.INSTRUCTOR, ClassroomRole.OWNER].includes(
+            userClassroomRole
+          )
+            ? `/app/assessment/${assessment.id}/submissions`
+            : `/app/assessment/${assessment.id}`
+        }
+      >
         <Button className="self-end" variant="ghost">
           View
         </Button>

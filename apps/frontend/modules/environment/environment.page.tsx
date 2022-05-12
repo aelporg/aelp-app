@@ -1,22 +1,13 @@
 import TopNav from '@components/organisms/top-nav/top-nav'
-import Tabs from '@components/primitives/tabs/tabs'
 import { useRouter } from 'next/router'
 import { Logo } from '@components/primitives'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
-import { CogIcon, PlayIcon } from '@heroicons/react/outline'
-import AdvancedMarkdownPreview from '@components/molecules/advanced-markdown-preview/advanced-markdown-review'
-import IconButton from '@components/primitives/icon-button/icon-button'
 import CodeEditor from './code-editor.component'
-import WhiteBoard from './whiteboard.component'
 import Loader from '@components/primitives/loader'
-import Button from '@components/primitives/button'
-import Select from '@components/primitives/select/select.component'
 import Center from '@components/primitives/center'
 import NoResultMessage from '@components/templates/NoResultMessage'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { EnvironmentProvider, useEnviromentStore } from './useEnvirnoment'
-import { Console } from './components/console'
-import { TestCasesResult as TestCases } from './components/test-cases-result'
 import { OutputPortion } from './components/output-portion'
 import { StatementPortion } from './components/statement-portion'
 const splitterDefaultProps = {
@@ -63,6 +54,18 @@ function EnvironmentPageContent() {
       </Center>
     )
   }
+
+
+  if (environment.submitted) {
+    return (
+      <Center full>
+        <NoResultMessage title="Already Submitted">
+          The envirnment has beed submitted and it can{`'`}t be accessed
+        </NoResultMessage>
+      </Center>
+    )
+  }
+
 
   return (
     <div className="w-full flex flex-col items-stretch h-screen">

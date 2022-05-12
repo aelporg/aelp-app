@@ -1,10 +1,10 @@
 import { ResolveField, Resolver, Root } from '@nestjs/graphql'
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
+import { QuestionAnswer } from '../assessment/types/question-answer.model'
 import { User } from '../user/types/user.model'
 import QuestionService from './question.service'
 import { MultipleChoiceQuestion } from './types/multiple-choice-question.model'
 import { ProgrammingQuestion } from './types/programming-question.model'
-import { QuestionAnswer } from './types/question-answer.model'
 import { Question } from './types/question.model'
 
 @Resolver(() => Question)

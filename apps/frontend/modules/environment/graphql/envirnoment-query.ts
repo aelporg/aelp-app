@@ -4,6 +4,7 @@ export const ENVIRNOMENT_QUERY = gql`
   query EnvironmentQuery($id: String!) {
     envirnoment(id: $id) {
       id
+      submitted
       files {
         id
         name

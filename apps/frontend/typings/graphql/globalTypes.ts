@@ -67,6 +67,12 @@ export interface CreateClassroomInput {
   section?: string | null;
 }
 
+export interface CreateDiscussionInput {
+  title: string;
+  description: string;
+  tags?: string[] | null;
+}
+
 export interface DefaultCodeInput {
   defaultCode: string;
   languageId: string;

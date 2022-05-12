@@ -9,14 +9,17 @@ import { DISCUSSIONS_QUERY } from '../graphql/queries/discussions-query'
 import { Discussions, DiscussionsVariables } from 'typings/graphql/Discussions'
 import Query from '@components/templates/Query'
 import DiscussionCard from '../components/discussion-card'
+import Link from 'next/link'
 
 export default function DiscussionListPage() {
   return (
     <MainDashboardLayout
       topNavActions={
-        <Button size="md" icon={<AnnotationIcon />}>
-          Ask Question
-        </Button>
+        <Link href="/app/discussions/create" passHref>
+          <Button size="md" icon={<AnnotationIcon />}>
+            Ask Question
+          </Button>
+        </Link>
       }
     >
       <div className="flex flex-col gap-4">

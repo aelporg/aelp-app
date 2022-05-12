@@ -44,8 +44,8 @@ export interface AssessmentQuestions_questions_answers {
   __typename: "QuestionAnswer";
   id: string;
   questionId: string;
-  programmingQuestionAnswer: AssessmentQuestions_questions_answers_programmingQuestionAnswer | null;
-  multipleChoiceQuestionAnswer: AssessmentQuestions_questions_answers_multipleChoiceQuestionAnswer | null;
+  programmingQuestionAnswer: AssessmentQuestions_questions_answers_programmingQuestionAnswer;
+  multipleChoiceQuestionAnswer: AssessmentQuestions_questions_answers_multipleChoiceQuestionAnswer;
 }
 
 export interface AssessmentQuestions_questions {

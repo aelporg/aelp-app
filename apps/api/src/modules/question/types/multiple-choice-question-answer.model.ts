@@ -1,8 +1,8 @@
 import { Field } from '@nestjs/graphql'
 import { ObjectType } from '@nestjs/graphql'
 import { ID } from '@nestjs/graphql'
+import { QuestionAnswer } from '../../assessment/types/question-answer.model'
 import { MultipleChoiceQuestionChoice } from './multiple-choice-question-choice.model'
-import { QuestionAnswer } from './question-answer.model'
 
 @ObjectType()
 export class MultipleChoiceQuestionAnswer {

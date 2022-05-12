@@ -1,6 +1,9 @@
 import { gql } from "@apollo/client";
+import { CLASSROOM_MEMBERS_FRAGMENT } from "@modules/classroom/graphql/classroom-query"
 
 export const ASSESSMENT_FRAGMENT = gql`
+
+${CLASSROOM_MEMBERS_FRAGMENT}
   fragment AssessmentInfo on Assessment {
     id
     title
@@ -13,6 +16,18 @@ export const ASSESSMENT_FRAGMENT = gql`
     answer {
       userId
       reviewed
+      recPoints
+      updatedAt
+      createdAt
+    }
+    classroom {
+      ...ClassroomMembers
+    }
+    answers {
+      user {
+        id
+        name
+      }
       recPoints
       updatedAt
       createdAt

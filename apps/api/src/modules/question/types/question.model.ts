@@ -4,9 +4,9 @@ import { ID } from '@nestjs/graphql'
 import { Int } from '@nestjs/graphql'
 import { QuestionType } from '../../../global-types'
 import { Assessment } from '../../assessment/types/assessment.model'
+import { QuestionAnswer } from '../../assessment/types/question-answer.model'
 import { MultipleChoiceQuestion } from './multiple-choice-question.model'
 import { ProgrammingQuestion } from './programming-question.model'
-import { QuestionAnswer } from './question-answer.model'
 import { QuestionCount } from './question-count.output'
 
 @ObjectType()

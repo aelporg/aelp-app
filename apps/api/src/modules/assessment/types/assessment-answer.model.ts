@@ -1,10 +1,10 @@
 import { Field } from '@nestjs/graphql'
 import { ObjectType } from '@nestjs/graphql'
-import { QuestionAnswer } from '../../question/types/question-answer.model'
 import { Int } from '@nestjs/graphql'
 import { Assessment } from './assessment.model'
 import { User } from '../../user/types/user.model'
 import { AssessmentAnswerCount } from './assessment-answer-count.output'
+import { QuestionAnswer } from './question-answer.model'
 
 @ObjectType()
 export class AssessmentAnswer {

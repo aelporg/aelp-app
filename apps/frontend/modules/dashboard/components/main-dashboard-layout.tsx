@@ -24,21 +24,21 @@ const DashboardLinks = [
     icon: QuestionMarkCircleIcon,
     href: '/app/discussions',
   },
-  {
-    name: 'Leaderboard',
-    icon: ChartBarIcon,
-    href: '/app/leaderboard',
-  },
-  {
-    name: 'Practice',
-    icon: CollectionIcon,
-    href: '/app/practice',
-  },
-  {
-    name: 'Competitions',
-    icon: PuzzleIcon,
-    href: '/app/competitions',
-  },
+  // {
+  //   name: 'Leaderboard',
+  //   icon: ChartBarIcon,
+  //   href: '/app/leaderboard',
+  // },
+  // {
+  //   name: 'Practice',
+  //   icon: CollectionIcon,
+  //   href: '/app/practice',
+  // },
+  // {
+  //   name: 'Competitions',
+  //   icon: PuzzleIcon,
+  //   href: '/app/competitions',
+  // },
 ]
 
 export default function MainDashboardLayout(

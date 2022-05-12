@@ -1,8 +1,8 @@
 import { ResolveField, Resolver, Root } from "@nestjs/graphql";
+import { QuestionAnswer } from "../assessment/types/question-answer.model";
 import { ProgrammingQuestionAnswer } from "../environment/types/programming-question-answer.model";
 import QuestionAnswerService from "./question-answer.service";
 import { MultipleChoiceQuestionAnswer } from "./types/multiple-choice-question-answer.model";
-import { QuestionAnswer } from "./types/question-answer.model";
 import { Question } from "./types/question.model";
 
 @Resolver(() => QuestionAnswer)

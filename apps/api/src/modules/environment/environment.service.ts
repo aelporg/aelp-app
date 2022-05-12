@@ -66,6 +66,31 @@ export class EnvironmentService {
       }))
     })
 
+    const programmingQuestionAnswer = await this.prismaService.programmingQuestionAnswer.findFirst({
+      where: {
+        envirnmentId: id,
+      },
+      include: {
+        baseAnswer: true,
+      }
+    })
+
+    await this.prismaService.questionAnswer.update({
+      where: {
+        id: programmingQuestionAnswer.baseAnswer.id,
+      },
+      data: {
+        points: testCaseResult.reduce(
+          (prev, cur) => {
+            return prev + cur.status === "PASSED" ? cur.criteria.totalPoints : 0
+          },
+          0,
+        )
+      }
+    })
+
+    await this.prismaService.environment.update({ where: { id: answer.envirnmentId }, data: { submitted: true } })
+
     return true
   }
 

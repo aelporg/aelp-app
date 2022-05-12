@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AssessmentType, QuestionType } from "./globalTypes";
+import { AssessmentType, ClassroomRole, QuestionType } from "./globalTypes";
 
 // ====================================================
 // GraphQL query operation: ClassroomAssessment
@@ -13,6 +13,37 @@ export interface ClassroomAssessment_assessment_answer {
   __typename: "AssessmentAnswer";
   userId: string;
   reviewed: boolean;
+  recPoints: number | null;
+  updatedAt: any;
+  createdAt: any;
+}
+
+export interface ClassroomAssessment_assessment_classroom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface ClassroomAssessment_assessment_classroom_members {
+  __typename: "ClassroomMember";
+  user: ClassroomAssessment_assessment_classroom_members_user;
+  classroomRole: ClassroomRole;
+}
+
+export interface ClassroomAssessment_assessment_classroom {
+  __typename: "Classroom";
+  members: ClassroomAssessment_assessment_classroom_members[] | null;
+}
+
+export interface ClassroomAssessment_assessment_answers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface ClassroomAssessment_assessment_answers {
+  __typename: "AssessmentAnswer";
+  user: ClassroomAssessment_assessment_answers_user;
   recPoints: number | null;
   updatedAt: any;
   createdAt: any;
@@ -53,8 +84,8 @@ export interface ClassroomAssessment_assessment_questions_answers {
   __typename: "QuestionAnswer";
   id: string;
   questionId: string;
-  programmingQuestionAnswer: ClassroomAssessment_assessment_questions_answers_programmingQuestionAnswer | null;
-  multipleChoiceQuestionAnswer: ClassroomAssessment_assessment_questions_answers_multipleChoiceQuestionAnswer | null;
+  programmingQuestionAnswer: ClassroomAssessment_assessment_questions_answers_programmingQuestionAnswer;
+  multipleChoiceQuestionAnswer: ClassroomAssessment_assessment_questions_answers_multipleChoiceQuestionAnswer;
 }
 
 export interface ClassroomAssessment_assessment_questions {
@@ -78,6 +109,8 @@ export interface ClassroomAssessment_assessment {
   submitAfterEnd: boolean;
   totalPoints: number;
   answer: ClassroomAssessment_assessment_answer | null;
+  classroom: ClassroomAssessment_assessment_classroom | null;
+  answers: ClassroomAssessment_assessment_answers[] | null;
   questions: ClassroomAssessment_assessment_questions[] | null;
 }
 

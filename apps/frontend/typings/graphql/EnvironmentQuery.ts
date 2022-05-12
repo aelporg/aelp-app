@@ -79,6 +79,7 @@ export interface EnvironmentQuery_envirnoment_language {
 export interface EnvironmentQuery_envirnoment {
   __typename: "Environment";
   id: string;
+  submitted: boolean;
   files: EnvironmentQuery_envirnoment_files[] | null;
   answer: EnvironmentQuery_envirnoment_answer | null;
   scratchPadData: string;

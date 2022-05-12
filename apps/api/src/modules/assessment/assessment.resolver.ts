@@ -1,5 +1,6 @@
 import { Args, Mutation, Resolver, Query, ResolveField, Root } from '@nestjs/graphql'
 import { LoggedInUser } from '../../utils/decorators/LoggedInUser'
+import { Classroom } from '../classroom/types/classroom.model'
 import { User } from '../user/types/user.model'
 import AssessmentService from './assessment.service'
 import { AssessmentAnswer } from './types/assessment-answer.model'
@@ -43,6 +44,17 @@ export default class AssessmentResolver {
       return null
 
     return result[0]
+  }
+
+  @ResolveField(() => [AssessmentAnswer], { nullable: true })
+  async answers(@Root() assessment: Assessment, @LoggedInUser() user: User) {
+    return this.assessmentService.getAssessmentFindUniqueClient(assessment.id).answers({})
+  }
+
+
+  @ResolveField(() => Classroom, { nullable: true })
+  async classroom(@Root() assessment: Assessment) {
+    return this.assessmentService.getAssessmentFindUniqueClient(assessment.id).classroom()
   }
 
   @ResolveField(() => AssessmentAnswer, { nullable: true })

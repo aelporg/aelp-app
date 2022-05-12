@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-const CLASSROOM_MEMBERS_FRAGMENT = gql`
+export const CLASSROOM_MEMBERS_FRAGMENT = gql`
   fragment ClassroomMembers on Classroom {
     members {
       user {
