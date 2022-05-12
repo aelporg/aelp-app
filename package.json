@@ -59,7 +59,7 @@
     "mobx": "^6.4.2",
     "moment": "^2.29.1",
     "monaco": "^1.201704190613.0",
-    "monaco-editor": "^0.32.1",
+    "monaco-editor": "^0.33.0",
     "nestjs-joi": "^1.6.0",
     "next": "12.1.1",
     "next-compose-plugins": "^2.2.1",
