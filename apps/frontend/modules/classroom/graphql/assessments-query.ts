@@ -52,19 +52,28 @@ fragment AssessmentQuestions on Assessment {
       id
       title
     }
-    answers {
+    points
+  }
+
+  answers {
+    questionsSubmissions {
       id
+      points
       questionId
       programmingQuestionAnswer {
-        envirnmentId
-        id
+        evaluationResults {
+          id
+          evaulationPoints
+        }
       }
       multipleChoiceQuestionAnswer {
         id
         questionChoiceId
       }
     }
-    points
+    user {
+      name
+    }
   }
 }
 `

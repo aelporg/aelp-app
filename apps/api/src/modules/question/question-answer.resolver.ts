@@ -14,12 +14,12 @@ export default class QuestionAnswerResolver {
     return this.questionAnswerService.getById(answer.id).question();
   }
 
-  @ResolveField(() => ProgrammingQuestionAnswer)
+  @ResolveField(() => ProgrammingQuestionAnswer, { nullable: true })
   async programmingQuestionAnswer(@Root() answer: QuestionAnswer) {
     return this.questionAnswerService.getById(answer.id).programmingQuestionAnswer();
   }
 
-  @ResolveField(() => MultipleChoiceQuestionAnswer)
+  @ResolveField(() => MultipleChoiceQuestionAnswer, { nullable: true })
   async multipleChoiceQuestionAnswer(@Root() answer: QuestionAnswer) {
     return this.questionAnswerService.getById(answer.id).multipleChoiceQuestionAnswer();
   }

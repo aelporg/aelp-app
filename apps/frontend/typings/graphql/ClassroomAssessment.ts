@@ -41,12 +41,39 @@ export interface ClassroomAssessment_assessment_answers_user {
   name: string;
 }
 
+export interface ClassroomAssessment_assessment_answers_questionsSubmissions_programmingQuestionAnswer_evaluationResults {
+  __typename: "EvaluationResult";
+  id: string;
+  evaulationPoints: number;
+}
+
+export interface ClassroomAssessment_assessment_answers_questionsSubmissions_programmingQuestionAnswer {
+  __typename: "ProgrammingQuestionAnswer";
+  evaluationResults: ClassroomAssessment_assessment_answers_questionsSubmissions_programmingQuestionAnswer_evaluationResults[] | null;
+}
+
+export interface ClassroomAssessment_assessment_answers_questionsSubmissions_multipleChoiceQuestionAnswer {
+  __typename: "MultipleChoiceQuestionAnswer";
+  id: string;
+  questionChoiceId: string;
+}
+
+export interface ClassroomAssessment_assessment_answers_questionsSubmissions {
+  __typename: "QuestionAnswer";
+  id: string;
+  points: number | null;
+  questionId: string;
+  programmingQuestionAnswer: ClassroomAssessment_assessment_answers_questionsSubmissions_programmingQuestionAnswer | null;
+  multipleChoiceQuestionAnswer: ClassroomAssessment_assessment_answers_questionsSubmissions_multipleChoiceQuestionAnswer | null;
+}
+
 export interface ClassroomAssessment_assessment_answers {
   __typename: "AssessmentAnswer";
   user: ClassroomAssessment_assessment_answers_user;
   recPoints: number | null;
   updatedAt: any;
   createdAt: any;
+  questionsSubmissions: ClassroomAssessment_assessment_answers_questionsSubmissions[] | null;
 }
 
 export interface ClassroomAssessment_assessment_questions_multipleChoiceQuestion_choices {
@@ -68,33 +95,12 @@ export interface ClassroomAssessment_assessment_questions_programmingQuestion {
   title: string;
 }
 
-export interface ClassroomAssessment_assessment_questions_answers_programmingQuestionAnswer {
-  __typename: "ProgrammingQuestionAnswer";
-  envirnmentId: string;
-  id: string;
-}
-
-export interface ClassroomAssessment_assessment_questions_answers_multipleChoiceQuestionAnswer {
-  __typename: "MultipleChoiceQuestionAnswer";
-  id: string;
-  questionChoiceId: string;
-}
-
-export interface ClassroomAssessment_assessment_questions_answers {
-  __typename: "QuestionAnswer";
-  id: string;
-  questionId: string;
-  programmingQuestionAnswer: ClassroomAssessment_assessment_questions_answers_programmingQuestionAnswer;
-  multipleChoiceQuestionAnswer: ClassroomAssessment_assessment_questions_answers_multipleChoiceQuestionAnswer;
-}
-
 export interface ClassroomAssessment_assessment_questions {
   __typename: "Question";
   id: string;
   questionType: QuestionType;
   multipleChoiceQuestion: ClassroomAssessment_assessment_questions_multipleChoiceQuestion | null;
   programmingQuestion: ClassroomAssessment_assessment_questions_programmingQuestion | null;
-  answers: ClassroomAssessment_assessment_questions_answers[] | null;
   points: number;
 }
 

@@ -28,37 +28,54 @@ export interface AssessmentQuestions_questions_programmingQuestion {
   title: string;
 }
 
-export interface AssessmentQuestions_questions_answers_programmingQuestionAnswer {
-  __typename: "ProgrammingQuestionAnswer";
-  envirnmentId: string;
-  id: string;
-}
-
-export interface AssessmentQuestions_questions_answers_multipleChoiceQuestionAnswer {
-  __typename: "MultipleChoiceQuestionAnswer";
-  id: string;
-  questionChoiceId: string;
-}
-
-export interface AssessmentQuestions_questions_answers {
-  __typename: "QuestionAnswer";
-  id: string;
-  questionId: string;
-  programmingQuestionAnswer: AssessmentQuestions_questions_answers_programmingQuestionAnswer;
-  multipleChoiceQuestionAnswer: AssessmentQuestions_questions_answers_multipleChoiceQuestionAnswer;
-}
-
 export interface AssessmentQuestions_questions {
   __typename: "Question";
   id: string;
   questionType: QuestionType;
   multipleChoiceQuestion: AssessmentQuestions_questions_multipleChoiceQuestion | null;
   programmingQuestion: AssessmentQuestions_questions_programmingQuestion | null;
-  answers: AssessmentQuestions_questions_answers[] | null;
   points: number;
+}
+
+export interface AssessmentQuestions_answers_questionsSubmissions_programmingQuestionAnswer_evaluationResults {
+  __typename: "EvaluationResult";
+  id: string;
+  evaulationPoints: number;
+}
+
+export interface AssessmentQuestions_answers_questionsSubmissions_programmingQuestionAnswer {
+  __typename: "ProgrammingQuestionAnswer";
+  evaluationResults: AssessmentQuestions_answers_questionsSubmissions_programmingQuestionAnswer_evaluationResults[] | null;
+}
+
+export interface AssessmentQuestions_answers_questionsSubmissions_multipleChoiceQuestionAnswer {
+  __typename: "MultipleChoiceQuestionAnswer";
+  id: string;
+  questionChoiceId: string;
+}
+
+export interface AssessmentQuestions_answers_questionsSubmissions {
+  __typename: "QuestionAnswer";
+  id: string;
+  points: number | null;
+  questionId: string;
+  programmingQuestionAnswer: AssessmentQuestions_answers_questionsSubmissions_programmingQuestionAnswer | null;
+  multipleChoiceQuestionAnswer: AssessmentQuestions_answers_questionsSubmissions_multipleChoiceQuestionAnswer | null;
+}
+
+export interface AssessmentQuestions_answers_user {
+  __typename: "User";
+  name: string;
+}
+
+export interface AssessmentQuestions_answers {
+  __typename: "AssessmentAnswer";
+  questionsSubmissions: AssessmentQuestions_answers_questionsSubmissions[] | null;
+  user: AssessmentQuestions_answers_user;
 }
 
 export interface AssessmentQuestions {
   __typename: "Assessment";
   questions: AssessmentQuestions_questions[] | null;
+  answers: AssessmentQuestions_answers[] | null;
 }
