@@ -20,7 +20,7 @@
     "@nestjs/config": "^1.1.0",
     "@nestjs/core": "^8.2.2",
     "@nestjs/graphql": "^10.0.2",
-    "@nestjs/jwt": "^8.0.0",
+    "@nestjs/jwt": "^10.0.0",
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.2.2",
     "@nrwl/next": "^13.10.4",
