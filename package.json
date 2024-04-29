@@ -84,7 +84,7 @@
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.8",
     "rehype-katex": "^6.0.2",
-    "rehype-mermaid": "^0.1.5",
+    "rehype-mermaid": "^2.0.1",
     "rehype-sanitize": "^5.0.1",
     "rxjs": "^7.1.0",
     "sharp": "^0.30.1",
